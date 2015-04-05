@@ -9,6 +9,7 @@ class CreateMembers < ActiveRecord::Migration
       t.boolean :is_active
       t.string :vehicle
       t.integer :group_id
+      t.integer :route_id
 
       t.timestamps null: false
     end
