@@ -39,6 +39,9 @@ gem 'cancan'
 # Admin Interface
 gem 'rails_admin'
 
+# Twitter Bootstrap for views.
+gem 'twitter-bootstrap-rails'
+
 
 group :development, :test do
   # Include Capybara
