@@ -1,2 +1,8 @@
-<h1>Welcome#index</h1>
-<p>Find me in app/views/welcome/index.html.erb</p>
+<div class="jumbotron">
+	<% if signed_in? -%>
+		<h1>Welcome back!</h1>
+	<% else -%>
+		<h1>Welcome.</h1>
+		<p>Please sign in to access and update routes, or create an account to gain access.</p>
+	<% end -%>
+</div>
