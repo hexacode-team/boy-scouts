@@ -56,9 +56,12 @@ ActiveRecord::Schema.define(version: 20150405194143) do
 
   create_table "routes", force: :cascade do |t|
     t.string   "name"
+    t.integer  "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "routes", ["group_id"], name: "index_routes_on_group_id"
 
   create_table "runs", force: :cascade do |t|
     t.integer  "route_id"
