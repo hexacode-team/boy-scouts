@@ -12,6 +12,9 @@ user1 = User.create! :email => 'admin@boyscoutsfd.com', :password => 'secret',  
 #Create a regular user
 user2 = User.create! :email => 'user01@boyscoutsfd.com', :password => 'secret',  :can_vew_routes => true unless User.find_by_email('user01@boyscoutsfd.com')
 
+#Create a "customer" account
+user3 = User.create! :email=> 'manning@tamu.edu', :password => 'secret' unless User.find_by_email('manning@tamu.edu')
+
 #Create a group to function as a Troop and set the admin to the created default admin.
 group1 = Group.create! :name => "Troop01", :user_id => user1.id unless Group.find_by_name('Troop01')
 group2 = Group.create! :name => "Troop02", :user_id => user1.id unless Group.find_by_name('Troop02')
