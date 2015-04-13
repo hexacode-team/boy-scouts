@@ -7,6 +7,20 @@ class CreateUsers < ActiveRecord::Migration
       t.string :confirmation_token, limit: 128
       t.string :remember_token, limit: 128, null: false
       t.boolean :admin, null: false, default: false
+      t.boolean :can_view_routes
+
+      #incorporate columns from member class.
+      t.string :first_name
+      t.string :last_name
+      t.string :cell_phone
+      t.string :landline
+      t.string :email
+      t.boolean :is_active
+      t.string :vehicle
+      t.integer :group_id
+      t.integer :route_id
+
+      t.timestamps null: false
     end
 
     add_index :users, :email

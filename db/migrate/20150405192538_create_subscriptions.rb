@@ -14,7 +14,7 @@ class CreateSubscriptions < ActiveRecord::Migration
       t.string :state
       t.string :zip
       t.integer :qty
-      t.integer :member_id
+      t.integer :user_id
       t.datetime :last_invoice_sent
       t.datetime :renewal_due_date
       t.text :notes

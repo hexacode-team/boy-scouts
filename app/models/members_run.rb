@@ -1,4 +1,4 @@
 class MembersRun < ActiveRecord::Base
-  belongs_to :member
+  belongs_to :users
   belongs_to :run
 end
