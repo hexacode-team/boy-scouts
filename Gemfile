@@ -51,4 +51,9 @@ group :development, :test do
   # RSpec-Rails for testing.
   gem 'rspec-rails'
 
+  gem 'wkhtmltopdf'
+end
+
+group :production do
+  gem 'wkhtmltopdf-heroku'
 end
