@@ -10,7 +10,7 @@
 user1 = User.create! :email => 'admin@boyscoutsfd.com', :password => 'secret',  :admin => true unless User.find_by_email('admin@boyscoutsfd.com')
 
 #Create a regular user
-user2 = User.create! :email => 'user01@boyscoutsfd.com', :password => 'secret',  :can_vew_routes => true unless User.find_by_email('user01@boyscoutsfd.com')
+user2 = User.create! :email => 'user01@boyscoutsfd.com', :password => 'secret',  :can_view_routes => true unless User.find_by_email('user01@boyscoutsfd.com')
 
 #Create a "customer" account
 user3 = User.create! :email=> 'manning@tamu.edu', :password => 'secret' unless User.find_by_email('manning@tamu.edu')
