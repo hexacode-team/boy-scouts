@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  resources :routes
+  get 'routes/view_routes'
+  get 'routes/view_route'
 
   get 'group/view_groups'
   get 'group/view_group'
@@ -16,6 +17,9 @@ Rails.application.routes.draw do
 
   get 'payment/generate_invoices'
   get 'payment/generate_invoices_pdf'
+
+
+
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   get 'welcome/index'
