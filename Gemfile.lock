@@ -151,7 +151,6 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rake (10.4.2)
     rdoc (4.2.0)
-      json (~> 1.4)
     remotipart (1.2.1)
     rspec-core (3.2.3)
       rspec-support (~> 3.2.0)
@@ -202,6 +201,8 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    wkhtmltopdf (0.1.2)
+    wkhtmltopdf-heroku (1.0.0)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -220,9 +221,15 @@ DEPENDENCIES
   jquery-rails
   rails (= 4.2.1)
   rails_admin
+<<<<<<< HEAD
   rspec-rails (~> 3.0)
+=======
+  rspec-rails
+>>>>>>> dev
   sdoc (~> 0.4.0)
   spring
   sqlite3
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
+  wkhtmltopdf
+  wkhtmltopdf-heroku

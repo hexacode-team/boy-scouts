@@ -1,4 +1,26 @@
 Rails.application.routes.draw do
+  get 'routes/view_routes'
+  get 'routes/view_route'
+
+  get 'group/view_groups'
+  get 'group/view_group'
+
+  get 'run_sheets/generate_runsheet'
+  get 'run_sheets/generate_runsheet_pdf'
+
+  get 'run_sheets/generate_runsheets'
+  get 'run_sheets/generate_runsheets_pdf'
+
+
+  get 'payment/generate_invoice'
+  get 'payment/generate_invoice_pdf'
+
+  get 'payment/generate_invoices'
+  get 'payment/generate_invoices_pdf'
+
+
+
+
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   get 'welcome/index'
 

@@ -22,29 +22,15 @@ ActiveRecord::Schema.define(version: 20150405194143) do
 
   add_index "groups", ["user_id"], name: "index_groups_on_user_id"
 
-  create_table "members", force: :cascade do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "cell_phone"
-    t.string   "landline"
-    t.string   "email"
-    t.boolean  "is_active"
-    t.string   "vehicle"
-    t.integer  "group_id"
-    t.integer  "route_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "members_runs", force: :cascade do |t|
-    t.integer  "member_id"
+    t.integer  "user_id"
     t.integer  "run_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_index "members_runs", ["member_id"], name: "index_members_runs_on_member_id"
   add_index "members_runs", ["run_id"], name: "index_members_runs_on_run_id"
+  add_index "members_runs", ["user_id"], name: "index_members_runs_on_user_id"
 
   create_table "payments", force: :cascade do |t|
     t.integer  "subscription_id"
@@ -56,6 +42,7 @@ ActiveRecord::Schema.define(version: 20150405194143) do
 
   create_table "routes", force: :cascade do |t|
     t.string   "name"
+    t.integer  "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -83,7 +70,7 @@ ActiveRecord::Schema.define(version: 20150405194143) do
     t.string   "state"
     t.string   "zip"
     t.integer  "qty"
-    t.integer  "member_id"
+    t.integer  "user_id"
     t.datetime "last_invoice_sent"
     t.datetime "renewal_due_date"
     t.text     "notes"
@@ -103,11 +90,20 @@ ActiveRecord::Schema.define(version: 20150405194143) do
   create_table "users", force: :cascade do |t|
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
-    t.string   "email",                                          null: false
+    t.string   "email"
     t.string   "encrypted_password", limit: 128,                 null: false
     t.string   "confirmation_token", limit: 128
     t.string   "remember_token",     limit: 128,                 null: false
     t.boolean  "admin",                          default: false, null: false
+    t.boolean  "can_view_routes"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "cell_phone"
+    t.string   "landline"
+    t.boolean  "is_active"
+    t.string   "vehicle"
+    t.integer  "group_id"
+    t.integer  "route_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email"

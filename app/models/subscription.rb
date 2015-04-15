@@ -1,5 +1,6 @@
 class Subscription < ActiveRecord::Base
-    belongs_to :member
+    has_many :payments
+    belongs_to :users
     belongs_to :route
     
 end
