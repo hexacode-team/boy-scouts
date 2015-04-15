@@ -11,6 +11,36 @@ module NavigationHelpers
     when /admin/
       '/admin'
 
+    when /dashboard/
+      '/admin'
+
+    when /generate run sheets/
+      '/run_sheets/generate_runsheet'
+
+    when /users/
+      '/admin/user'
+
+    when /payments/
+      '/admin/payment'
+
+    when /routes/
+      '/admin/route'
+
+    when /runs/
+      '/admin/run'
+
+    when /subscriptions/
+      '/admin/subscription'
+
+    when /groups/
+      '/admin/group'
+
+    when /member runs/
+      '/admin/members_run'
+
+    when /tasks/
+      '/admin/task'
+
     else
       begin
         page_name =~ /the (.*) page/
