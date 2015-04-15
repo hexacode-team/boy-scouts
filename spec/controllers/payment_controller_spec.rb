@@ -9,9 +9,9 @@ RSpec.describe PaymentController, type: :controller do
     end
   end
 
-  describe "GET #generate_invoices_html" do
+  describe "GET #generate_invoices" do
     it "returns http success" do
-      get :generate_invoices_html
+      get :generate_invoices
       expect(response).to have_http_status(:success)
     end
   end

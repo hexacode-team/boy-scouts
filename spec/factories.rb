@@ -6,14 +6,15 @@
 #end
 
 FactoryGirl.define do
-	factory :user do
-		email		"test@example.com"
-		password	"password"
-	end
-	factory :admin do
-		admin true
-	end
+    factory :user do
+            email		"test@example.com"
+            password	"password"
+        end
+    factory :admin do
+        admin true
+    end
 end
+
 #factory :user do
  # email "test@example.com"
   #password "password"
