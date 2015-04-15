@@ -37,6 +37,7 @@ gem 'bootstrap-sass'
 # Autoprefix css browser extensions.
 gem 'autoprefixer-rails'
 
+gem 'pdfkit'
 
 group :development, :test do
   # Include Capybara
@@ -58,7 +59,11 @@ group :development, :test do
   # RSpec-Rails for testing.
   gem 'rspec-rails'
 
+  gem 'wkhtmltopdf-binary'
   gem 'wkhtmltopdf'
+
+  gem 'unicorn'
+
 end
 
 group :production do

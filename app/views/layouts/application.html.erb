@@ -6,6 +6,7 @@
   <%= csrf_meta_tag %>
 </head>
 <body>
+  <% unless defined?(@no_header) %>
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -25,7 +26,10 @@
         <ul class="nav navbar-nav">
           <!-- TODO: Make tab active when page is active. -->
           <li class="<%= 'active' if current_page?(root_path) %>"><%= link_to "Welcome", root_path %></li>
-          <li><%= link_to "Admin", "/admin" %></li>
+          <% if signed_in? && current_user.admin? %>
+              <li><%= link_to "Admin", "/admin" %></li>
+              <li><%= link_to view_invoices_url(:group_id => 1) do %> View Invoices<% end %></li>
+          <% end %>
         </ul>
         
         <!-- Show login and sign-up buttons when we're not logged in, but -->
@@ -47,7 +51,7 @@
       <div id="flash_<%= key %>"><%=h value %></div>
     <% end %>
   </div>
-
+  <% end %>
   <%= yield %>
 </body>
 </html>

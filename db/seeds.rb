@@ -7,7 +7,8 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 #Create Default Admin
-user1 = User.create! :email => 'admin@boyscoutsfd.com', :password => 'secret',  :admin => true unless User.find_by_email('admin@boyscoutsfd.com')
+user1 = User.create! :email => 'admin@boyscoutsfd.com', :password => 'secret',  :admin => true,
+                     :first_name => "FirstName01", :last_name => "LastName01" unless User.find_by_email('admin@boyscoutsfd.com')
 
 #Create a regular user
 user2 = User.create! :email => 'user01@boyscoutsfd.com', :password => 'secret',  :can_view_routes => true unless User.find_by_email('user01@boyscoutsfd.com')
@@ -31,7 +32,10 @@ sub3 = Subscription.create! :first_name => "FirstName03", :last_name => "LastNam
                             :city => "Fake City", :zip => "00006", :state => "Fake Station", :qty => 3, :user_id => user2 unless Subscription.find_by_first_name("FirstName03")
 
 #create a current payment for sub 1, and an old payment for sub2
-pay1 = Payment.create! :subscription_id => sub1.id, :amount_paid => sub1.qty * 30, :date => DateTime.now unless Payment.find_by_subscription_id(sub1.id)
-pay2 = Payment.create! :subscription_id => sub2.id, :amount_paid => sub2.qty * 30, :date => (DateTime.now - 366) unless Payment.find_by_subscription_id(sub2.id)
+pay1 = Payment.create! :subscription_id => sub1.id, :amount_paid => sub1.qty * 30, :start_date => DateTime.now,
+                       :end_date  => (DateTime.now + 366) unless Payment.find_by_subscription_id(sub1.id)
+
+pay1 = Payment.create! :subscription_id => sub1.id, :amount_paid => sub1.qty * 30, :start_date => (DateTime.now - 366),
+                       :end_date  => (DateTime.now - 1) unless Payment.find_by_subscription_id(sub1.id)
 
 

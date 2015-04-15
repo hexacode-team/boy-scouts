@@ -1,6 +1,47 @@
 class Subscription < ActiveRecord::Base
+    has_one :group, :through => :route
+    belongs_to :route
     has_many :payments
     belongs_to :users
-    belongs_to :route
-    
+
+    def self.get_require_invoices(group_id)
+
+      routes = Route.where(:group_id => group_id)
+      subscriptions = []
+
+      routes.each do |route|
+        subscriptions += Subscription.where(:route_id => route.id)
+      end
+
+      today = Date.today()
+      subs_that_need_invoices = []
+      subscriptions.each do |sub|
+        needs_invoice = true
+        payments = Payment.where(:subscription_id => sub.id)
+
+        #if we cannot find a payment for a subscription, we obviously need an invoice
+        if payments.blank?
+          subs_that_need_invoices.append(sub)
+          next
+        end
+
+        #if there are payments such good for at least the next 30 days....we need an invoice.
+
+        payments.each do |payment|
+          if (today < payment.end_date - 30)
+            needs_invoice = false
+            break
+          end
+        end
+
+        if needs_invoice
+          subs_that_need_invoices.append(sub)
+        end
+
+      end
+
+      return subs_that_need_invoices
+
+    end
+
 end
