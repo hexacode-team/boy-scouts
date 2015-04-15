@@ -31,7 +31,10 @@ sub3 = Subscription.create! :first_name => "FirstName03", :last_name => "LastNam
                             :city => "Fake City", :zip => "00006", :state => "Fake Station", :qty => 3, :user_id => user2 unless Subscription.find_by_first_name("FirstName03")
 
 #create a current payment for sub 1, and an old payment for sub2
-pay1 = Payment.create! :subscription_id => sub1.id, :amount_paid => sub1.qty * 30, :date => DateTime.now unless Payment.find_by_subscription_id(sub1.id)
-pay2 = Payment.create! :subscription_id => sub2.id, :amount_paid => sub2.qty * 30, :date => (DateTime.now - 366) unless Payment.find_by_subscription_id(sub2.id)
+pay1 = Payment.create! :subscription_id => sub1.id, :amount_paid => sub1.qty * 30, :start_date => DateTime.now,
+                       :end_date  => (DateTime.now + 366) unless Payment.find_by_subscription_id(sub1.id)
+
+pay1 = Payment.create! :subscription_id => sub1.id, :amount_paid => sub1.qty * 30, :start_date => (DateTime.now - 366),
+                       :end_date  => (DateTime.now - 1) unless Payment.find_by_subscription_id(sub1.id)
 
 

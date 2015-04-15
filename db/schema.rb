@@ -35,7 +35,8 @@ ActiveRecord::Schema.define(version: 20150405194143) do
   create_table "payments", force: :cascade do |t|
     t.integer  "subscription_id"
     t.decimal  "amount_paid"
-    t.datetime "date"
+    t.datetime "start_date"
+    t.datetime "end_date"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
