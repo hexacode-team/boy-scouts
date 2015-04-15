@@ -23,9 +23,20 @@
    
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <!-- TODO: Make tab active when page is active. -->
-          <li class="<%= 'active' if current_page?(root_path) %>"><%= link_to "Welcome", root_path %></li>
-          <li><%= link_to "Admin", "/admin" %></li>
+          <li class="<%= 'active' if current_page?(root_path) %>"><%= link_to "Home", root_path %></li>
+
+          <% if current_user && current_user.admin? %>
+            <!-- If we're an admin, give access to panel, invoices, and routes. -->
+            <li><%= link_to "Admin", "/admin" %></li>
+            <li class="<%= 'active' if current_page?(routes_path) %>"><%= link_to "Routes", routes_path %></li>
+
+            <!-- TODO: steven -->
+            <li><%= link_to "Invoices", root_path %></li> 
+
+          <% elsif current_user && current_user.can_view_routes? %>
+            <!-- Otherwise, only show routes to members. -->
+            <li class="<%= 'active' if current_page?(routes_path) %>"><%= link_to "My Routes", routes_path %></li>
+          <% end %>   
         </ul>
         
         <!-- Show login and sign-up buttons when we're not logged in, but -->
