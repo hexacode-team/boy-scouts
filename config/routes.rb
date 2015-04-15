@@ -11,12 +11,9 @@ Rails.application.routes.draw do
   get 'run_sheets/generate_runsheets'
   get 'run_sheets/generate_runsheets_pdf'
 
-
-  get 'payment/generate_invoice'
-  get 'payment/generate_invoice_pdf'
-
-  get 'payment/generate_invoices'
-  get 'payment/generate_invoices_pdf'
+  get 'subscription/:group_id/invoices' => 'subscription#index', as: :view_invoices
+  get 'subscription/:group_id/generate_invoices' => 'subscription#generate_invoices', as: :generate_invoices
+  get 'subscription/:group_id/generate_invoices_pdf' => 'subscription#generate_invoices_pdf', as: :generate_invoices_pdf
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   get 'welcome/index'
