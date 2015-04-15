@@ -38,6 +38,10 @@ gem 'autoprefixer-rails'
 group :development, :test do
   # Include Capybara
   gem 'capybara'
+
+  #Cucumber Gem for testing
+  gem 'cucumber-rails', :require => false
+  gem 'database_cleaner'
   
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
