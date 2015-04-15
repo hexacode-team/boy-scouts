@@ -39,11 +39,11 @@
         <!-- Show login and sign-up buttons when we're not logged in, but -->
         <!-- only show sign-out button when we are logged in. -->
         <% if signed_in? -%>
-          <button type="" class="btn btn-default navbar-right navbar-btn"><%= link_to "Logout", sign_out_path, :method => :delete %></button>
+          <div class="navbar-right"><%= link_to "Logout", sign_out_path, :method => :delete, :class => "btn btn-danger navbar-btn" %></div>
         <% else -%>
           <div class="navbar-right">
-            <button type="" class="btn btn-default navbar-btn"><%= link_to "Login", sign_in_path %></button>
-            <button type="" class="btn btn-default navbar-btn"><%= link_to "Sign up", sign_up_path %></button>
+            <%= link_to "Login", sign_in_path, :class => "btn btn-default navbar-btn" %>
+            <%= link_to "Sign Up", sign_up_path, :class => "btn btn-default navbar-btn" %>
           </div>
         <% end -%>
       </div>
