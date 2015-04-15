@@ -7,7 +7,8 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 #Create Default Admin
-user1 = User.create! :email => 'admin@boyscoutsfd.com', :password => 'secret',  :admin => true unless User.find_by_email('admin@boyscoutsfd.com')
+user1 = User.create! :email => 'admin@boyscoutsfd.com', :password => 'secret',  :admin => true,
+                     :first_name => "FirstName01", :last_name => "LastName01" unless User.find_by_email('admin@boyscoutsfd.com')
 
 #Create a regular user
 user2 = User.create! :email => 'user01@boyscoutsfd.com', :password => 'secret',  :can_view_routes => true unless User.find_by_email('user01@boyscoutsfd.com')
