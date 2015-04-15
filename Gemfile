@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+# FACTORY GURL!
+gem 'factory_girl_rails'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
 
