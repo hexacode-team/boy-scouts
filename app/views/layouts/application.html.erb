@@ -24,12 +24,16 @@
    
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <!-- TODO: Make tab active when page is active. -->
-          <li class="<%= 'active' if current_page?(root_path) %>"><%= link_to "Welcome", root_path %></li>
+          <li class="<%= 'active' if current_page?(root_path) %>"><%= link_to "Home", root_path %></li>
           <% if signed_in? && current_user.admin? %>
-              <li><%= link_to "Admin", "/admin" %></li>
-              <li><%= link_to view_invoices_url(:group_id => 1) do %> View Invoices<% end %></li>
-          <% end %>
+            <!-- If we're an admin, give access to panel, invoices, and routes. -->
+            <li><%= link_to "Admin", "/admin" %></li>
+            <li><%= link_to view_invoices_url(:group_id => 1) do %> View Invoices<% end %></li>
+            <li><%= link_to "Routes", view_routes_url %></li>
+          <% elsif current_user && current_user.can_view_routes? %>
+            <!-- Otherwise, only show routes to members. -->
+            <li><%= link_to "My Routes", view_route_url(group_id: 1) %></li> <!-- TODO: remove hard-coded group once groups are required -->
+          <% end %>   
         </ul>
         
         <!-- Show login and sign-up buttons when we're not logged in, but -->
