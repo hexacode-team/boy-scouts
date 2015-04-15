@@ -95,7 +95,7 @@ ActiveRecord::Schema.define(version: 20150405194143) do
     t.string   "confirmation_token", limit: 128
     t.string   "remember_token",     limit: 128,                 null: false
     t.boolean  "admin",                          default: false, null: false
-    t.boolean  "can_vew_routes"
+    t.boolean  "can_view_routes"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "cell_phone"
