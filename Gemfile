@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+# FACTORY GURL!
+gem 'factory_girl_rails'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
 
@@ -39,6 +42,10 @@ gem 'pdfkit'
 group :development, :test do
   # Include Capybara
   gem 'capybara'
+
+  #Cucumber Gem for testing
+  gem 'cucumber-rails', :require => false
+  gem 'database_cleaner'
   
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
