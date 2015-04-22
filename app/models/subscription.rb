@@ -40,8 +40,10 @@ class Subscription < ActiveRecord::Base
 
       end
 
-      return subs_that_need_invoices
-
+      return subs_that_need_invoices.sort do |a, b|
+        comp = (a.last_name <=> b.last_name)
+        comp.zero? ? (a.first_name <=> b.first_name) : comp
+      end 
     end
 
 end

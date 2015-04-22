@@ -7,9 +7,15 @@
         <div class="invoice-header">
           <div class="invoice-header-company">
             <h3>Boy Scouts of America</h3>
+            <% if @user.blank? %>
+            <h4>Admin_first Admin_last</h4>
+            <h4> admin@boyscoutsfd.com </h4>
+            <h4> (999) 999 - 9999</h4>
+            <% else %>
             <h4><%= @user.first_name %> <%= @user.last_name %></h4>
             <h4><%= @user.email %></h4>
             <h4><%= @user.landline %></h4>
+            <% end %>
           </div>
           <div class="invoice-header-info">
             <h3>Invoice</h3>
