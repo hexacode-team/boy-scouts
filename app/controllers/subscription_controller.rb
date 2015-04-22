@@ -1,20 +1,14 @@
 class SubscriptionController < ApplicationController
   def index
 
-    @invoices = Subscription.get_require_invoices(params[:group_id]).sort do |a, b|
-      comp = (a.last_name <=> b.last_name)
-      comp.zero? ? (a.first_name <=> b.first_name) : comp
-    end
+    @invoices = Subscription.get_require_invoices(params[:group_id])
 
     @group = Group.find(params[:group_id])
     @user = current_user
   end
 
   def generate_invoices
-    @invoices = Subscription.get_require_invoices(params[:group_id]).sort do |a, b|
-      comp = (a.last_name <=> b.last_name)
-      comp.zero? ? (a.first_name <=> b.first_name) : comp
-    end
+    @invoices = Subscription.get_require_invoices(params[:group_id])
 
     @group = Group.find(params[:group_id])
     @user = current_user
@@ -24,10 +18,7 @@ class SubscriptionController < ApplicationController
   end
 
   def generate_invoices_pdf
-    @invoices = Subscription.get_require_invoices(params[:group_id]).sort do |a, b|
-      comp = (a.last_name <=> b.last_name)
-      comp.zero? ? (a.first_name <=> b.first_name) : comp
-    end
+    @invoices = Subscription.get_require_invoices(params[:group_id])
 
     @group = Group.find(params[:group_id])
     @user = current_user
