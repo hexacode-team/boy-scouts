@@ -7,7 +7,6 @@ gem 'factory_girl_rails'
 gem 'rails', '4.2.1'
 
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -37,11 +36,13 @@ gem 'bootstrap-sass'
 # Autoprefix css browser extensions.
 gem 'autoprefixer-rails'
 
-gem 'pdfkit'
+gem 'wicked_pdf'
 
 group :development, :test do
   # Include Capybara
   gem 'capybara'
+
+  gem 'io-console'
 
   #Cucumber Gem for testing
   gem 'cucumber-rails', :require => false
@@ -59,10 +60,10 @@ group :development, :test do
   # RSpec-Rails for testing.
   gem 'rspec-rails'
 
-  gem 'wkhtmltopdf-binary'
   gem 'wkhtmltopdf'
-
   gem 'unicorn'
+  gem 'puma'
+  gem 'sqlite3'
 
 end
 
