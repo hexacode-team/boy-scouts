@@ -24,7 +24,7 @@ class SubscriptionController < ApplicationController
     @user = current_user
     @no_header = true
 
-    render pdf: "test", :layout => "static_layout"
+    render pdf: "invoices", :layout => "static_layout"
 
   end
 end
