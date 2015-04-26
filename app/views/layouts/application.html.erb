@@ -30,7 +30,7 @@
             <li><%= link_to "Admin", "/admin" %></li>
             <li><%= link_to view_invoices_url(:group_id => 1) do %> View Invoices<% end %></li>
             <li><%= link_to "Routes", view_routes_url %></li>
-          <% elsif can? :access, :routes %>
+          <% elsif can? :access, :routes %> <!-- TODO: this does not work yet -->
             <!-- Otherwise, only show routes to members. -->
             <li><%= link_to "My Routes", view_route_url(group_id: 1) %></li> <!-- TODO: remove hard-coded group once groups are required -->
           <% end %>   
