@@ -17,9 +17,9 @@ RailsAdmin.config do |config|
   # Configure the new user model to support Clearance config.
   config.model "User" do
     edit do
-      field :admin
       field :email
       field :password
+      field :groups
     end
   end
 
@@ -35,5 +35,8 @@ RailsAdmin.config do |config|
     end
 
   config.current_user_method { current_user }
-  
+
+  config.label_methods << :full_name
+  config.label_methods << :full_name
+
 end
