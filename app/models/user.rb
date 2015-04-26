@@ -9,9 +9,18 @@ include Clearance::User
       self.groups.each do |g|
         if g.admin?
           return true
+
         end
       end
       false
+  end
+
+  def display_name
+      self.last_name + ', ' + self.first_name
+  end
+
+  def full_name
+    self.first_name + self.last_name
   end
 
 end

@@ -8,20 +8,24 @@
 
 #Create Default Admin
 user1 = User.create! :email => 'admin@boyscoutsfd.com', :password => 'secret',
-                     :first_name => "FirstName01", :last_name => "LastName01" unless User.find_by_email('admin@boyscoutsfd.com')
+                     :first_name => "AdminFirstName01", :last_name => "AdminLastName01" unless User.find_by_email('admin@boyscoutsfd.com')
 
 #Create regular users
-user2 = User.create! :email => 'user01@boyscoutsfd.com', :password => 'secret',  :can_view_routes => true unless User.find_by_email('user01@boyscoutsfd.com')
-user3 = User.create! :email=> 'user02@boyscoutsfd.com', :password => 'secret' unless User.find_by_email('user02@boyscoutsfd.com')
+user2 = User.create! :email => 'user01@boyscoutsfd.com', :password => 'secret',  :can_view_routes => true,
+                     :first_name => "FirstName01", :last_name => "LastName01" unless User.find_by_email('user01@boyscoutsfd.com')
+user3 = User.create! :email=> 'user02@boyscoutsfd.com', :password => 'secret',
+                     :first_name => "FirstName02", :last_name => "LastName02" unless User.find_by_email('user02@boyscoutsfd.com')
 
 
 
 #Create a group to function as a Troop and set the admin to the created default admin.
 groupAdmin = Group.create! :name => "SiteAdmins", :admin => true unless Group.find_by_name("SiteAdmins")
+groupTroopLeader = Group.create! :name => "Troop01Leader" unless Group.find_by_name('Troop01')
 group1 = Group.create! :name => "Troop01" unless Group.find_by_name('Troop01')
 group2 = Group.create! :name => "Troop02" unless Group.find_by_name('Troop02')
 
 groupAdmin.users << user1
+groupTroopLeader.children << group1
 
 #Create new routes and add new subscriptions to that routes
 route1 = Route.create! :name => "Route01", :group_id => group1.id unless Route.find_by_name("Route01")

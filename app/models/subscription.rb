@@ -3,6 +3,10 @@ class Subscription < ActiveRecord::Base
     belongs_to :group
     has_many :payments
 
+    def name
+      return last_name + ', ' + first_name 
+    end
+
     def self.get_require_invoices(group_id)
 
       routes = Route.where(:group_id => group_id)
