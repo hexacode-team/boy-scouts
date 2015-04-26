@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get 'welcome/index'
+  root :to  => 'welcome#index'
+  
   get 'routes/view_routes' => 'routes#view_routes', as: :view_routes
   get 'routes/:group_id/view_route' => 'routes#view_route', as: :view_route
 
@@ -16,13 +19,7 @@ Rails.application.routes.draw do
   get 'subscription/:group_id/generate_invoices_pdf' => 'subscription#generate_invoices_pdf', as: :generate_invoices_pdf
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  get 'welcome/index'
 
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-
-  # You can have the root of your site routed with "root"
-  root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
