@@ -18,12 +18,17 @@ user3 = User.create! :email=> 'user02@boyscoutsfd.com', :password => 'secret',
 
 
 
+#Create Another admin to test My Groups
+user4 = User.create! :email => 'admin2@boyscoutsfd.com', :password => 'secret',  :admin => true,
+                     :first_name => "FirstName012", :last_name => "LastName012" unless User.find_by_email('admin2@boyscoutsfd.com')
+
+
 #Create a group to function as a Troop and set the admin to the created default admin.
 groupAdmin = Group.create! :name => "SiteAdmins", :admin => true unless Group.find_by_name("SiteAdmins")
 groupTroopLeader = Group.create! :name => "Troop01Leader" unless Group.find_by_name('Troop01')
 group1 = Group.create! :name => "Troop01" unless Group.find_by_name('Troop01')
 group2 = Group.create! :name => "Troop02" unless Group.find_by_name('Troop02')
-
+group3 = Group.create! :name => "Troop03" unless Group.find_by_name('Troop03')
 groupAdmin.users << user1
 groupTroopLeader.children << group1
 
