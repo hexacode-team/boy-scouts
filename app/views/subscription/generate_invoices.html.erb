@@ -5,6 +5,74 @@
     <h3> No Current Invoices Required </h3>
   <% else %>
     <% @invoices.each do |subscription| %>
+          <% if @display_letter %>
+              <p class="letter-body">
+                <%= subscription.first_name %> <%= subscription.last_name %> <br />
+                <%= subscription.address_line_1 %> <br />
+                <% unless subscription.address_line_2.blank? %>
+                <%= subscription.address_line_2 %> <br />
+                <% end %>
+                <%= subscription.city %>, <%= subscription.state %> <%= subscription.zip %> <br />
+                <br /><br />
+                Dear <%= subscription.first_name %> <%= subscription.last_name %>,
+                <br /> <br />
+                Hopefully, you have enjoyed our Flag Service this past year.  Your subscription has helped our scouts
+                cover their dues and offset fees for summer camps.  The younger boys will go to El Rancho Cima in the
+                Hill Country; and the older boys to the Philmont Scout Ranch in New Mexico. Other Texas trips this
+                camping season included: Lost Maples, Dinosaur Valley, Huntsville, and Lake Tyler.
+                <br /> <br />
+                If you wish to continue your support for another year, please remit a payment of $30/year
+                either online at www.troop1300.org or by check, enclosing the bottom part of this letter.
+                <br /> <br />
+                The six flag days are: July 4th, Patriots Day (September), Veterans Day (November),
+                President&#39;s Day (February), Memorial Day (May), and Flag Day (June) from 9am to 7 pm, unless raining.
+                <br /> <br />
+                If you have any questions or issues with your Flag Subscription, please feel free to contact me.
+                <br /> <br />
+                THANK YOU AGAIN!
+                <br /> <br />
+                Don Gilman, 979.229.1053  <br />
+                Troop 1300, Arrowmoon District, <br />
+                Sam Houston Council, Boy Scouts of America <br />
+                <br />
+
+              </p>
+              <div class="letter-payment-slip">
+                <%= subscription.first_name %> <%= subscription.last_name %> @
+                <%= subscription.address_line_1 %>
+                <%= subscription.address_line_2 %>
+                Qty: <%= subscription.qty %><br /><br />
+
+                <div class="letter-return-to">
+                  <div class="return-to-label">
+                  Return to:
+                  </div>
+                  <div class="return-to-addr">
+                  Troop 1300 BSA <br />
+                  2511 Broadmoor <br />
+                  Bryan, TX 77802 <br />
+                  </div>
+                </div>
+                <div class="request-changes-description">
+                    <p class="center-text"><strong>DONATIONS OR SERVICE CHANGES BELOW THIS LINE </strong>
+                    <hr>
+                    <p class="center-text small-text">NEED A DIFFERENT SERVICE ADDRESS? &#09; CHANGE FLAG QTY? &#09; DONATION?</p>
+                  <p></p>
+                </div>
+                <div class="requested-changes-fields">
+                  <p>
+                    Address: ________________________________________________________ <br /><br />
+                    # of Flags: __________  x $30/flag/yr = $ _______________ <br /><br />
+                    Total Enclosed: $ ___________
+                  </p>
+                </div>
+              </div>
+              <div style="page-break-after:always !important;"></div>
+
+          <% end %>
+
+
+        <% if not @display_letter %>
         <a name="sub_<%= subscription.id %>" ></a>
         <div class="invoice">
           <div class="invoice-header">
@@ -92,6 +160,7 @@
             <div style="page-break-after:always !important;"></div>
             <hr />
         <% end %>
+              <% end %>
     <% end %>
   <% end %>
 </div>
