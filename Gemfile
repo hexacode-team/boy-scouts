@@ -25,7 +25,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # User authencation and Roles
 gem 'clearance'
-gem 'cancan'
+gem 'cancancan'
 
 # Admin Interface
 gem 'rails_admin'
