@@ -11,16 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150405194143) do
+ActiveRecord::Schema.define(version: 20150426155110) do
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.boolean  "admin",      default: false, null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   add_index "groups", ["user_id"], name: "index_groups_on_user_id"
+
+  create_table "groups_users", force: :cascade do |t|
+    t.integer "group_id"
+    t.integer "user_id"
+  end
 
   create_table "members_runs", force: :cascade do |t|
     t.integer  "user_id"
@@ -49,6 +55,11 @@ ActiveRecord::Schema.define(version: 20150405194143) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "routes_users", force: :cascade do |t|
+    t.integer "route_id"
+    t.integer "user_id"
+  end
+
   create_table "runs", force: :cascade do |t|
     t.integer  "route_id"
     t.datetime "date"
@@ -72,7 +83,7 @@ ActiveRecord::Schema.define(version: 20150405194143) do
     t.string   "state"
     t.string   "zip"
     t.integer  "qty"
-    t.integer  "user_id"
+    t.integer  "group_id"
     t.datetime "last_invoice_sent"
     t.datetime "renewal_due_date"
     t.text     "notes"
@@ -90,13 +101,12 @@ ActiveRecord::Schema.define(version: 20150405194143) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.string   "email"
-    t.string   "encrypted_password", limit: 128,                 null: false
+    t.string   "encrypted_password", limit: 128, null: false
     t.string   "confirmation_token", limit: 128
-    t.string   "remember_token",     limit: 128,                 null: false
-    t.boolean  "admin",                          default: false, null: false
+    t.string   "remember_token",     limit: 128, null: false
     t.boolean  "can_view_routes"
     t.string   "first_name"
     t.string   "last_name"
