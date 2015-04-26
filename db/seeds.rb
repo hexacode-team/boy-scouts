@@ -16,9 +16,15 @@ user2 = User.create! :email => 'user01@boyscoutsfd.com', :password => 'secret', 
 #Create a "customer" account
 user3 = User.create! :email=> 'manning@tamu.edu', :password => 'secret' unless User.find_by_email('manning@tamu.edu')
 
+#Create Another admin to test My Groups
+user4 = User.create! :email => 'admin2@boyscoutsfd.com', :password => 'secret',  :admin => true,
+                     :first_name => "FirstName012", :last_name => "LastName012" unless User.find_by_email('admin2@boyscoutsfd.com')
+
+
 #Create a group to function as a Troop and set the admin to the created default admin.
 group1 = Group.create! :name => "Troop01", :user_id => user1.id unless Group.find_by_name('Troop01')
 group2 = Group.create! :name => "Troop02", :user_id => user1.id unless Group.find_by_name('Troop02')
+group3 = Group.create! :name => "Troop03", :user_id => user4.id unless Group.find_by_name('Troop03')
 
 #Create new routes and add new subscriptions to that routes
 route1 = Route.create! :name => "Route01", :group_id => group1.id unless Route.find_by_name("Route01")

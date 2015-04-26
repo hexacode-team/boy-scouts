@@ -1,93 +1,97 @@
 
 
 <div id="invoices">
-  <% @invoices.each do |subscription| %>
-      <a name="sub_<%= subscription.id %>" ></a>
-      <div class="invoice">
-        <div class="invoice-header">
-          <div class="invoice-header-company">
-            <h3>Boy Scouts of America</h3>
-            <% if @user.blank? %>
-            <h4>Admin_first Admin_last</h4>
-            <h4> admin@boyscoutsfd.com </h4>
-            <h4> (999) 999 - 9999</h4>
-            <% else %>
-            <h4><%= @user.first_name %> <%= @user.last_name %></h4>
-            <h4><%= @user.email %></h4>
-            <h4><%= @user.landline %></h4>
-            <% end %>
+  <% if @invoices.size == 0 %>
+    <h3> No Current Invoices Required </h3>
+  <% else %>
+    <% @invoices.each do |subscription| %>
+        <a name="sub_<%= subscription.id %>" ></a>
+        <div class="invoice">
+          <div class="invoice-header">
+            <div class="invoice-header-company">
+              <h3>Boy Scouts of America</h3>
+              <% if @user.blank? %>
+              <h4>Admin_first Admin_last</h4>
+              <h4> admin@boyscoutsfd.com </h4>
+              <h4> (999) 999 - 9999</h4>
+              <% else %>
+              <h4><%= @user.first_name %> <%= @user.last_name %></h4>
+              <h4><%= @user.email %></h4>
+              <h4><%= @user.landline %></h4>
+              <% end %>
+            </div>
+            <div class="invoice-header-info">
+              <h3>Invoice</h3>
+              <h4>Date: <%= Date.today().to_s %></h4>
+              <h4>Customer Id: <%= subscription.id %></h4>
+            </div>
           </div>
-          <div class="invoice-header-info">
-            <h3>Invoice</h3>
-            <h4>Date: <%= Date.today().to_s %></h4>
-            <h4>Customer Id: <%= subscription.id %></h4>
+          <div class="invoice-billing-delivery-addr-container">
+            <div class="invoice-addr-left">
+              <h4>Address Serviced</h4>
+              <h5><%= subscription.first_name %> <%= subscription.last_name %></h5>
+              <h5><%= subscription.address_line_1 %></h5>
+              <h5><%= subscription.address_line_2 %></h5>
+              <h5><%= subscription.city %>, <%= subscription.state %></h5>
+              <h5><%= subscription.zip %></h5>
+            </div>
+            <div class="invoice-addr-right">
+              <h4>Billed To:</h4>
+              <h5><%= subscription.first_name %> <%= subscription.last_name %></h5>
+              <h5><%= subscription.address_line_1 %></h5>
+              <h5><%= subscription.address_line_2 %></h5>
+              <h5><%= subscription.city %>, <%= subscription.state %></h5>
+              <h5><%= subscription.zip %></h5>
+            </div>
           </div>
-        </div>
-        <div class="invoice-billing-delivery-addr-container">
-          <div class="invoice-addr-left">
-            <h4>Address Serviced</h4>
-            <h5><%= subscription.first_name %> <%= subscription.last_name %></h5>
-            <h5><%= subscription.address_line_1 %></h5>
-            <h5><%= subscription.address_line_2 %></h5>
-            <h5><%= subscription.city %>, <%= subscription.state %></h5>
-            <h5><%= subscription.zip %></h5>
+          <div class="invoice-itemized">
+            <table>
+              <tr>
+                <th>
+                  Item Description
+                </th>
+                <th>
+                  Quantity
+                </th>
+                <th>
+                  Price Per Unit
+                </th>
+                <th>
+                  Unit Total
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  American Flag(s)
+                </td>
+                <td>
+                  <%= subscription.qty %>
+                </td>
+                <td>
+                  $30.00
+                </td>
+                <td>
+                  $ <%= subscription.qty * 30.00 %>0
+                </td>
+              </tr>
+            </table>
           </div>
-          <div class="invoice-addr-right">
-            <h4>Billed To:</h4>
-            <h5><%= subscription.first_name %> <%= subscription.last_name %></h5>
-            <h5><%= subscription.address_line_1 %></h5>
-            <h5><%= subscription.address_line_2 %></h5>
-            <h5><%= subscription.city %>, <%= subscription.state %></h5>
-            <h5><%= subscription.zip %></h5>
+          <div class="invoice-instr-total-container">
+            <div class="invoice-instructions">
+              To pay this invoice please "Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+              veniam...
+            </div>
+            <div class="invoice-totals">Total Due: $ <%= subscription.qty * 30.00 %>0</div>
           </div>
-        </div>
-        <div class="invoice-itemized">
-          <table>
-            <tr>
-              <th>
-                Item Description
-              </th>
-              <th>
-                Quantity
-              </th>
-              <th>
-                Price Per Unit
-              </th>
-              <th>
-                Unit Total
-              </th>
-            </tr>
-            <tr>
-              <td>
-                American Flag(s)
-              </td>
-              <td>
-                <%= subscription.qty %>
-              </td>
-              <td>
-                $30.00
-              </td>
-              <td>
-                $ <%= subscription.qty * 30.00 %>0
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="invoice-instr-total-container">
-          <div class="invoice-instructions">
-            To pay this invoice please "Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-            veniam...
-          </div>
-          <div class="invoice-totals">Total Due: $ <%= subscription.qty * 30.00 %>0</div>
-        </div>
-        <div class="invoice-footer">
+          <div class="invoice-footer">
 
+          </div>
         </div>
-      </div>
-      <% if @invoices.last != subscription %>
-          <div style="page-break-after:always !important;"></div>
-          <hr />
-      <% end %>
+        <% if @invoices.last != subscription %>
+            <div style="page-break-after:always !important;"></div>
+            <hr />
+        <% end %>
+    <% end %>
   <% end %>
 </div>

@@ -3,4 +3,8 @@ class Route < ActiveRecord::Base
   has_many :subscriptions
   has_many :runs
 
+  def self.get_routes(group_id)
+  	routes = Route.where(:group_id => group_id)	
+  end
+
 end
