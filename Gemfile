@@ -33,6 +33,9 @@ gem 'rails_admin'
 # Bootstrap for views.
 gem 'bootstrap-sass'
 
+# Additions for Bootstrap navigation bar.
+gem 'active_link_to'
+
 # Autoprefix css browser extensions.
 gem 'autoprefixer-rails'
 
