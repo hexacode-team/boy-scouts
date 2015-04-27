@@ -1,30 +1,44 @@
 class User < ActiveRecord::Base
-include Clearance::User
-
+  
   include Clearance::User
+
   has_and_belongs_to_many :groups
   has_and_belongs_to_many :routes
 
-  def admin?
-      self.groups.each do |g|
-        if g.admin?
-          return true
+  Roles = [ :admin , :leader, :member, :subscriber ]
 
-        end
+  def admin?
+    self.groups.each do |g|
+      if g.admin?
+        return true
       end
-      false
+    end
+  false
+  end
+
+  def role
+    if admin?
+      :admin
+    else
+      # TODO: other roles
+      :member
+    end
+  end
+
+  def is?(role_type)
+    return role == role_type
   end
 
   def display_name
-      self.last_name + ', ' + self.first_name
+    self.last_name.to_s + ", " + self.first_name.to_s
   end
 
   def full_name
-    self.first_name + self.last_name
+    self.first_name.to_s + self.last_name.to_s
   end
 
   def self.get_group_admin(user_id)
-  	  group = Group.where(:user_id => user_id)
+    group = Group.where(:user_id => user_id)
   end
 
 end
