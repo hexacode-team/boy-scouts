@@ -29,6 +29,7 @@
             <!-- If we're an admin, give access to panel, invoices, and routes. -->
             <%= active_link_to 'Admin', "/admin", :wrap_tag => :li %>
             <%= active_link_to 'Routes', view_routes_url, :wrap_tag => :li %>
+            <%= active_link_to 'My Troops', view_groups_url, :wrap_tag => :li %>
           <% elsif can? :access, :routes %>
             <% if can? :access, :troops %>
               <%= active_link_to 'My Troops', view_groups_url, :wrap_tag => :li %>

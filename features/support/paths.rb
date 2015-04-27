@@ -41,6 +41,12 @@ module NavigationHelpers
     when /tasks/
       '/admin/task'
 
+    when /groupList/
+      '/group/view_groups'
+
+    when /routeList/
+      '/routes/view_routes'
+
     else
       begin
         page_name =~ /the (.*) page/

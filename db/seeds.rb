@@ -30,7 +30,8 @@ group1 = Group.create! :name => "Troop01" unless Group.find_by_name('Troop01')
 group2 = Group.create! :name => "Troop02" unless Group.find_by_name('Troop02')
 group3 = Group.create! :name => "Troop03" unless Group.find_by_name('Troop03')
 groupAdmin.users << user1
-groupAdmin.users << user4
+#groupAdmin.users << user4
+groupTroopLeader.users << user4
 groupTroopLeader.children << group1
 
 #Create new routes and add new subscriptions to that routes
