@@ -38,6 +38,8 @@ gem 'autoprefixer-rails'
 
 gem 'wicked_pdf'
 
+gem 'acts_as_tree'
+
 group :development, :test do
   # Include Capybara
   gem 'capybara'

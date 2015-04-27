@@ -13,7 +13,8 @@ class SubscriptionController < ApplicationController
     @group = Group.find(params[:group_id])
     @user = current_user
     @no_header = true
-  
+    @display_letter = true
+
     render :layout => "static_layout"
   end
 
@@ -23,6 +24,7 @@ class SubscriptionController < ApplicationController
     @group = Group.find(params[:group_id])
     @user = current_user
     @no_header = true
+    @display_letter = true
 
     render pdf: "invoices", :layout => "static_layout"
 

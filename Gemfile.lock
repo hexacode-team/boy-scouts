@@ -36,6 +36,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    acts_as_tree (2.1.0)
+      activerecord (>= 3.0.0)
     arel (6.0.0)
     autoprefixer-rails (5.1.11)
       execjs
@@ -120,7 +122,7 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
-    mime-types (2.4.3)
+    mime-types (2.5)
     mini_portile (0.6.2)
     minitest (5.6.0)
     multi_json (1.11.0)
@@ -242,6 +244,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  acts_as_tree
   autoprefixer-rails
   bootstrap-sass
   byebug

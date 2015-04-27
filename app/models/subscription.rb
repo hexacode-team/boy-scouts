@@ -1,8 +1,11 @@
 class Subscription < ActiveRecord::Base
-    has_one :group, :through => :route
     belongs_to :route
+    belongs_to :group
     has_many :payments
-    belongs_to :users
+
+    def name
+      return last_name + ', ' + first_name 
+    end
 
     def self.get_require_invoices(group_id)
 
