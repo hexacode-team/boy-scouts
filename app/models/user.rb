@@ -7,15 +7,6 @@ class User < ActiveRecord::Base
 
   Roles = [ :admin , :leader, :member, :subscriber ]
 
-  def role
-    if self.admin
-      :admin
-    else
-      # TODO: other roles
-      :member
-    end
-  end
-
   def admin?
     self.groups.each do |g|
       if g.admin?
@@ -23,6 +14,15 @@ class User < ActiveRecord::Base
       end
     end
   false
+  end
+
+  def role
+    if admin?
+      :admin
+    else
+      # TODO: other roles
+      :member
+    end
   end
 
   def is?(role_type)

@@ -19,7 +19,7 @@ user3 = User.create! :email=> 'user02@boyscoutsfd.com', :password => 'secret',
 
 
 #Create Another admin to test My Groups
-user4 = User.create! :email => 'admin2@boyscoutsfd.com', :password => 'secret',  :admin => true,
+user4 = User.create! :email => 'admin2@boyscoutsfd.com', :password => 'secret',
                      :first_name => "FirstName012", :last_name => "LastName012" unless User.find_by_email('admin2@boyscoutsfd.com')
 
 
@@ -30,6 +30,7 @@ group1 = Group.create! :name => "Troop01" unless Group.find_by_name('Troop01')
 group2 = Group.create! :name => "Troop02" unless Group.find_by_name('Troop02')
 group3 = Group.create! :name => "Troop03" unless Group.find_by_name('Troop03')
 groupAdmin.users << user1
+groupAdmin.users << user4
 groupTroopLeader.children << group1
 
 #Create new routes and add new subscriptions to that routes
