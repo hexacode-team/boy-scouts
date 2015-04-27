@@ -22,6 +22,7 @@ RailsAdmin.config do |config|
   end
 
   config.label_methods << :full_name
+  config.label_methods << :role
 
   # Only allow access to the admin panel if the current user
   # is an admin, otherwise redirect to root.

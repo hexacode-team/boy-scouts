@@ -23,15 +23,33 @@ user4 = User.create! :email => 'admin2@boyscoutsfd.com', :password => 'secret',
                      :first_name => "FirstName012", :last_name => "LastName012" unless User.find_by_email('admin2@boyscoutsfd.com')
 
 
-#Create a group to function as a Troop and set the admin to the created default admin.
+#Create Group Roles
+admin_role = Role.create! :role=> "SiteAdmin" unless Role.find_by_role("SiteAdmin")
+troop_leader_role = Role.create! :role=> "TroopLeader" unless Role.find_by_role("TroopLeader")
+troop_member_role = Role.create! :role=> "TroopMember" unless Role.find_by_role("TroopMembers")
+
+#Create a group to function as a Troop and set the admin to the created default admin
 groupAdmin = Group.create! :name => "SiteAdmins", :admin => true unless Group.find_by_name("SiteAdmins")
+groupAdmin.roles << admin_role unless groupAdmin.blank?
+
 groupTroopLeader = Group.create! :name => "Troop01Leader" unless Group.find_by_name('Troop01')
+groupTroopLeader.roles << troop_leader_role unless groupTroopLeader.blank?
+
 group1 = Group.create! :name => "Troop01" unless Group.find_by_name('Troop01')
+group1.roles <<  troop_member_role unless group1.blank?
+
 group2 = Group.create! :name => "Troop02" unless Group.find_by_name('Troop02')
+group2.roles <<  troop_member_role unless group2.blank?
+
 group3 = Group.create! :name => "Troop03" unless Group.find_by_name('Troop03')
+group3.roles <<  troop_member_role unless group3.blank?
+
+
+#Add users to groups
 groupAdmin.users << user1
-#groupAdmin.users << user4
 groupTroopLeader.users << user4
+
+#Associate Troop leader group with its troop
 groupTroopLeader.children << group1
 
 #Create new routes and add new subscriptions to that routes
