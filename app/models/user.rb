@@ -30,11 +30,11 @@ class User < ActiveRecord::Base
   end
 
   def display_name
-    self.last_name + ', ' + self.first_name
+    self.last_name.to_s + ", " + self.first_name.to_s
   end
 
   def full_name
-    self.first_name + self.last_name
+    self.first_name.to_s + self.last_name.to_s
   end
 
   def self.get_group_admin(user_id)
