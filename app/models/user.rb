@@ -37,8 +37,8 @@ class User < ActiveRecord::Base
     self.first_name.to_s + self.last_name.to_s
   end
 
-  def self.get_group_admin(user_id)
-    group = Group.where(:user_id => user_id)
+  def get_group_admin
+    group = self.groups
   end
 
 end
