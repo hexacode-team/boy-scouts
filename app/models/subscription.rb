@@ -9,18 +9,18 @@ class Subscription < ActiveRecord::Base
 
     def self.get_require_invoices(group_id)
 
-      routes = Route.where(:group_id => group_id)
+      routes = Group.find(group_id).routes
       subscriptions = []
 
       routes.each do |route|
-        subscriptions += Subscription.where(:route_id => route.id)
+        subscriptions += route.subscriptions
       end
 
       today = Date.today()
       subs_that_need_invoices = []
       subscriptions.each do |sub|
         needs_invoice = true
-        payments = Payment.where(:subscription_id => sub.id)
+        payments = sub.payments
 
         #if we cannot find a payment for a subscription, we obviously need an invoice
         if payments.blank?
