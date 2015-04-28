@@ -73,4 +73,8 @@ pay1 = Payment.create! :subscription_id => sub1.id, :amount_paid => sub1.qty * 3
 pay1 = Payment.create! :subscription_id => sub1.id, :amount_paid => sub1.qty * 30, :start_date => (DateTime.now - 366),
                        :end_date  => (DateTime.now - 1) unless Payment.find_by_subscription_id(sub1.id)
 
+run1 = Run.create! :route_id => route1.id, :datetime_started => DateTime.now() unless Run.find_by_route_id(route1.id)
+run1.users << user2
+run1.users << user3
+
 

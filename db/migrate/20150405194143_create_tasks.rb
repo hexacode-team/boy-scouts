@@ -3,9 +3,8 @@ class CreateTasks < ActiveRecord::Migration
     create_table :tasks do |t|
       t.integer :run_id
       t.integer :subscription_id
-      t.datetime :start
-      t.datetime :end
-
+      t.string :description
+      t.integer :qty
       t.timestamps null: false
     end
   end

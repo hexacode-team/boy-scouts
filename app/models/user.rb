@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :groups
   has_and_belongs_to_many :routes
+  has_and_belongs_to_many :runs
 
   Roles = [ :admin , :leader, :member, :subscriber ]
 
