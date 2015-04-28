@@ -18,7 +18,7 @@
 				<div class="troop-functions">
 					<!--<tr><td><a href=""> Routes </a></td><td><a href=""> Invoices </a></td></tr>-->
 					<li id="invoice-link"><%= link_to view_invoices_url(:group_id => troop.id) do %> View Invoices<% end %></li>
-					<%= active_link_to 'Routes', view_routes_url, :wrap_tag => :li %>
+					<%= active_link_to 'Routes', view_routes_for_group_url(:id => troop.id), :wrap_tag => :li %>
 				</div>
 			</div>
 		<% end %>

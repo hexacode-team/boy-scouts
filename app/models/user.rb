@@ -62,7 +62,7 @@ class User < ActiveRecord::Base
     self.first_name.to_s + self.last_name.to_s
   end
 
-  def get_group_admin
+  def get_groups
     if self.is? :admin
       Group.all()
     elsif self.is? :leader
