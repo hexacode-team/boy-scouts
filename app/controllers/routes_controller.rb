@@ -4,4 +4,11 @@ class RoutesController < ApplicationController
     @routes = Route.routes_for(current_user)
   end
 
+  def view_routes_for_group
+    group_id = params[:id]
+    @group = Group.find(group_id)
+    #TODO make sure @group is in  current_user.get_groups otherwise, shouldn't be able to see this page.
+    @routes = @group.routes
+  end
+
 end
