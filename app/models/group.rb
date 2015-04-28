@@ -8,7 +8,7 @@ class Group < ActiveRecord::Base
   has_many :subscriptions
 
 
-  def self.has_role?(r)
+  def has_role?(r)
     return self.roles.find_by(:role => r)
   end
 
