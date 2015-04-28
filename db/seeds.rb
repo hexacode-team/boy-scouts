@@ -46,8 +46,8 @@ group3.roles <<  troop_member_role unless group3.blank?
 
 
 #Add users to groups
-groupAdmin.users << user1
-groupTroopLeader.users << user4
+groupAdmin.users << user1 unless groupAdmin.blank?
+groupTroopLeader.users << user4 unless groupTroopLeader.blank?
 
 #Associate Troop leader group with its troop
 groupTroopLeader.children << group1
@@ -72,5 +72,9 @@ pay1 = Payment.create! :subscription_id => sub1.id, :amount_paid => sub1.qty * 3
 
 pay1 = Payment.create! :subscription_id => sub1.id, :amount_paid => sub1.qty * 30, :start_date => (DateTime.now - 366),
                        :end_date  => (DateTime.now - 1) unless Payment.find_by_subscription_id(sub1.id)
+
+run1 = Run.create! :route_id => route1.id, :datetime_started => DateTime.now() unless Run.find_by_route_id(route1.id)
+run1.users << user2 unless run1.blank?
+run1.users << user3 unless run1.blank?
 
 
