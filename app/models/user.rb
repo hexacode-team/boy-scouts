@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
       groups_admin_for = []
       self.groups.each do |grp|
         if grp.has_role? "TroopLeader"
-          g += grp.children
+          groups_admin_for += grp.children if grp
         end
       end
       groups_admin_for
