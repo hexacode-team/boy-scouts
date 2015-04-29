@@ -7,6 +7,13 @@ class Subscription < ActiveRecord::Base
       return last_name + ', ' + first_name 
     end
 
+    def address
+      address = ""
+      [self.address_line_1, self.address_line_2, self.city, self.state, self.zip].each do |a|
+        address += a.to_s
+      end
+    end
+
     def self.get_require_invoices(group_id)
 
       routes = Group.find(group_id).routes

@@ -19,6 +19,15 @@ Rails.application.routes.draw do
   get 'subscription/:group_id/generate_invoices' => 'subscription#generate_invoices', as: :generate_invoices
   get 'subscription/:group_id/generate_invoices_pdf' => 'subscription#generate_invoices_pdf', as: :generate_invoices_pdf
 
+  post 'subscription/:sub_id/add_maintenance_note' => 'subscription#add_maintenance_note', as: :add_maintenance_note
+
+  post 'runs/:route_id/:run_type/begin' => "run#begin", as: :begin_run
+  post 'runs/:route_id/:run_type/end' => "run#end", as: :end_run
+  post 'runs/:run_id/progress' => "run#get_run_progress", as: :run_progress
+
+  post 'task/complete' => "tasks#complete_task", as: :complete_task
+
+
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
 
