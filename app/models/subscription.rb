@@ -7,6 +7,14 @@ class Subscription < ActiveRecord::Base
       return last_name + ', ' + first_name 
     end
 
+    def street_address
+      if address_line_2 != nil
+        return address_line_1 + ' ' + address_line_2
+      else
+        return address_line_1
+      end
+    end
+
     def self.get_require_invoices(group_id)
 
       routes = Group.find(group_id).routes

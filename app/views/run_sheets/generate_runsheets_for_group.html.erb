@@ -1,0 +1,46 @@
+<div id="my routes">
+	<% if @routes.size == 0 %>
+		<h3>You have no routes for this troop</h3>
+	<% else %>
+		<h3> Viewing routes for: </h3>
+		<% if @group.blank? %>
+			<h4> Default Group Name </h4>
+		<% else %>
+			<h4><%= @group.name %></h4>
+		<% end %>
+		<% @routesHash.each_key do |key| %>
+			<a name="route_<%= key.to_s %>"> </a>
+			<div class="troop">
+				<div class="route-header">
+				<h3><%= key.to_s %></h3>
+				</div>
+
+				<div class="route-subscribers">
+					<table>
+						<tr>
+							<th>Sequence</th>
+							<th>Street</th>
+							<th>Quantity</th>
+							<th>Name</th>
+							<th>ID</th>
+							<!--TODO Maybe Status and Service notes for maintinence-->
+						</tr>
+
+						<tbody>
+							<% @routesHash[key].each do |subscriber| %>
+								<tr>
+									<td><%= subscriber.visit_sequence %></td>
+									<td><%= subscriber.street_address %></td>
+									<td><%= subscriber.qty %></td>
+									<td><%= subscriber.name %></td>
+									<td><%= subscriber.id %></td>
+								</tr>
+							<% end %>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		<% end %>
+	<% end %>
+</div>
+
