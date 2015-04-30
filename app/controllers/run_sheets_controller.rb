@@ -19,7 +19,7 @@ class RunSheetsController < ApplicationController
       @routes.each do |route|
           @subscribers = []
           @subscribers += route.subscriptions
-          #@routesHash[route.name] = []
+          
           @routesHash[route.name] = @subscribers
           @routesHash[route.name].sort_by! {|x| x.visit_sequence}
       end
