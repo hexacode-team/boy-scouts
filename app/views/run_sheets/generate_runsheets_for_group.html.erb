@@ -1,3 +1,5 @@
+
+<!-- This is the view page for generating runsheets -->
 <body>
 
 <style media='screen' type='text/css'>
@@ -55,10 +57,10 @@ section {
 				<h3><%= @group.name %></h3>
 			<% end %>
 			<% @routesHash.each_key do |key| %>
-				<a name="route_<%= key.to_s %>"> </a>	
+				<a name="route_<%= key.to_i %>"> </a>	
 				<div class="troop">
 					<div class="route-header">
-					<h4><%= key.to_s %></h4>
+					<h4>Run <%= key.to_i %></h4>
 					</div>
 					<% if @routesHash[key].size == 0 %>
 						<div class="alert alert-info" role="alert">

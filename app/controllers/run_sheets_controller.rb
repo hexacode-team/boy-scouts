@@ -20,8 +20,8 @@ class RunSheetsController < ApplicationController
           @subscribers = []
           @subscribers += route.subscriptions
           
-          @routesHash[route.name] = @subscribers
-          @routesHash[route.name].sort_by! {|x| x.visit_sequence}
+          @routesHash[route.id] = @subscribers
+          @routesHash[route.id].sort_by! {|x| x.visit_sequence}
       end
       return @routes
   end
