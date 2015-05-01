@@ -65,7 +65,13 @@ class User < ActiveRecord::Base
 
   def get_groups
     if self.is? :admin
-      Group.all()
+      groups_admin_for = []
+      Group.all().each do |grp|
+          if grp.has_role? "TroopMember"
+              groups_admin_for.append grp 
+          end
+      end
+      groups_admin_for
     elsif self.is? :leader
       groups_admin_for = []
       self.groups.each do |grp|
