@@ -40,7 +40,7 @@ class RunSheetsController < ApplicationController
       end
       return @routes
 
-      render pdf: "runsheets"
+      render pdf: "invoices", :layout => "static_layout"
   end
 
   def generate_runsheets_for_group
