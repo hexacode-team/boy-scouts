@@ -103,6 +103,8 @@ ActiveRecord::Schema.define(version: 20150428155110) do
     t.text     "notes"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.boolean  "maintenance_status",  default: false, null: false
+    t.string   "service_note"
   end
 
   create_table "tasks", force: :cascade do |t|
