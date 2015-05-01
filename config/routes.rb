@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get 'group/view_groups' => 'group#view_groups', as: :view_groups
   get 'group/view_group'
 
-  get 'run_sheets/generate_runsheet'
+  get 'run_sheets/generate_runsheet/' => 'run_sheets#generate_runsheet_for_user', as: :generate_runsheet_for_user
   get 'run_sheets/generate_runsheet_pdf'
 
   get 'run_sheets/generate_runsheets/:id/' => 'run_sheets#generate_runsheets_for_group', as: :generate_runsheets_for_group
