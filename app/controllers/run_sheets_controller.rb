@@ -23,6 +23,24 @@ class RunSheetsController < ApplicationController
   end
 
   def generate_runsheets_pdf
+      @user = current_user
+      group_id = params[:id]
+      @group = Group.find(group_id)
+      @nameHash = Hash.new
+      @routesHash = Hash.new
+      @routes = @group.routes
+      @routes.each do |route|
+          @subscribers = []
+          @subscribers += route.subscriptions
+          
+          @nameHash[route.id] = route.name
+
+          @routesHash[route.id] = @subscribers
+          @routesHash[route.id].sort_by! {|x| x.visit_sequence}
+      end
+      return @routes
+
+      render pdf: "runsheets"
   end
 
   def generate_runsheets_for_group

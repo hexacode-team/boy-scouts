@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   get 'run_sheets/generate_runsheet_pdf'
 
   get 'run_sheets/generate_runsheets/:id/' => 'run_sheets#generate_runsheets_for_group', as: :generate_runsheets_for_group
-  get 'run_sheets/generate_runsheets_pdf'
+  get 'run_sheets/generate_runsheets_pdf/:id/' => 'run_sheets#generate_runsheets_pdf', as: :generate_runsheets_pdf
 
   get 'subscription/:group_id/invoices' => 'subscription#index', as: :view_invoices
   get 'subscription/:group_id/generate_invoices' => 'subscription#generate_invoices', as: :generate_invoices
