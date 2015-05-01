@@ -86,7 +86,7 @@ section {
 									<% @routesHash[key].each do |subscriber| %>
 										<tr>								
 											<td height="12px" style="border-spacing: 12px;"><%= subscriber.visit_sequence %></td>
-											<td height="12px" style="border-spacing: 12px;"><%= subscriber.mainenance_status %></td>
+											<td height="12px" style="border-spacing: 12px;"><%= subscriber.maintenance_status.to_s %></td>
 											<td height="12px" style="border-spacing: 12px;"><%= subscriber.service_note %></td>
 											<td height="12px" style="border-spacing: 12px;"><%= subscriber.street_address %></td>
 											<td height="12px" style="border-spacing: 12px;"><%= subscriber.qty %></td>
