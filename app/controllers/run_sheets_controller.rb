@@ -1,6 +1,24 @@
 class RunSheetsController < ApplicationController
+
+  #For generating runsheets by User
   def generate_runsheet_pdf
-    #route_id = params[:route_id]
+    @user = current_user
+    @group = current_user.get_groups
+    @nameHash = Hash.new
+    @routesHash = Hash.new
+    @routes = []
+    @routes = Route.where(:group_id => @group[0].id)
+    @routes.each do |route|
+        @subscribers = []
+        @subscribers += route.subscriptions
+
+        @nameHash[route.id] = route.name
+          
+        @routesHash[route.id] = @subscribers
+        @routesHash[route.id].sort_by! {|x| x.visit_sequence}
+      end
+
+      render pdf: "runsheets", :layout => "static_layout"
   end
 
   def generate_runsheet_for_user
@@ -19,9 +37,9 @@ class RunSheetsController < ApplicationController
           @routesHash[route.id] = @subscribers
           @routesHash[route.id].sort_by! {|x| x.visit_sequence}
       end
-      return @routes
   end
 
+  #For generating runsheets by Group
   def generate_runsheets_pdf
       @user = current_user
       group_id = params[:id]
@@ -38,9 +56,8 @@ class RunSheetsController < ApplicationController
           @routesHash[route.id] = @subscribers
           @routesHash[route.id].sort_by! {|x| x.visit_sequence}
       end
-      return @routes
 
-      render pdf: "invoices", :layout => "static_layout"
+      render pdf: "runsheets", :layout => "static_layout"
   end
 
   def generate_runsheets_for_group
@@ -59,7 +76,6 @@ class RunSheetsController < ApplicationController
           @routesHash[route.id] = @subscribers
           @routesHash[route.id].sort_by! {|x| x.visit_sequence}
       end
-      return @routes
   end
 
 

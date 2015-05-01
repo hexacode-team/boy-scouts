@@ -36,6 +36,7 @@
             <!-- Otherwise, only show routes to members. -->
             <%= active_link_to 'My Routes', view_routes_url, :wrap_tag => :li %>
             <%= active_link_to 'My Troop Run Sheets', generate_runsheet_for_user_url, :wrap_tag => :li %>
+            <%= active_link_to 'My Troop Run Sheets PDF', generate_runsheet_pdf_url, :wrap_tag => :li %>
           <% end %>   
         </ul>
         
