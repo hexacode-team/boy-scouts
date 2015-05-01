@@ -101,10 +101,8 @@ ActiveRecord::Schema.define(version: 20150428155110) do
     t.datetime "last_invoice_sent"
     t.datetime "renewal_due_date"
     t.text     "notes"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.boolean  "maintenance_status", default: false,  null: false
-    t.string   "service_note",       default: "None", null: "None"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   create_table "tasks", force: :cascade do |t|
