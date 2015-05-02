@@ -18,7 +18,7 @@ user3 = User.create! :email=> 'user02@boyscoutsfd.com', :password => 'secret',
 
 
 
-#Create Another admin to test My Groups
+#Create Another admin to test My Groups and Troop Leaders
 user4 = User.create! :email => 'admin2@boyscoutsfd.com', :password => 'secret',
                      :first_name => "FirstName012", :last_name => "LastName012" unless User.find_by_email('admin2@boyscoutsfd.com')
 
@@ -48,6 +48,7 @@ group3.roles <<  troop_member_role unless group3.blank?
 #Add users to groups
 groupAdmin.users << user1 unless groupAdmin.blank?
 groupTroopLeader.users << user4 unless groupTroopLeader.blank?
+group1.users << user2 
 
 #Associate Troop leader group with its troop
 groupTroopLeader.children << group1
@@ -60,11 +61,11 @@ route1.users << user2
 route1.users << user3
 
 sub1 = Subscription.create! :first_name => "FirstName01", :last_name => "LastName01", :route_id => route1.id, :address_line_1 => "1234 Fake Street",
-                            :city => "Fake City", :zip => "00001", :state => "Fake Station", :qty => 1 unless Subscription.find_by_first_name("FirstName01")
+                            :city => "Fake City", :zip => "00001", :state => "Fake Station", :qty => 1, :visit_sequence => 1 unless Subscription.find_by_first_name("FirstName01")
 sub2 = Subscription.create! :first_name => "FirstName02", :last_name => "LastName02", :route_id => route1.id, :address_line_1 => "1235 Fake Street",
-                            :city => "Fake City", :zip => "00002", :state => "Fake Station", :qty => 2 unless Subscription.find_by_first_name("FirstName02")
+                            :city => "Fake City", :zip => "00002", :state => "Fake Station", :qty => 2, :visit_sequence => 3 unless Subscription.find_by_first_name("FirstName02")
 sub3 = Subscription.create! :first_name => "FirstName03", :last_name => "LastName03", :route_id => route1.id, :address_line_1 => "1236 Fake Street",
-                            :city => "Fake City", :zip => "00006", :state => "Fake Station", :qty => 3 unless Subscription.find_by_first_name("FirstName03")
+                            :city => "Fake City", :zip => "00006", :state => "Fake Station", :qty => 3, :visit_sequence => 2 unless Subscription.find_by_first_name("FirstName03")
 
 #create a current payment for sub 1, and an old payment for sub2
 pay1 = Payment.create! :subscription_id => sub1.id, :amount_paid => sub1.qty * 30, :start_date => DateTime.now,

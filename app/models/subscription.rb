@@ -7,10 +7,11 @@ class Subscription < ActiveRecord::Base
       return last_name + ', ' + first_name 
     end
 
-    def address
-      address = ""
-      [self.address_line_1, self.address_line_2, self.city, self.state, self.zip].each do |a|
-        address += a.to_s
+    def street_address
+      if address_line_2 != nil
+        return address_line_1 + ' ' + address_line_2
+      else
+        return address_line_1
       end
     end
 
