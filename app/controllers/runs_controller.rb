@@ -18,9 +18,7 @@ class RunsController < ApplicationController
 
   def get_run_progress
     @run = run.find(params[:run_id])
-    @subscriptions = @run.route.subscriptions
-    @tasks = @run.tasks
-    render json: {:run => @run, :subscriptions => @subscriptions, :tasks => @tasks}
+    render json: {:run => @run, :progress => @run.get_run_progress}
   end
 
 end

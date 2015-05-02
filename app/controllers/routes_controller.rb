@@ -11,4 +11,9 @@ class RoutesController < ApplicationController
     @routes = @group.routes || []
   end
 
+  def view_route
+    @route = params[:id]
+
+  end
+
 end
