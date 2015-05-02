@@ -48,6 +48,7 @@ group3.roles <<  troop_member_role unless group3.blank?
 #Add users to groups
 groupAdmin.users << user1 unless groupAdmin.blank?
 groupTroopLeader.users << user4 unless groupTroopLeader.blank?
+group1.users << user2 
 
 #Associate Troop leader group with its troop
 groupTroopLeader.children << group1

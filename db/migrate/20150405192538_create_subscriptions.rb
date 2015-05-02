@@ -19,6 +19,7 @@ class CreateSubscriptions < ActiveRecord::Migration
       t.datetime :last_invoice_sent
       t.datetime :renewal_due_date
       t.text :notes
+      t.text :maintenance_notes
 
       t.timestamps null: false
     end
