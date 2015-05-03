@@ -15,6 +15,17 @@ class Subscription < ActiveRecord::Base
       end
     end
 
+    def status
+      today = Date.today()
+      payments.each do |payment|
+        if payment.end_date > today
+          return "Good"
+        end
+      end
+
+      return "Expired"
+    end
+
     def self.get_require_invoices(group_id)
 
       routes = Group.find(group_id).routes
