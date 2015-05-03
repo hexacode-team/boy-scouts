@@ -12,7 +12,8 @@ class RunsController < ActionController::Base
 
   def end_run
     @run = Run.find(params[:run_id])
-    run.datetime_ended = Datetime.now()
+    @run.datetime_ended = DateTime.now()
+    @run.save!
     render json: {:run => @run }
   end
 
