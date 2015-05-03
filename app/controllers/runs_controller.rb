@@ -1,4 +1,4 @@
-class RunsController < ApplicationController
+class RunsController < ActionController::Base
 
   def begin_run
     route_id = params[:route_id]
@@ -17,8 +17,8 @@ class RunsController < ApplicationController
   end
 
   def get_run_progress
-    @run = run.find(params[:run_id])
-    render json: {:run => @run, :progress => @run.get_run_progress}
+    @run = Run.find(params[:run_id])
+    render json: @run.progress
   end
 
 end

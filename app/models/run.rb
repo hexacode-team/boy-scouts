@@ -10,12 +10,17 @@ class Run < ActiveRecord::Base
     false
   end
 
-  def progress()
+  def finished?
+    return !self.datetime_started.blank? && !self.datetime_ended.blank?
+  end
+
+  def progress
     #Returns hash with keys done and todo detailing run progression
     subs = self.route.subscriptions.order(:visit_sequence)
     completed_tasks = self.tasks
 
-    run_progress = Hash()
+    run_progress = Hash([])
+    run_progress["id"] = self.id
     run_progress["todo"] = []
     run_progress["done"] = []
 

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get 'routes/view_routes' => 'routes#view_routes', as: :view_routes
   get 'routes/view_routes/:id/' => 'routes#view_routes_for_group', as: :view_routes_for_group
   get 'routes/:id/' => 'routes#view_route', as: :view_route
+  get 'routes/:id/run/' => 'routes#get_run_info', as: :view_route_run_info
 
   get 'group/view_groups' => 'group#view_groups', as: :view_groups
   get 'group/view_group'
@@ -22,11 +23,11 @@ Rails.application.routes.draw do
 
   post 'subscription/:sub_id/add_maintenance_note' => 'subscription#add_maintenance_note', as: :add_maintenance_note
 
-  post 'runs/:route_id/:run_type/begin' => "run#begin", as: :begin_run
-  post 'runs/:route_id/:run_type/end' => "run#end", as: :end_run
-  post 'runs/:run_id/progress' => "run#get_run_progress", as: :run_progress
+  post 'runs/begin' => "runs#begin", as: :begin_run
+  post 'runs/end' => "runs#end", as: :end_run
+  post 'runs/progress' => "runs#get_run_progress", as: :run_progress
 
-  post 'task/complete' => "tasks#complete_task", as: :complete_task
+  post 'task/set' => "tasks#set_task", as: :set_task
 
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'

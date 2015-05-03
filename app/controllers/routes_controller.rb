@@ -12,8 +12,12 @@ class RoutesController < ApplicationController
   end
 
   def view_route
-    @route = params[:id]
+    @route = Route.find(params[:id])
+  end
 
+  def get_run_info
+    @route = Route.find(params[:id])
+    render json: @route.runs_in_progress
   end
 
 end

@@ -12,4 +12,12 @@ class Group < ActiveRecord::Base
     return self.roles.find_by(:role => r)
   end
 
+  def troop_members
+    members = []
+    self.users.order(:last_name).order(:first_name).each do |u|
+      members.append({"name"=>u.display_name, "id"=>u.id})
+    end
+    members
+  end
+
 end
