@@ -26,7 +26,7 @@ class RunSheetsController < ApplicationController
       @nameHash[route.id] = route.name
 
       @routesHash[route.id] = @subscribers
-      @routesHash[route.id].sort_by! { |x| x.visit_sequence }
+      @routesHash[route.id].sort_by! { |x| x.print_sequence }
     end
   end
 
