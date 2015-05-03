@@ -34,6 +34,10 @@
     border-right: none;
 }
 
+.route {
+  padding: 20px 10px;
+}
+
 </style>
 
 <% if @routes.empty? %>
@@ -48,40 +52,50 @@
     <h3><%= @group.name %></h3>
   <% end %>
   <% @routesHash.each_key do |key| %>
-    <h4><%= @nameHash[key].to_s %></h4>
-    <% if @routesHash[key].empty? %>
-      <div class="alert alert-info" role="alert">
-        <p>No subscribers on this route.</p>
-      </div>
-    <% else %>
-      <table class="zui-table zui-table-zebra zui-table-horizontal">
-        <thead>
-          <tr>
-  					<th>Sequence</th>
-            <th>Status</th>
-  					<th>Street</th>
-  					<th>Quantity</th>
-  					<th>Name</th>
-            <th>Maintenance Notes</th>
-  					<th>ID</th>
-  					<th colspan="3"></th>
-					</tr>
-        </thead>
-        <tbody>
-          <% @routesHash[key].each do |subscriber| %>
-						<tr>								
-  						<td height="12px" style="border-spacing: 12px;"><%= subscriber.visit_sequence %></td>
-              <td height="12px" style="border-spacing: 12px;"><%= subscriber.status %></td>
-  						<td height="12px" style="border-spacing: 12px;"><%= subscriber.street_address %></td>
-  						<td height="12px" style="border-spacing: 12px;"><%= subscriber.qty %></td>
-  						<td height="12px" style="border-spacing: 12px;"><%= subscriber.name %></td>
-              <td height="12px" style="border-spacing: 12px;"><%= subscriber.maintenance_notes.to_s %></td>
-  						<td height="12px" style="border-spacing: 12px;"><%= subscriber.id %></td>
-						</tr>
-  				<% end %>
-				</tbody>
-			</table>
-		<% end %>
+    <div class="route">
+      <h3><%= @nameHash[key].to_s %></h3>
+
+      <% if @generate_fields %>
+        <p>Morning Driver:</p>
+        <p>Morning Start Time:</p>
+        <p>Evening Driver:</p>
+        <p>Evening Start Time:</p>
+      <% end %>
+
+      <% if @routesHash[key].empty? %>
+        <div class="alert alert-info" role="alert">
+          <p>No subscribers on this route.</p>
+        </div>
+      <% else %>
+        <table class="zui-table zui-table-zebra zui-table-horizontal">
+          <thead>
+            <tr>
+    					<th>Sequence</th>
+              <th>Status</th>
+    					<th>Street</th>
+    					<th>Quantity</th>
+    					<th>Name</th>
+              <th>Maintenance Notes</th>
+    					<th>ID</th>
+    					<th colspan="3"></th>
+  					</tr>
+          </thead>
+          <tbody>
+            <% @routesHash[key].each do |subscriber| %>
+  						<tr>								
+    						<td height="12px" style="border-spacing: 12px;"><%= subscriber.visit_sequence %></td>
+                <td height="12px" style="border-spacing: 12px;"><%= subscriber.status %></td>
+    						<td height="12px" style="border-spacing: 12px;"><%= subscriber.street_address %></td>
+    						<td height="12px" style="border-spacing: 12px;"><%= subscriber.qty %></td>
+    						<td height="12px" style="border-spacing: 12px;"><%= subscriber.name %></td>
+                <td height="12px" style="border-spacing: 12px;"><%= subscriber.maintenance_notes.to_s %></td>
+    						<td height="12px" style="border-spacing: 12px;"><%= subscriber.id %></td>
+  						</tr>
+    				<% end %>
+  				</tbody>
+  			</table>
+  		<% end %>
+    </div>
 	<% end %>
 <% end %>
 </body>
