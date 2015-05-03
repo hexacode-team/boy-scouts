@@ -29,4 +29,11 @@ class SubscriptionController < ApplicationController
     render pdf: "invoices", :layout => "static_layout"
 
   end
+
+  def add_maintenance_note
+    sub = Subscription.find(params[:sub_id])
+    sub.maintenance_notes += DateTime.now().to_s + params[:note]
+    render json: sub.id
+  end
+
 end

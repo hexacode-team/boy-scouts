@@ -9,10 +9,33 @@ class Route < ActiveRecord::Base
       when :admin
         Route.all
       when :leader
+        leader_routes = []
+        user.get_groups.each do |grp|
+          leader_routes += grp.routes
+        end
+        leader_routes
       when :member
         user.routes
       else
     end
+  end
+
+  def runs_in_progress
+    in_progress = []
+    self.runs.each do |run|
+      if run.in_progress? and run.datetime_started.to_date == Date.today()
+        in_progress.append(run)
+      end
+    end
+    in_progress_details = []
+    in_progress.each do |run|
+      in_progress_details.append(run.progress)
+    end
+    in_progress_details
+  end
+
+  def runs_in_progress?
+    return !self.runs_in_progress.blank?
   end
 
 end

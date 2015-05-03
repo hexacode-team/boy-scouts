@@ -15,7 +15,14 @@ user2 = User.create! :email => 'user01@boyscoutsfd.com', :password => 'secret', 
                      :first_name => "FirstName01", :last_name => "LastName01" unless User.find_by_email('user01@boyscoutsfd.com')
 user3 = User.create! :email=> 'user02@boyscoutsfd.com', :password => 'secret',
                      :first_name => "FirstName02", :last_name => "LastName02" unless User.find_by_email('user02@boyscoutsfd.com')
-
+user4 = User.create! :email=> 'user04@boyscoutsfd.com', :password => 'secret',
+                     :first_name => "FirstName04", :last_name => "LastName04" unless User.find_by_email('user04@boyscoutsfd.com')
+user5 = User.create! :email=> 'user05@boyscoutsfd.com', :password => 'secret',
+                     :first_name => "FirstName05", :last_name => "LastName05" unless User.find_by_email('user05@boyscoutsfd.com')
+user6 = User.create! :email=> 'user06@boyscoutsfd.com', :password => 'secret',
+                     :first_name => "FirstName06", :last_name => "LastName06" unless User.find_by_email('user06@boyscoutsfd.com')
+user7 = User.create! :email=> 'user07@boyscoutsfd.com', :password => 'secret',
+                     :first_name => "FirstName07", :last_name => "LastName07" unless User.find_by_email('user07@boyscoutsfd.com')
 
 
 #Create Another admin to test My Groups and Troop Leaders
@@ -48,7 +55,7 @@ group3.roles <<  troop_member_role unless group3.blank?
 #Add users to groups
 groupAdmin.users << user1 unless groupAdmin.blank?
 groupTroopLeader.users << user4 unless groupTroopLeader.blank?
-group1.users << user2 
+group1.users += [user2, user3, user4, user5, user6, user7]
 
 #Associate Troop leader group with its troop
 groupTroopLeader.children << group1
@@ -56,6 +63,7 @@ groupTroopLeader.children << group1
 #Create new routes and add new subscriptions to that routes
 route1 = Route.create! :name => "Route01", :group_id => group1.id unless Route.find_by_name("Route01")
 route2 = Route.create! :name => "Route02", :group_id => group1.id unless Route.find_by_name("Route02")
+route3 = Route.create! :name => "Route03", :group_id => group2.id unless Route.find_by_name("Route03")
 
 route1.users << user2
 route1.users << user3

@@ -7,7 +7,7 @@ class CreateSubscriptions < ActiveRecord::Migration
       t.string :cell_phone
       t.string :landline
       t.integer :route_id
-      t.integer :visit_sequence
+      t.integer :print_sequence
       t.string :address_line_1
       t.string :address_line_2
       t.string :city
