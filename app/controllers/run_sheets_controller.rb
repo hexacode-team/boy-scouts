@@ -5,7 +5,7 @@ class RunSheetsController < ApplicationController
     @group = Group.find(params[:id])
     prepare_runsheets_for_routes(@group.routes)
 
-    render pdf: "runsheets", :layout => "static_layout"
+    render pdf: "runsheets", :layout => "static_layout", :orientation => "Landscape"
   end
 
   def generate_runsheets_for_group
