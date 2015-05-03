@@ -4,23 +4,49 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :groups
   has_and_belongs_to_many :routes
+  has_and_belongs_to_many :runs
 
   Roles = [ :admin , :leader, :member, :subscriber ]
 
   def admin?
     self.groups.each do |g|
-      if g.admin?
-        return true
+      g.roles.each do |r|
+        if r.role == "SiteAdmin"
+          return true
+        end
       end
     end
   false
   end
 
+  def troop_leader?
+    self.groups.each do |g|
+      g.roles.each do |r|
+        if r.role == "TroopLeader"
+          return true
+        end
+      end
+    end
+    false
+  end
+
+  def troop_member?
+    self.groups.each do |g|
+      g.roles.each do |r|
+        if r.role == "TroopMember"
+          return true
+        end
+      end
+    end
+    false
+  end
+
   def role
     if admin?
       :admin
-    else
-      # TODO: other roles
+    elsif troop_leader?
+      :leader
+    elsif troop_member?
       :member
     end
   end
@@ -37,8 +63,26 @@ class User < ActiveRecord::Base
     self.first_name.to_s + self.last_name.to_s
   end
 
-  def get_group_admin
-    group = self.groups
+  def get_groups
+    if self.is? :admin
+      groups_admin_for = []
+      Group.all().each do |grp|
+          if grp.has_role? "TroopMember"
+              groups_admin_for.append grp 
+          end
+      end
+      groups_admin_for
+    elsif self.is? :leader
+      groups_admin_for = []
+      self.groups.each do |grp|
+        if grp.has_role? "TroopLeader"
+          groups_admin_for += grp.children if grp
+        end
+      end
+      groups_admin_for
+    elsif self.is? :member
+      self.groups
+    end
   end
 
 end

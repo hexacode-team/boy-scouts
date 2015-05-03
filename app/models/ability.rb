@@ -13,6 +13,8 @@ class Ability
       can :access, :rails_admin
       can :dashboard
       can :manage, :all
+      can :access, :routes
+      can :access, :troops
     elsif user.is? :leader
       # TODO
       can :access, :routes

@@ -5,7 +5,7 @@
 <% else %>
   <div class="list-group">
   <% @routes.each do |route| %>
-    <a href="#" class="list-group-item">
+    <a href="<%= view_route_url(route.id) %>" class="list-group-item">
       <h4 class="list-group-item-heading"><%= route.name %></h4>
       <p class="list-group-item-text"><%= route.group.name %></p>
     </a>
