@@ -2,11 +2,19 @@
 feature "Admin dashboard" do
     
     scenario "visitor is admin" do
-        admin = User.create :email => 'a@b.com', :password => 'tests'
-        groupAdmin = Group.create! :name => "SiteAdmins", :admin => true
-        Group.find_by_name("SiteAdmins")
-        groupAdmin.users << admin
+        #Create a test Admin user
+        admin = User.create :email => 'a@b.com', :password => 'tests', :first_name => "First", :last_name => "Last"
+     
+        admin_role = Role.create! :role=> "SiteAdmin" unless Role.find_by_role("SiteAdmin")
         
+        #Create a test group to function as a SiteAdmin
+        groupAdmin = Group.create! :name => "SiteAdmins", :admin => true unless Group.find_by_name("SiteAdmins")
+        groupAdmin.roles << admin_role unless groupAdmin.blank?
+        
+        #Add user to group
+        groupAdmin.users << admin unless groupAdmin.blank?
+
+        #visit the admin path as the newly created admin
         visit rails_admin_path(as: admin)
         expect(current_path).to eq(rails_admin_path)
     end
