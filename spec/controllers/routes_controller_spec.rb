@@ -8,12 +8,13 @@ RSpec.describe RoutesController, type: :controller do
       expect(response).to have_http_status(:success)
     end
   end
-
-  describe "GET #view_route" do
-    it "returns http success" do
-      get :view_route
-      expect(response).to have_http_status(:success)
-    end
-  end
+  #route no longer exists for this!
+  
+  #describe "GET #view_route" do
+  # it "returns http success" do
+  #   get :view_route
+  #   expect(response).to have_http_status(:success)
+  # end
+  #end
 
 end

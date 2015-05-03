@@ -5,7 +5,8 @@ class Route < ActiveRecord::Base
   has_and_belongs_to_many :users
 
   def self.routes_for(user)
-    case user.role
+    case user.role 
+      when nil
       when :admin
         Route.all
       when :leader

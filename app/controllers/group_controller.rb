@@ -5,7 +5,7 @@ class GroupController < ApplicationController
 	end
 
 	def view_groups
-		@groups = current_user.get_groups
+		@groups = current_user.get_groups unless current_user.nil?
 		@user = current_user
 
 		#render :layout => "group_layout"
