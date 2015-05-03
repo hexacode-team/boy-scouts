@@ -5,7 +5,11 @@ class Route < ActiveRecord::Base
   has_and_belongs_to_many :users
 
   def self.routes_for(user)
-    case user.role
+    if !user
+      return []
+    end
+
+    case user.role 
       when :admin
         Route.all
       when :leader
@@ -16,7 +20,6 @@ class Route < ActiveRecord::Base
         leader_routes
       when :member
         user.routes
-      else
     end
   end
 

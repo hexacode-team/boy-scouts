@@ -16,7 +16,7 @@ class Run < ActiveRecord::Base
 
   def progress
     #Returns hash with keys done and todo detailing run progression
-    subs = self.route.subscriptions.order(:visit_sequence)
+    subs = self.route.subscriptions.order(:print_sequence)
     completed_tasks = self.tasks
 
     run_progress = Hash([])

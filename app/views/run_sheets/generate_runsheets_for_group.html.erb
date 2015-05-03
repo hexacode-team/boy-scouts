@@ -34,74 +34,68 @@
     border-right: none;
 }
 
-section {
-    width:900px;
-    float:left;
-    padding:10px; 
-   text-align:justify;
+.route {
+  padding: 20px 10px;
 }
 
 </style>
 
-<section>
-	<div id="my routes">
-		<% if @routes.size == 0 %>
-			<div class="alert alert-info" role="alert">
-	      		<p>No routes to show.</p>
-	    	</div>
-		<% else %>
-			<h3> Viewing routes for: </h3>
-			<% if @group.blank? %>
-				<h2> Default Group Name </h2>
-			<% else %>
-				<h3><%= @group.name %></h3>
-			<% end %>
-			<% @routesHash.each_key do |key| %>
-				<a name="<%= @nameHash[key].to_s %>"> </a>	
-				<div class="troop">
-					<div class="route-header">
-					<h4><%= @nameHash[key].to_s %></h4>
-					</div>
-					<% if @routesHash[key].size == 0 %>
-						<div class="alert alert-info" role="alert">
-							<p> No subscribers on this route </p>
-						</div>
-					<% else %>
-						<div class="route-subscribers">
-							<table class="zui-table zui-table-zebra zui-table-horizontal">
-								<thead>
-									<tr>
-										<th>Sequence</th>
-										<th>Maintenance Notes</th>
-										<th>Street</th>
-										<th>Quantity</th>
-										<th>Name</th>
-										<th>ID</th>
-										<th colspan="3"></th>
-									</tr>
-								</thead>
-								<tbody>
-									<% @routesHash[key].each do |subscriber| %>
-										<tr>								
-											<td height="12px" style="border-spacing: 12px;"><%= subscriber.visit_sequence %></td>
-											<% if subscriber.maintenance_notes.blank? %>
-												<td height="12px" style="border-spacing: 12px;"><p>None</p></td>
-											<% else %>
-												<td height="12px" style="border-spacing: 12px;"><%= subscriber.maintenance_notes.to_s %></td>
-											<% end %>
-											<td height="12px" style="border-spacing: 12px;"><%= subscriber.street_address %></td>
-											<td height="12px" style="border-spacing: 12px;"><%= subscriber.qty %></td>
-											<td height="12px" style="border-spacing: 12px;"><%= subscriber.name %></td>
-											<td height="12px" style="border-spacing: 12px;"><%= subscriber.id %></td>
-										</tr>
-									<% end %>
-								</tbody>
-							</table>
-						</div>
-					<% end %>
-				</div>
-			<% end %>
-		<% end %>
-	</div>
-</section>
+<% if @routes.empty? %>
+	<div class="alert alert-info" role="alert">
+    <p>No routes to show.</p>
+  </div>
+<% else %>
+  <h3>Routes:</h3>
+	<% if @group.blank? %>
+    <h2>Default Group Name</h2>
+  <% else %>
+    <h3><%= @group.name %></h3>
+  <% end %>
+  <% @routesHash.each_key do |key| %>
+    <div class="route">
+      <h3><%= @nameHash[key].to_s %></h3>
+
+      <% if @generate_fields %>
+        <p>Morning Driver:</p>
+        <p>Morning Start Time:</p>
+        <p>Evening Driver:</p>
+        <p>Evening Start Time:</p>
+      <% end %>
+
+      <% if @routesHash[key].empty? %>
+        <div class="alert alert-info" role="alert">
+          <p>No subscribers on this route.</p>
+        </div>
+      <% else %>
+        <table class="zui-table zui-table-zebra zui-table-horizontal">
+          <thead>
+            <tr>
+    					<th>Sequence</th>
+              <th>Status</th>
+    					<th>Street</th>
+    					<th>Quantity</th>
+    					<th>Name</th>
+              <th>Maintenance Notes</th>
+    					<th>ID</th>
+    					<th colspan="3"></th>
+  					</tr>
+          </thead>
+          <tbody>
+            <% @routesHash[key].each do |subscriber| %>
+  						<tr>								
+    						<td height="12px" style="border-spacing: 12px;"><%= subscriber.print_sequence %></td>
+                <td height="12px" style="border-spacing: 12px;"><%= subscriber.status %></td>
+    						<td height="12px" style="border-spacing: 12px;"><%= subscriber.street_address %></td>
+    						<td height="12px" style="border-spacing: 12px;"><%= subscriber.qty %></td>
+    						<td height="12px" style="border-spacing: 12px;"><%= subscriber.name %></td>
+                <td height="12px" style="border-spacing: 12px;"><%= subscriber.maintenance_notes.to_s %></td>
+    						<td height="12px" style="border-spacing: 12px;"><%= subscriber.id %></td>
+  						</tr>
+    				<% end %>
+  				</tbody>
+  			</table>
+  		<% end %>
+    </div>
+	<% end %>
+<% end %>
 </body>
