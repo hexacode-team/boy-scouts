@@ -5,49 +5,72 @@
 
     </div>
     <div id="route-header" class="row">
-      <div class="col-md-5">
-        <h2 id="route-name"><%= @route.name %></h2>
-      </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
+        <h1 id="route-name"><%= @route.name %></h1>
       </div>
       <div class="col-md-3">
-        <button id="begin_run_button" value="<%= @route.id %>" onClick="begin_run()" >Begin Run!</button>
-        <button id="end_run_button"   value="<%= @route.id %>" style="display:none;" >Finish Run!</button>
+        <button class="btn btn-primary btn-lg" id="begin_run_button" value="<%= @route.id %>" data-toggle="modal" data-target="#select-scouts-modal" >Begin Run!</button>
+        <button class="btn btn-primary btn-lg" id="end_run_button"   value="<%= @route.id %>" style="display:none;" >Finish Run!</button>
+      </div>
+      <div class="col-md-6">
+      </div>
       </div>
     </div>
     <div id="route-content">
       <% @route.subscriptions.each do | sub |  %>
       <div id="subscriber_<%=sub.id %>" class="row subscriber">
-        <div class="col-md-3">
+        <div class="col-xs-3">
           <span class="hide-unless-run">
               <input id="subscriber_<%=sub.id %>_checkbox" value="<%=sub.id %>"  type="checkbox" class="task-complete-checkbox" />
           </span>
         </div>
-        <div class="col-md-6">
+        <div class="col-xs-3">
           <%= sub.street_address %>
         </div>
-        <div class="col-md-3">
+        <div class="col-xs-3">
           <button >Add Maintenance Note</button>
         </div>
       </div>
-      <div id="subscriber_<%=sub.id %>_info" style="display:none;" class="row subscriber_info">
+          <!--
+      <div id="subscriber_<%=sub.id %>_info" style="display:none;" class="row-fluid subscriber_info">
         <div class="col-md-3">
           <%= sub.street_address %>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
           <%= sub.cell_phone %>
         </div>
         <div class="col-md-3">
           <%- sub.maintenance_notes %>
         </div>
       </div>
+      -->
       <% end %>
 
     </div>
     <div id="route-footer">
 
     </div>
+
+  <div class="modal fade" id="select-scouts-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Select Scouts and Run Time!</h4>
+        </div>
+        <div id="choose-scouts" class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button id="begin-run-submit" type="button" class="btn btn-primary">Begin Run!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 </div>
+
 <script type="text/javascript">
   $(document).ready(function (){
       var root_url = "<%= root_url %>";
@@ -64,6 +87,15 @@
       var route_id = <%= @route.id %>;
       var run_is_started = false;
 
+      function populate_scouts(){
+          var scout_html = '<label class="radio-inline"><input type="radio" checked="checked" name="ampmradio" value="am">AM</label>'
+          scout_html += '<label class="radio-inline"> <input type="radio" name="ampmradio" value="pm">PM</label>'
+          for(var i = 0; i < scouts.length; i++){
+              scout_html += "<label class='checkbox' style='padding-left:2em;'><input type='checkbox' class='scout-checkbox' name='scout_ids[]' value='" + scouts[i]["id"] +"'>" + scouts[i]["name"] + "</label>";
+          }
+          $("#choose-scouts").html(scout_html);
+      }
+
       function send_post(url, post, cb){
           if(cb == undefined) cb = handle_response
           $.ajax({
@@ -77,7 +109,7 @@
 
       function handle_response(data, status, jqXHR){
             //update_message(data["message"], data["type"])
-
+            console.log(message)
 
       }
 
@@ -90,10 +122,6 @@
                   $("#message").html("")
               });
           }, 5000);
-      }
-
-      function clear_message(){
-
       }
 
 
@@ -124,6 +152,23 @@
           var hidden = $('.hide-unless-run').show();
           $("#begin_run_button").hide();
           $("#end_run_button").show();
+
+          $(".task-complete-checkbox").bootstrapToggle({
+              on: get_task_on_text(),
+              off: get_task_off_text()
+          })
+      }
+
+      function begin_run() {
+          console.log("Starting Run");
+          var scouts_selected = $('.scout-checkbox:checked');
+          var scout_values = [];
+          for (var i = 0; i < scouts_selected.length; i++) {
+              scout_values.push(scouts_selected[i]["value"]);
+          }
+          var run_type = $("input:radio[name=ampmradio]:checked").val();
+          var data = {"route_id": route_id, "run_type": run_type, "user_ids": scout_values};
+          send_post(begin_run_url, data, function(){window.location.reload(true);})
       }
 
       function update_subscriptions(run_progress, status){
@@ -141,6 +186,10 @@
       }
 
       function get_task_on_text(){
+          if (run){
+              if (run["ampm"] == "am") return "Flag In";
+              if (run["ampm"] == "pm") return "Flag Out";
+          }
           var hours = new Date().getHours();
           var hours = (hours+24-2)%24;
           var mid='am';
@@ -153,6 +202,10 @@
       }
 
       function get_task_off_text(){
+          if (run) {
+              if (run["ampm"] == "am") return "Flag Out";
+              if (run["ampm"] == "pm") return "Flag In";
+          }
           var hours = new Date().getHours();
           var hours = (hours+24-2)%24;
           var mid='am';
@@ -166,7 +219,7 @@
 
       function end_run(){
           send_post(end_run_url, {"run_id": run["id"]});
-          //window.location.replace(root_url);
+          window.location.replace(root_url);
       }
 
       function setup(){
@@ -191,7 +244,10 @@
 
           }
 
+          populate_scouts();
+
           $("#end_run_button").on("click", end_run);
+          $("#begin-run-submit").on("click", begin_run);
 
           window.setInterval(function(){
               get_run_update()
