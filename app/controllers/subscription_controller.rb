@@ -32,7 +32,13 @@ class SubscriptionController < ApplicationController
 
   def add_maintenance_note
     sub = Subscription.find(params[:sub_id])
-    sub.maintenance_notes += DateTime.now().to_s + params[:note]
+    note = DateTime.now().strftime("%m/%d/%y %H:%M:%S") + ': ' + params[:note]
+    if sub.maintenance_notes.blank?
+      sub.maintenance_notes = note;
+    else
+      sub.maintenance_notes += ", " + note
+    end
+    sub.save!
     render json: sub.id
   end
 

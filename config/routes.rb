@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   get 'subscription/:group_id/generate_invoices' => 'subscription#generate_invoices', as: :generate_invoices
   get 'subscription/:group_id/generate_invoices_pdf' => 'subscription#generate_invoices_pdf', as: :generate_invoices_pdf
 
-  post 'subscription/:sub_id/add_maintenance_note' => 'subscription#add_maintenance_note', as: :add_maintenance_note
+  post 'subscription/add_maintenance_note' => 'subscription#add_maintenance_note', as: :add_maintenance_note
 
   post 'runs/begin' => "runs#begin_run", as: :begin_run
   post 'runs/end' => "runs#end_run", as: :end_run
