@@ -12,5 +12,16 @@ class GroupController < ApplicationController
 	end
 
   	def view_group
-  	end
+    end
+
+  def report
+    @group = Group.find(params[:id])
+
+  end
+
+  def report_pdf
+    @group = Group.find(params[:id])
+
+  end
+
 end

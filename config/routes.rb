@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   get 'group/view_groups' => 'group#view_groups', as: :view_groups
   get 'group/view_group'
 
+  get 'group/:id/report' => 'group#report', as: :report
+  get 'group/:id/report/pdf' => 'group#report_pdf', as: :report_pdf
+
   get 'run_sheets/generate_runsheet/' => 'run_sheets#generate_runsheet_for_user', as: :generate_runsheet_for_user
   get 'run_sheets/generate_runsheet_pdf' => 'run_sheets#generate_runsheet_pdf', as: :generate_runsheet_pdf
 
