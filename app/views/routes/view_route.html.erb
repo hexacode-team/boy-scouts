@@ -24,7 +24,7 @@
               <input id="subscriber_<%=sub.id %>_checkbox" value="<%=sub.id %>"  type="checkbox" class="task-complete-checkbox" />
           </span>
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-3 route-address" value="<%=sub.id %>" class="col-xs-3">
           <%= sub.street_address %>
         </div>
         <div class="col-xs-3">
@@ -33,8 +33,7 @@
           </span>
         </div>
       </div>
-          <!--
-      <div id="subscriber_<%=sub.id %>_info" style="display:none;" class="row-fluid subscriber_info">
+      <div id="subscriber_<%=sub.id %>_info" style="display:none;" class="row subscriber_info">
         <div class="col-md-3">
           <%= sub.street_address %>
         </div>
@@ -45,7 +44,7 @@
           <%- sub.maintenance_notes %>
         </div>
       </div>
-      -->
+
       <% end %>
 
     </div>
@@ -88,6 +87,25 @@
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="maintenance-note-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Add Maintenance Note</h4>
+          </div>
+          <div id="maintence-note-container" class="modal-body">
+            <textarea style="width:80%;height:80%;" id="maintence-note-text"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button id="maintenance-note-submit" type="button"  data-dismiss="modal" class="btn btn-primary">Submit Note.</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
 </div>
 
@@ -253,6 +271,13 @@
           window.location.replace(root_url);
       }
 
+      function show_route_info(sub_id){
+          var sub_info = $("#subscriber_"+sub_id+"_info");
+          if(sub_info.css('display') == "none") sub_info.show();
+          else sub_info.hide();
+      }
+
+
       function setup(){
           $('.hide-unless-run').hide();
           //create subscription finish toggles.
@@ -264,13 +289,17 @@
           $(".task-complete-checkbox").bootstrapToggle({
               on: get_task_on_text(),
               off: get_task_off_text()
-          })
+          });
 
           $('.task-complete-checkbox').on('change', function(event, state) {
               toggle_task_completion(this.value)
           });
           $('.add-maintenance-note').on('click', function(event, state){
               add_maintenance_note_modal(this.value);
+          });
+          $('.route-address').on('click', function(event, state){
+
+              //show_route_info(this.attributes.value.nodeValue);
           });
 
           if (run_is_started){
@@ -288,6 +317,7 @@
               get_run_update()
           }, 5000);
       }
+
 
 
       setup();
