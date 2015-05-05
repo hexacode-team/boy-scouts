@@ -21,6 +21,7 @@ class Run < ActiveRecord::Base
 
     run_progress = Hash([])
     run_progress["id"] = self.id
+    run_progress["ampm"] = self.am_pm
     run_progress["todo"] = []
     run_progress["done"] = []
 

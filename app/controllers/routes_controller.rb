@@ -16,8 +16,13 @@ class RoutesController < ApplicationController
   end
 
   def get_run_info
-    @route = Route.find(params[:id])
-    render json: @route.runs_in_progress
+    @route = Route.find(params[:route_id])
+    if @route.runs_in_progress?
+      render json: @route.runs_in_progress[0]
+      return
+    end
+
+    render json: false
   end
 
 end

@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get 'routes/view_routes' => 'routes#view_routes', as: :view_routes
   get 'routes/view_routes/:id/' => 'routes#view_routes_for_group', as: :view_routes_for_group
   get 'routes/:id/' => 'routes#view_route', as: :view_route
-  get 'routes/:id/run/' => 'routes#get_run_info', as: :view_route_run_info
+  post 'routes/run' => 'routes#get_run_info', as: :view_route_run_info
 
   get 'group/view_groups' => 'group#view_groups', as: :view_groups
   get 'group/view_group'
@@ -21,10 +21,10 @@ Rails.application.routes.draw do
   get 'subscription/:group_id/generate_invoices' => 'subscription#generate_invoices', as: :generate_invoices
   get 'subscription/:group_id/generate_invoices_pdf' => 'subscription#generate_invoices_pdf', as: :generate_invoices_pdf
 
-  post 'subscription/:sub_id/add_maintenance_note' => 'subscription#add_maintenance_note', as: :add_maintenance_note
+  post 'subscription/add_maintenance_note' => 'subscription#add_maintenance_note', as: :add_maintenance_note
 
-  post 'runs/begin' => "runs#begin", as: :begin_run
-  post 'runs/end' => "runs#end", as: :end_run
+  post 'runs/begin' => "runs#begin_run", as: :begin_run
+  post 'runs/end' => "runs#end_run", as: :end_run
   post 'runs/progress' => "runs#get_run_progress", as: :run_progress
 
   post 'task/set' => "tasks#set_task", as: :set_task
