@@ -5,7 +5,7 @@ feature "Admin dashboard" do
         #Create a test Admin user
         admin = User.create :email => 'a@b.com', :password => 'tests', :first_name => "First", :last_name => "Last"
      
-        admin_role = Role.create! :role=> "SiteAdmin" unless Role.find_by_role("SiteAdmin")
+        admin_role = Role.create! :role=> "SiteAdmin"
         
         #Create a test group to function as a SiteAdmin
         groupAdmin = Group.create! :name => "SiteAdmins", :admin => true unless Group.find_by_name("SiteAdmins")

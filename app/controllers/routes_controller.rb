@@ -1,7 +1,7 @@
 class RoutesController < ApplicationController
 
   def view_routes
-    @routes = Route.routes_for(current_user) || []
+    @routes = Route.routes_for(current_user) || [] unless current_user.nil?
   end
 
   def view_routes_for_group
