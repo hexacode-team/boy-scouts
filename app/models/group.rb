@@ -20,4 +20,5 @@ class Group < ActiveRecord::Base
     members
   end
 
+
 end

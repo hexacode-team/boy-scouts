@@ -26,7 +26,7 @@ class Route < ActiveRecord::Base
   def runs_in_progress
     in_progress = []
     self.runs.each do |run|
-      if run.in_progress? and run.datetime_started.to_date == Date.today()
+      if run.in_progress? and run.datetime_started.in_time_zone("Central Time (US & Canada)").to_date() == Date.today()
         in_progress.append(run)
       end
     end
