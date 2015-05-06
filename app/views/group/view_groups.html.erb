@@ -21,6 +21,7 @@
             <%= link_to 'Run Sheets', generate_runsheets_for_group_url(:id => troop.id), :class => "btn btn-default" %>
             <%= link_to 'PDF', generate_runsheets_pdf_url(:id => troop.id), :class => "btn btn-default" %>
           </div>
+          <%= link_to 'Participation Report', report_pdf_url(:id => troop.id), :class => "btn btn-default" %>
         <% else %>
           <%= link_to 'Routes', view_routes_for_group_url(:id => troop.id), :class => "btn btn-default" %>
           <%= link_to 'Run Sheets', generate_runsheets_for_group_url(:id => troop.id), :class => "btn btn-default" %>
