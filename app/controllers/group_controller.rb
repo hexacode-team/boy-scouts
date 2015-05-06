@@ -17,11 +17,12 @@ class GroupController < ApplicationController
   def report
     @group = Group.find(params[:id])
 
+
   end
 
   def report_pdf
     @group = Group.find(params[:id])
-
+		render pdf: "troop_participation", :layout => "static_layout"
   end
 
 end

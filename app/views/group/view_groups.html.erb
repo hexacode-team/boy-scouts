@@ -24,6 +24,7 @@
 						<%= active_link_to 'Routes', view_routes_for_group_url(:id => troop.id), :wrap_tag => :li %>
 						<%= active_link_to 'Run Sheets', generate_runsheets_for_group_url(:id => troop.id), :wrap_tag => :li %>
 						<%= active_link_to 'Run Sheets PDF', generate_runsheets_pdf_url(:id => troop.id), :wrap_tag => :li %>
+                        <%= active_link_to 'Participation Report', report_pdf_url(:id => troop.id), :wrap_tag => :li %>
 					<% else %>
 						<%= active_link_to 'Routes', view_routes_for_group_url(:id => troop.id), :wrap_tag => :li %>
 						<%= active_link_to 'Run Sheets', generate_runsheets_for_group_url(:id => troop.id), :wrap_tag => :li %>
