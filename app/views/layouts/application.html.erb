@@ -4,6 +4,22 @@
   <%= stylesheet_link_tag 'application' %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tag %>
+
+  <style>
+
+  .callout {
+    padding: 5px 20px;
+    margin: 25px 30px;
+    border: 0px solid #eee;
+    border-left-width: 5px;
+    border-radius: 0px;
+  }
+
+  .callout-empty {
+    border-color: white;
+  }
+
+  </style>
 </head>
 <body>
   <% unless defined?(@no_header) %>
@@ -25,14 +41,16 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <li class="<%= 'active' if current_page?(root_path) %>"><%= link_to "Home", root_path %></li>
-          <% if signed_in? && current_user.admin? %>
+          <% if can? :access, :rails_admin %>
             <!-- If we're an admin, give access to panel, invoices, and routes. -->
-            <li><%= link_to "Admin", "/admin" %></li>
-            <li><%= link_to view_invoices_url(:group_id => 1) do %> View Invoices<% end %></li>
-            <li><%= link_to "Routes", view_routes_url %></li>
-          <% elsif current_user && current_user.can_view_routes? %>
-            <!-- Otherwise, only show routes to members. -->
-            <li><%= link_to "My Routes", view_route_url(group_id: 1) %></li> <!-- TODO: remove hard-coded group once groups are required -->
+            <%= active_link_to 'Admin', "/admin", :wrap_tag => :li %>
+          <% end %>
+          <% if can? :access, :troops %>
+            <%= active_link_to 'My Troops', view_groups_url, :wrap_tag => :li %>
+          <% end %>
+          <% if can? :access, :routes %>
+            <%# Otherwise, only show routes to members %>
+            <%= active_link_to 'My Routes', view_routes_url, :wrap_tag => :li %>
           <% end %>   
         </ul>
         
@@ -43,7 +61,6 @@
         <% else -%>
           <div class="navbar-right">
             <%= link_to "Login", sign_in_path, :class => "btn btn-default navbar-btn" %>
-            <%= link_to "Sign Up", sign_up_path, :class => "btn btn-default navbar-btn" %>
           </div>
         <% end -%>
       </div>
@@ -52,7 +69,9 @@
   
   <div id="flash">
     <% flash.each do |key, value| -%>
-      <div id="flash_<%= key %>"><%=h value %></div>
+      <div class="alert alert-warning" role="alert">
+        <%=h value %>
+      </div>
     <% end %>
   </div>
   <% end %>

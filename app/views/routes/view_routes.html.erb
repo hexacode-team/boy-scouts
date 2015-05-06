@@ -1,2 +1,14 @@
-<h1>Routes#view_routes</h1>
-<p>Find me in app/views/routes/view_routes.html.erb</p>
+<% if @routes.blank? %>
+  <div class="alert alert-info" role="alert">
+    <p>No routes to show.</p>
+  </div>
+<% else %>
+  <% @routes.each do |route| %>
+    <div class="callout">
+    <a href="<%= view_route_url(route.id) %>">
+      <h4 class=""><%= route.name %></h4>
+    </a>
+    <p class=""><%= route.group.name %></p>
+    </div>
+  <% end %>
+<% end %>

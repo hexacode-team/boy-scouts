@@ -1,28 +1,40 @@
 Rails.application.routes.draw do
-  get 'routes/view_routes' => 'routes#view_routes', as: :view_routes
-  get 'routes/:group_id/view_route' => 'routes#view_route', as: :view_route
 
-  get 'group/view_groups'
+  get 'welcome/index'
+  root 'welcome#index'
+  
+  get 'routes/view_routes' => 'routes#view_routes', as: :view_routes
+  get 'routes/view_routes/:id/' => 'routes#view_routes_for_group', as: :view_routes_for_group
+  get 'routes/:id/' => 'routes#view_route', as: :view_route
+  post 'routes/run' => 'routes#get_run_info', as: :view_route_run_info
+
+  get 'group/view_groups' => 'group#view_groups', as: :view_groups
   get 'group/view_group'
 
-  get 'run_sheets/generate_runsheet'
-  get 'run_sheets/generate_runsheet_pdf'
+  get 'group/:id/report' => 'group#report', as: :report
+  get 'group/:id/report/pdf' => 'group#report_pdf', as: :report_pdf
 
-  get 'run_sheets/generate_runsheets'
-  get 'run_sheets/generate_runsheets_pdf'
+  get 'run_sheets/generate_runsheet/' => 'run_sheets#generate_runsheet_for_user', as: :generate_runsheet_for_user
+  get 'run_sheets/generate_runsheet_pdf' => 'run_sheets#generate_runsheet_pdf', as: :generate_runsheet_pdf
+
+  get 'run_sheets/generate_runsheets/:id/' => 'run_sheets#generate_runsheets_for_group', as: :generate_runsheets_for_group
+  get 'run_sheets/generate_runsheets_pdf/:id/' => 'run_sheets#generate_runsheets_pdf', as: :generate_runsheets_pdf
 
   get 'subscription/:group_id/invoices' => 'subscription#index', as: :view_invoices
   get 'subscription/:group_id/generate_invoices' => 'subscription#generate_invoices', as: :generate_invoices
   get 'subscription/:group_id/generate_invoices_pdf' => 'subscription#generate_invoices_pdf', as: :generate_invoices_pdf
 
+  post 'subscription/add_maintenance_note' => 'subscription#add_maintenance_note', as: :add_maintenance_note
+
+  post 'runs/begin' => "runs#begin_run", as: :begin_run
+  post 'runs/end' => "runs#end_run", as: :end_run
+  post 'runs/progress' => "runs#get_run_progress", as: :run_progress
+
+  post 'task/set' => "tasks#set_task", as: :set_task
+
+
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  get 'welcome/index'
 
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-
-  # You can have the root of your site routed with "root"
-  root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -1,23 +1,45 @@
 class Subscription < ActiveRecord::Base
-    has_one :group, :through => :route
     belongs_to :route
+    belongs_to :group
     has_many :payments
-    belongs_to :users
+
+    def name
+      return last_name + ', ' + first_name 
+    end
+
+    def street_address
+      if address_line_2 != nil
+        return address_line_1 + ' ' + address_line_2
+      else
+        return address_line_1
+      end
+    end
+
+    def status
+      today = Date.today()
+      payments.each do |payment|
+        if payment.end_date > today
+          return "Good"
+        end
+      end
+
+      return "Expired"
+    end
 
     def self.get_require_invoices(group_id)
 
-      routes = Route.where(:group_id => group_id)
+      routes = Group.find(group_id).routes
       subscriptions = []
 
       routes.each do |route|
-        subscriptions += Subscription.where(:route_id => route.id)
+        subscriptions += route.subscriptions
       end
 
       today = Date.today()
       subs_that_need_invoices = []
       subscriptions.each do |sub|
         needs_invoice = true
-        payments = Payment.where(:subscription_id => sub.id)
+        payments = sub.payments
 
         #if we cannot find a payment for a subscription, we obviously need an invoice
         if payments.blank?
@@ -40,8 +62,10 @@ class Subscription < ActiveRecord::Base
 
       end
 
-      return subs_that_need_invoices
-
+      return subs_that_need_invoices.sort do |a, b|
+        comp = (a.last_name <=> b.last_name)
+        comp.zero? ? (a.first_name <=> b.first_name) : comp
+      end 
     end
 
 end

@@ -1,2 +1,32 @@
-<h1>Group#view_groups</h1>
-<p>Find me in app/views/group/view_groups.html.erb</p>
+<div id="my troops">
+	<% if @groups.blank? %>
+		<div class="alert alert-info" role="alert">
+			<p>You Have No Troops</p>
+		</div>
+	<% else %>
+		<% if !@user.blank? %>
+      <div class="callout callout-empty">
+        <h4>Troops for: </h4>
+        <p><%=@user.first_name %> <%= @user.last_name %></p>
+      </div>
+		<% end %>
+		<% @groups.each do |troop| %>
+      <div class="callout">
+				<h4><%= troop.name %></h4>
+
+				<% if can? :access, :troops %>
+          <%= link_to 'Invoices', view_invoices_url(:group_id => troop.id), :class => "btn btn-default" %>
+          <%= link_to 'Routes', view_routes_for_group_url(:id => troop.id), :class => "btn btn-default" %>
+          <div class="btn-group" aria-label="">
+            <%= link_to 'Run Sheets', generate_runsheets_for_group_url(:id => troop.id), :class => "btn btn-default" %>
+            <%= link_to 'PDF', generate_runsheets_pdf_url(:id => troop.id), :class => "btn btn-default" %>
+          </div>
+          <%= link_to 'Participation Report', report_pdf_url(:id => troop.id), :class => "btn btn-default" %>
+        <% else %>
+          <%= link_to 'Routes', view_routes_for_group_url(:id => troop.id), :class => "btn btn-default" %>
+          <%= link_to 'Run Sheets', generate_runsheets_for_group_url(:id => troop.id), :class => "btn btn-default" %>
+        <% end %>
+  		</div>
+		<% end %>
+	<% end %>
+</div>

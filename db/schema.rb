@@ -11,16 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150405194143) do
+ActiveRecord::Schema.define(version: 20150428155110) do
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "parent_id"
+    t.boolean  "admin",      default: false, null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
-  add_index "groups", ["user_id"], name: "index_groups_on_user_id"
+  create_table "groups_roles", force: :cascade do |t|
+    t.integer "group_id"
+    t.integer "role_id"
+  end
+
+  create_table "groups_users", force: :cascade do |t|
+    t.integer "group_id"
+    t.integer "user_id"
+  end
 
   create_table "members_runs", force: :cascade do |t|
     t.integer  "user_id"
@@ -42,6 +51,12 @@ ActiveRecord::Schema.define(version: 20150405194143) do
     t.datetime "updated_at",      null: false
   end
 
+  create_table "roles", force: :cascade do |t|
+    t.string   "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "routes", force: :cascade do |t|
     t.string   "name"
     t.integer  "group_id"
@@ -49,13 +64,23 @@ ActiveRecord::Schema.define(version: 20150405194143) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "routes_users", force: :cascade do |t|
+    t.integer "route_id"
+    t.integer "user_id"
+  end
+
   create_table "runs", force: :cascade do |t|
     t.integer  "route_id"
-    t.datetime "date"
-    t.integer  "time_taken"
+    t.datetime "datetime_started"
+    t.datetime "datetime_ended"
     t.string   "am_pm"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  create_table "runs_users", force: :cascade do |t|
+    t.integer "run_id"
+    t.integer "user_id"
   end
 
   create_table "subscriptions", force: :cascade do |t|
@@ -65,17 +90,18 @@ ActiveRecord::Schema.define(version: 20150405194143) do
     t.string   "cell_phone"
     t.string   "landline"
     t.integer  "route_id"
-    t.integer  "visit_sequence"
+    t.integer  "print_sequence"
     t.string   "address_line_1"
     t.string   "address_line_2"
     t.string   "city"
     t.string   "state"
     t.string   "zip"
     t.integer  "qty"
-    t.integer  "user_id"
+    t.integer  "group_id"
     t.datetime "last_invoice_sent"
     t.datetime "renewal_due_date"
     t.text     "notes"
+    t.text     "maintenance_notes"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
   end
@@ -83,20 +109,19 @@ ActiveRecord::Schema.define(version: 20150405194143) do
   create_table "tasks", force: :cascade do |t|
     t.integer  "run_id"
     t.integer  "subscription_id"
-    t.datetime "start"
-    t.datetime "end"
+    t.string   "description"
+    t.integer  "qty"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
 
   create_table "users", force: :cascade do |t|
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.string   "email"
-    t.string   "encrypted_password", limit: 128,                 null: false
+    t.string   "encrypted_password", limit: 128, null: false
     t.string   "confirmation_token", limit: 128
-    t.string   "remember_token",     limit: 128,                 null: false
-    t.boolean  "admin",                          default: false, null: false
+    t.string   "remember_token",     limit: 128, null: false
     t.boolean  "can_view_routes"
     t.string   "first_name"
     t.string   "last_name"

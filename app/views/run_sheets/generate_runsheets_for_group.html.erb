@@ -1,0 +1,141 @@
+
+<!-- This is the view page for generating runsheets -->
+<style media='screen' type='text/css'>
+.zui-table {
+    border: solid 1px #DDEEEE;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font: normal 13px Arial, sans-serif;
+}
+.zui-table thead th {
+    background-color: #DDEFEF;
+    border: solid 1px #DDEEEE;
+    color: #336B6B;
+    padding: 10px;
+    text-align: left;
+    text-shadow: 1px 1px 1px #fff;
+}
+.zui-table tbody td {
+    border: solid 1px #DDEEEE;
+    color: #333;
+    padding: 3px;
+    text-shadow: 1px 1px 1px #fff;
+}
+.zui-table-zebra tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+.zui-table-zebra tbody tr:nth-child(even) {
+    background-color: #EEF7EE;
+}
+.zui-table-horizontal tbody td {
+    border-left: none;
+    border-right: none;
+}
+
+.route {
+  padding: 20px 10px;
+}
+
+.columns-wrap {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.left {
+  width: 49%;
+  display: inline-block;
+}
+
+.right {
+  width: 49%;
+  display: inline-block;
+}
+
+p {
+  margin: 0;
+}
+
+</style>
+
+<% if @routes.empty? %>
+	<div class="alert alert-info" role="alert">
+    <p>No routes to show.</p>
+  </div>
+<% else %>
+  <h3>Routes:</h3>
+	<% if @group.blank? %>
+    <h2>Default Group Name</h2>
+  <% else %>
+    <h3><%= @group.name %></h3>
+  <% end %>
+  <% @routesHash.each_key do |key| %>
+    <div class="route">
+      <h3><%= @nameHash[key].to_s %></h3>
+
+      <% if @routesHash[key].empty? %>
+        <div class="alert alert-info" role="alert">
+          <p>No subscribers on this route.</p>
+        </div>
+      <% else %>
+
+        <% if @generate_fields %>
+        <div class="columns-wrap">
+          <div class="left">
+            <p>Morning Driver:</p>
+            <p>Morning Start Time:</p>
+          </div>
+
+          <div class="right">
+            <p>Evening Driver:</p>
+            <p>Evening Start Time:</p>
+          </div>
+        </div>
+        <% end %>
+
+        <table class="zui-table zui-table-zebra zui-table-horizontal">
+          <thead>
+            <tr>
+    					<th>Sequence</th>
+              <th>Status</th>
+    					<th>Street</th>
+    					<th>Quantity</th>
+    					<th>Name</th>
+              <th>Maintenance Notes</th>
+    					<th>ID</th>
+    					<th colspan="3"></th>
+  					</tr>
+          </thead>
+          <tbody>
+            <% @routesHash[key].each do |subscriber| %>
+  						<tr>								
+    						<td height="12px" style="border-spacing: 12px;"><%= subscriber.print_sequence %></td>
+                <td height="12px" style="border-spacing: 12px;"><%= subscriber.status %></td>
+    						<td height="12px" style="border-spacing: 12px;"><%= subscriber.street_address %></td>
+    						<td height="12px" style="border-spacing: 12px;"><%= subscriber.qty %></td>
+    						<td height="12px" style="border-spacing: 12px;"><%= subscriber.name %></td>
+                <td height="12px" style="border-spacing: 12px;"><%= subscriber.maintenance_notes.to_s %></td>
+    						<td height="12px" style="border-spacing: 12px;"><%= subscriber.id %></td>
+  						</tr>
+    				<% end %>
+  				</tbody>
+  			</table>
+
+        <% if @generate_fields %>
+          <div class="columns-wrap">
+            <div class="left">
+              <p>Morning End Time:</p>
+              <p>Morning Scouts:</p>
+            </div>
+
+          <div class="right">
+            <p>Evening End Time:</p>
+            <p>Evening Scouts:</p>
+          </div>
+        </div>
+        <% end %>
+
+  		<% end %>
+    </div>
+	<% end %>
+<% end %>
