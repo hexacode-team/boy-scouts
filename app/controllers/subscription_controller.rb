@@ -5,6 +5,8 @@ class SubscriptionController < ApplicationController
 
     @group = Group.find(params[:group_id])
     @user = current_user
+
+    raise CanCan::AccessDenied.new("You are not authorized to view the requested group!") unless !current_user.get_groups.blank? && current_user.get_groups.include?(@group) && (current_user.is?(:leader) || current_user.is?(:admin))
   end
 
   def generate_invoices
@@ -15,6 +17,8 @@ class SubscriptionController < ApplicationController
     @no_header = true
     @display_letter = true
 
+
+    raise CanCan::AccessDenied.new("You are not authorized to view the requested group!") unless !current_user.get_groups.blank? && current_user.get_groups.include?(@group) && (current_user.is?(:leader) || current_user.is?(:admin))
     render :layout => "static_layout"
   end
 
@@ -26,6 +30,7 @@ class SubscriptionController < ApplicationController
     @no_header = true
     @display_letter = true
 
+    raise CanCan::AccessDenied.new("You are not authorized to view the requested group!") unless !current_user.get_groups.blank? && current_user.get_groups.include?(@group) && (current_user.is?(:leader) || current_user.is?(:admin))
     render pdf: "invoices", :layout => "static_layout"
 
   end

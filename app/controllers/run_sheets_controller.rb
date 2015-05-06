@@ -7,11 +7,14 @@ class RunSheetsController < ApplicationController
 
     prepare_runsheets_for_routes(@group.routes)
 
+    raise CanCan::AccessDenied.new("You are not authorized to view the requested group!") unless !current_user.get_groups.blank? && current_user.get_groups.include?(@group)
     render pdf: "runsheets", :layout => "static_layout", :orientation => "Landscape"
   end
 
   def generate_runsheets_for_group
     @group = Group.find(params[:id])
+
+    raise CanCan::AccessDenied.new("You are not authorized to view the requested group!") unless !current_user.get_groups.blank? && current_user.get_groups.include?(@group)
     prepare_runsheets_for_routes(@group.routes)
   end
 
