@@ -1,6 +1,7 @@
 class RunsController < ActionController::Base
 
   def begin_run
+    #used in view_route's view to start run
     route_id = params[:route_id]
     run_type = params[:run_type]
     user_ids = params[:user_ids]
@@ -11,6 +12,7 @@ class RunsController < ActionController::Base
   end
 
   def end_run
+    #used in view_route's view to end run
     @run = Run.find(params[:run_id])
     @run.datetime_ended = DateTime.now()
     @run.save!
