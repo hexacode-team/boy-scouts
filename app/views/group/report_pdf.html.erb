@@ -10,7 +10,7 @@
         <%= user.display_name %>
       </td>
       <td>
-        <%= user.runs.where("created_at >= ? AND created_at <= ?", Date.today.beginning_of_year, Date.today.end_of_year).count %>
+        <%= user.runs.where("created_at >= ? AND created_at <= ?", Date.today.beginning_of_year, Date.today.end_of_year).count + user.tasks.count %>
       </td>
     </tr>
   <% end %>
