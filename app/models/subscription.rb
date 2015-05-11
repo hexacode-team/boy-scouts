@@ -4,7 +4,12 @@ class Subscription < ActiveRecord::Base
     has_many :payments
 
     def name
-      return last_name + ', ' + first_name 
+       if !last_name.blank? && !first_name.blank?
+           return last_name.to_s + ', ' + first_name.to_s
+       elsif !last_name.blank?
+           return last_name.to_s
+       end
+       return first_name.to_s    
     end
 
     def street_address
