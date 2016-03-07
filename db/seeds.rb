@@ -18,4 +18,3 @@ troop_member_role = Role.create! :role=> "TroopMember" unless Role.find_by_role(
 #Create a group to function as a Troop and set the admin to the created default admin
 groupAdmin = Group.create! :name => "SiteAdmins", :admin => true unless Group.find_by_name("SiteAdmins")
 groupAdmin.roles << admin_role unless groupAdmin.blank?
-
