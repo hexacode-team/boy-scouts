@@ -1,3 +1,7 @@
+.idea/
+.DS_Store
+ec2_user.pem
+
 # Ignore bundler config.
 /.bundle
 
