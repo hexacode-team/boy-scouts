@@ -68,8 +68,7 @@ group :development, :test do
   gem 'wkhtmltopdf'
   gem 'unicorn'
   gem 'puma'
-  gem 'sqlite3'
-
+  gem 'pg'
 end
 
 group :production do
@@ -77,5 +76,4 @@ group :production do
   gem 'io-console'
   gem 'wkhtmltopdf'
   gem 'puma'
-  gem 'sqlite3'
 end
