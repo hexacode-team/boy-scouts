@@ -52,7 +52,8 @@ group :development, :test do
   #Cucumber Gem for testing
   gem 'cucumber-rails', :require => false
   gem 'database_cleaner'
-  
+  gem 'selenium-webdriver'
+
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 
