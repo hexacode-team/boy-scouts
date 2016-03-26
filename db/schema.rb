@@ -13,6 +13,10 @@
 
 ActiveRecord::Schema.define(version: 20150428155110) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+  enable_extension "adminpack"
+
   create_table "groups", force: :cascade do |t|
     t.string   "name"
     t.integer  "parent_id"
@@ -38,8 +42,8 @@ ActiveRecord::Schema.define(version: 20150428155110) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "members_runs", ["run_id"], name: "index_members_runs_on_run_id"
-  add_index "members_runs", ["user_id"], name: "index_members_runs_on_user_id"
+  add_index "members_runs", ["run_id"], name: "index_members_runs_on_run_id", using: :btree
+  add_index "members_runs", ["user_id"], name: "index_members_runs_on_user_id", using: :btree
 
   create_table "payments", force: :cascade do |t|
     t.integer  "subscription_id"
@@ -47,6 +51,8 @@ ActiveRecord::Schema.define(version: 20150428155110) do
     t.datetime "date"
     t.datetime "start_date"
     t.datetime "end_date"
+    t.boolean  "paypal"
+    t.text     "notes"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
@@ -60,8 +66,9 @@ ActiveRecord::Schema.define(version: 20150428155110) do
   create_table "routes", force: :cascade do |t|
     t.string   "name"
     t.integer  "group_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "print_sequence"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "routes_users", force: :cascade do |t|
@@ -108,6 +115,7 @@ ActiveRecord::Schema.define(version: 20150428155110) do
 
   create_table "tasks", force: :cascade do |t|
     t.integer  "run_id"
+    t.integer  "user_id"
     t.integer  "subscription_id"
     t.string   "description"
     t.integer  "qty"
@@ -133,7 +141,9 @@ ActiveRecord::Schema.define(version: 20150428155110) do
     t.integer  "route_id"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email"
-  add_index "users", ["remember_token"], name: "index_users_on_remember_token"
+  add_index "users", ["email"], name: "index_users_on_email", using: :btree
+  add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
 
+  add_foreign_key "members_runs", "runs"
+  add_foreign_key "members_runs", "users"
 end
