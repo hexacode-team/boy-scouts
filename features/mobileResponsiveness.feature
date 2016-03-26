@@ -4,53 +4,69 @@ Feature: Mobile friendly and responsive on mobile devices for all potential user
   So that I can send and receive live data while in the middle of flag runs.
   I want to be able to have up to date information on each individual runs and add maintenance notes on the flag site.
 
+
   Scenario: Access admin page on desktop
     Given I am on the home page
-    When the browser width is 320px
-    Then the element #bs-example-navbar-collapse-1 should have margin-right : -15px
+    When the browser width is greater than or equal to 768px
+    Then the element #bs-example-navbar-collapse-1 should have display : inline-block
 
-
-
-
-
-
-
-
-
-
-
-
-
+#
+#  Scenario: Access admin page on smart phone vertical
+#    Given I am on the home page
+#    When the browser width is 320px
+#    Then the element #bs-example-navbar-collapse-1 should have margin-right : -15px
+#
+#  Scenario: Access admin page on smart phone horizontal
+#    Given I am on the home page
+#    When the browser width is 480px
+#    Then the element #bs-example-navbar-collapse-1 should have margin-right : -15px
+#
+#
+#  Scenario: Access admin page on tablet vertical
+#    Given I am on the home page
+#    When the browser width is 768px
+#    Then the element #bs-example-navbar-collapse-1 should have margin-right : 0px
+#
+#
+#  Scenario: Access admin page on tablet horizontal
+#    Given I am on the home page
+#    When the browser width is 1024px
+#    Then the element #bs-example-navbar-collapse-1 should have margin-right : 0px
 #
 #
 #
-#
-#
-#  Scenario: Access admin page on smart phone
-#    Given I am on the home page and on smart phone
-#    When I click on the admin link
-#    Then I should land on the admin page with appropriate UI scaling and design
-#
-#  Scenario: Access admin page on tablet
-#    Given I am on the home page and on tablet
-#    When I click on the admin link
-#    Then I should land on the admin page with appropriate UI scaling and design
 #
 #  Scenario: Access database dashboard on desktop
-#    Given I am on the admin page and on desktop
-#    When I click on the dashboard link
-#    Then I should land on the dashboard page with appropriate UI scaling and design
+#    Given I am on the dashboard page
+#    When the browser width is greater than or equal to 768px
+#    Then the element #container-fluid should have margin-right : 0px
 #
-#  Scenario: Access database dashboard on smart phone
-#    Given I am on the admin page and on smart phone
-#    When I click on the dashboard link
-#    Then I should land on the dashboard page with appropriate UI scaling and design
 #
-#  Scenario: Access database dashboard on tablet
-#    Given I am on the admin page and on tablet
-#    When I click on the dashboard link
-#    Then I should land on the dashboard page with appropriate UI scaling and design
+#  Scenario: Access database dashboard on smart phone vertical
+#    Given I am on the dashboard page
+#    When the browser width is 320px
+#    Then the element #container-fluid should have margin-right : -15px
 #
+#  Scenario: Access database dashboard on smart phone horizontal
+#    Given I am on the dashboard page
+#    When the browser width is 480px
+#    Then the element #container-fluid should have margin-right : -15px
+#
+#
+#  Scenario: Access database dashboard on tablet vertical
+#    Given I am on the dashboard page
+#    When the browser width is 768px
+#    Then the element #container-fluid should have margin-right : 0px
+#
+#
+#  Scenario: Access database dashboard on tablet horizontal
+#    Given I am on the dashboard page
+#    When the browser width is 1024px
+#    Then the element #container-fluid should have margin-right : 0px
+#
+#
+
+
 #  Scenario: Access list of users on desktop
 #    Given I am on the admin page on desktop
 #    When I click on the users link
