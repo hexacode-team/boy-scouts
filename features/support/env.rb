@@ -4,7 +4,10 @@
 # instead of editing this one. Cucumber will automatically load all features/**/*.rb
 # files.
 
+require 'rubygems'
 require 'cucumber/rails'
+require 'selenium-webdriver'
+
 
 # Capybara defaults to CSS3 selectors rather than XPath.
 # If you'd prefer to use XPath, just uncomment this line and adjust any

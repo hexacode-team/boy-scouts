@@ -1,4 +1,5 @@
 Given /^I am on the (.*) page/ do |name|
+
 		visit path_to(name)
 end
 

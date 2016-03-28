@@ -5,10 +5,10 @@ Feature: Mobile friendly and responsive on mobile devices for all potential user
   I want to be able to have up to date information on each individual runs and add maintenance notes on the flag site.
 
 
-  Scenario: Access admin page on desktop
+  Scenario: Test home page UI responsiveness on desktop
     Given I am on the home page
     When the browser width is greater than or equal to 768px
-    Then the element #bs-example-navbar-collapse-1 should have display : inline-block
+    Then the element with id "1254" should have padding-left : 15px
 
 #
 #  Scenario: Access admin page on smart phone vertical
