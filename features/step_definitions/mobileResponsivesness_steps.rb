@@ -9,7 +9,7 @@ When /^the browser width is greater than or equal to (.*)px/ do |width|
     browser.navigate.to('http://0.0.0.0:3000/')
 end
 
-
+#when side bar is less than 786 check width is zero if greater than then
 Then /^the element with (.*) "(.*)" should have (.*) : (.*)/ do |attr, attr_val, prop, prop_val|
 
   if(attr == 'id')
