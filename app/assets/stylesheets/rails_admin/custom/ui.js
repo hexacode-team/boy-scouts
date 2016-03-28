@@ -2,12 +2,15 @@
  * Created by thomas on 3/28/16.
  */
 window.onload = function(e) {
+
+    //Button for side navbar
     var sidebar_button = document.createElement("button");
     sidebar_button.setAttribute("id", "sidebar-button");
     sidebar_button.setAttribute("type", "button");
     sidebar_button.setAttribute("onclick", "javascript: slideNav();");
     document.body.appendChild(sidebar_button);
 
+    //Creating top navigation
     var meta = document.createElement("meta");
     meta.setAttribute("name", "viewport");
     meta.setAttribute("content", "width=device-width, initial-scale=1, maximum-scale=1");
@@ -18,6 +21,7 @@ window.onload = function(e) {
     att.value = "main-nav";
     navbar.setAttributeNode(att);
 
+    //Button for top navbar
     var navbar_button = document.createElement("button");
     navbar_button.setAttribute("type", "button");
     navbar_button.setAttribute("class", "navbar-toggle collapsed");
@@ -28,12 +32,9 @@ window.onload = function(e) {
 
     var navbar_header = document.getElementsByClassName("navbar-header").item(0);
     navbar_header.appendChild(navbar_button);
-
-    var sidebar_nav = document.getElementsByClassName("sidebar-nav").item(0);
-
-
-
 }
+
+//Side sliding navbar
 function slideNav() {
     var sidebar_nav = document.getElementsByClassName("sidebar-nav").item(0);
     var top_nav = document.getElementsByClassName("navbar-collapse").item(0);
@@ -47,6 +48,7 @@ function slideNav() {
         sidebar_nav.classList.add("toggle-nav");
 }
 
+//Top sliding navbar
 function showNav() {
     var sidebar_nav = document.getElementsByClassName("sidebar-nav").item(0);
 
