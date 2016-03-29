@@ -27,6 +27,18 @@ window.onload = function(e) {
 
     var navbar_header = document.getElementsByClassName("navbar-header").item(0);
     navbar_header.appendChild(navbar_button);
+
+    //Changes navbar title to "Boy Scout Flags"
+    document.getElementsByClassName("navbar-brand")[0].textContent = "Boy Scouts Flags: Admin";
+
+    //Removes G image from navbar
+    var navbar_nav = document.getElementsByClassName("navbar-nav").item(0);
+    navbar_nav.removeChild(navbar_nav.children[3]); 
+
+    //Add class admin-header to navbar-header for css purposes
+    var header = document.getElementsByClassName("navbar-header").item(0);
+    header.className += " admin-header";
+
 }
 function slideNav() {
     var sidebar_nav = document.getElementsByClassName("sidebar-nav").item(0);
