@@ -129,7 +129,7 @@ function changeIcon() {
 
 }
 function removePjax() {
-    var pjax = document.getElementsByClassName("pjax");
+    var pjax = document.getElementsByTagName("a");
     for (var i = 0; i < pjax.length; i++) {
         pjax.item(i).classList.remove("pjax");
     }
