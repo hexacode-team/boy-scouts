@@ -27,6 +27,8 @@ window.onload = function(e) {
 
     var navbar_header = document.getElementsByClassName("navbar-header").item(0);
     navbar_header.appendChild(navbar_button);
+
+    propogateHeaders();
 }
 function slideNav() {
     var sidebar_nav = document.getElementsByClassName("sidebar-nav").item(0);
@@ -37,4 +39,44 @@ function slideNav() {
 
 }
 
+function propogateHeaders() {
+    var headers = document.getElementsByTagName("th");
+    var header_names = [];
+    header_names.push("Select");
+    for (var i = 1; i < headers.length; i++) {
+        //if (i < headers.length - 2)
+        if (headers.item(i).innerText == "...")
+            header_names.push("Expand");
+        else if (headers.item(i).innerText != "")
+            header_names.push(headers.item(i).innerText);
+        //else if (i == headers.length - 2) {
+        //    if (headers.item(i).innerText != null)
+        //        header_names.push(headers.item(i).innerText);
+        //    else
+        //        header_names.push("Expand");
+        //}
+        //else if (i == headers.length - 1) {
+        //    header_names.push("Options");
+        //}
+    }
+    if (header_names.indexOf("Expand") == -1)
+        header_names.push("Expand");
+    header_names.push("Options");
 
+    var rows = document.getElementsByClassName("group_row");
+    for (var i = 0; i < rows.length; i++) {
+        var tds = rows.item(i).getElementsByTagName("td");
+        for (var j = 0; j < tds.length; j++) {
+            var att = document.createAttribute("data-header");
+            att.value = header_names[j];
+            tds.item(j).setAttributeNode(att);
+            var children = tds.item(j).getElementsByTagName("a");
+
+            for (var k = 0; k < children.length; k++) {
+                children.item(k).classList.remove("pjax");
+            }
+            if (tds.item(j).innerHTML == "" || (children.length != 0 && children.item(0).innerText == ""))
+                tds.item(j).innerHTML = "&nbsp";
+        }
+    }
+}

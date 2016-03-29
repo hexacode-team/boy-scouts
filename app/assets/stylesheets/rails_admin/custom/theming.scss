@@ -3,6 +3,11 @@
 }
 
 @media only screen and (max-width: 768px) {
+
+  /*
+      SIDE NAV BAR STYLING
+  */
+
   .sidebar-nav {
     width: 0 !important;
     padding: 0 !important;
@@ -35,11 +40,56 @@
     display: block;
     z-index: 100000;
   }
-  .table th {
-    display: none;
+
+  /*
+      TABLE STYLING
+  */
+
+  //.table td:first-child, td:nth-child(2) {
+  //  display: none !important;
+  //}
+  .table thead tr {
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
+  }
+  .table tr {
+    border: 1px solid #ccc !important;
+  }
+  .table table, .table thead, .table tbody,
+  .table th, .table td, .table tr {
+    display: block !important;
   }
   .table td {
-    display: block;
-    margin-left: 10%;
+    display: block !important;
   }
+  .table td {
+    /* Behave  like a "row" */
+    border: none !important;
+    border-bottom: 1px solid #eee !important;
+    position: relative !important;
+    padding-left: 200px !important;
+    overflow: visible !important;
+    max-width: none !important;
+  }
+  .table td:before {
+    /* Now like a table header */
+    position: absolute !important;
+    /* Top/left values mimic padding */
+    top: 6px !important;
+    left: 6px !important;
+    width: 150px !important;
+    padding-right: 10px !important;
+    white-space: nowrap !important;
+  }
+  td:nth-of-type(1):before { content: attr(data-header); }
+  td:nth-of-type(2):before { content: attr(data-header); }
+  td:nth-of-type(3):before { content: attr(data-header); }
+  td:nth-of-type(4):before { content: attr(data-header); }
+  td:nth-of-type(5):before { content: attr(data-header); }
+  td:nth-of-type(6):before { content: attr(data-header); }
+  td:nth-of-type(7):before { content: attr(data-header); }
+  td:nth-of-type(8):before { content: attr(data-header); }
+  td:nth-of-type(9):before { content: attr(data-header); }
+  td:nth-of-type(10):before { content: attr(data-header); }
 }
