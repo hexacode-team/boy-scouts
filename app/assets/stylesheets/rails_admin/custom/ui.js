@@ -66,30 +66,23 @@ function slideNav() {
     changeIcon();
 }
 
+//Add headers to individual table cells for responsive view
 function propogateHeaders() {
+    //Collect table header names
     var headers = document.getElementsByTagName("th");
     var header_names = [];
     header_names.push("Select");
     for (var i = 1; i < headers.length; i++) {
-        //if (i < headers.length - 2)
         if (headers.item(i).innerText == "...")
             header_names.push("Expand");
         else if (headers.item(i).innerText != "")
             header_names.push(headers.item(i).innerText);
-        //else if (i == headers.length - 2) {
-        //    if (headers.item(i).innerText != null)
-        //        header_names.push(headers.item(i).innerText);
-        //    else
-        //        header_names.push("Expand");
-        //}
-        //else if (i == headers.length - 1) {
-        //    header_names.push("Options");
-        //}
     }
     if (header_names.indexOf("Expand") == -1)
         header_names.push("Expand");
     header_names.push("Options");
 
+    //Add table headers to data-header attribute of each td
     var rows = document.getElementsByTagName("tr");
     for (var i = 0; i < rows.length; i++) {
         var tds = rows.item(i).getElementsByTagName("td");
@@ -99,14 +92,13 @@ function propogateHeaders() {
             tds.item(j).setAttributeNode(att);
             var children = tds.item(j).getElementsByTagName("a");
 
-            //for (var k = 0; k < children.length; k++) {
-            //    children.item(k).classList.remove("pjax");
-            //}
-            if (tds.item(j).innerHTML == "" || (children.length != 0 && children.item(0).innerText == ""))
+            //Add &nbsp to empty tds to fix styling issue
+            if (tds.item(j).innerHTML == "" || tds.item(j).innerHTML == "\n" || (children.length != 0 && children.item(0).innerText == ""))
                 tds.item(j).innerHTML = "&nbsp";
         }
     }
 }
+
 //Top sliding navbar
 function showNav() {
     var sidebar_nav = document.getElementsByClassName("sidebar-nav").item(0);
@@ -115,6 +107,7 @@ function showNav() {
         sidebar_nav.classList.remove("toggle-nav");
 }
 
+//Toggle icon for the left navbar button
 function changeIcon() {
     var icon = document.getElementById("navbar-icon");
 
@@ -124,8 +117,9 @@ function changeIcon() {
     else {
         icon.setAttribute("class", "icon-chevron-right");
     }
-
 }
+
+//Remove ajax functionality from links to force page load (and the use of all of this javascript)
 function removePjax() {
     var pjax = document.getElementsByTagName("a");
     for (var i = 0; i < pjax.length; i++) {
