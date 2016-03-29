@@ -2,12 +2,19 @@
  * Created by thomas on 3/28/16.
  */
 window.onload = function(e) {
+
+    //Button for side navbar
     var sidebar_button = document.createElement("button");
     sidebar_button.setAttribute("id", "sidebar-button");
     sidebar_button.setAttribute("type", "button");
     sidebar_button.setAttribute("onclick", "javascript: slideNav();");
+    var icon = document.createElement("i");
+    icon.setAttribute("class", "icon-chevron-right");
+    icon.setAttribute("id", "navbar-icon")
+    sidebar_button.appendChild(icon);
     document.body.appendChild(sidebar_button);
 
+    //Creating top navigation
     var meta = document.createElement("meta");
     meta.setAttribute("name", "viewport");
     meta.setAttribute("content", "width=device-width, initial-scale=1, maximum-scale=1");
@@ -18,25 +25,47 @@ window.onload = function(e) {
     att.value = "main-nav";
     navbar.setAttributeNode(att);
 
+    //Button for top navbar
     var navbar_button = document.createElement("button");
     navbar_button.setAttribute("type", "button");
     navbar_button.setAttribute("class", "navbar-toggle collapsed");
     navbar_button.setAttribute("data-toggle", "collapse");
     navbar_button.setAttribute("data-target", "#main-nav");
+    navbar_button.setAttribute("onclick", "javascript: showNav();");
     navbar_button.innerHTML = "<span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span>";
 
     var navbar_header = document.getElementsByClassName("navbar-header").item(0);
     navbar_header.appendChild(navbar_button);
 
     propogateHeaders();
-}
+    //Changes navbar title to "Boy Scout Flags"
+    document.getElementsByClassName("navbar-brand")[0].textContent = "Boy Scouts Flags: Admin";
+
+    //Removes G image from navbar
+    var navbar_nav = document.getElementsByClassName("navbar-nav").item(0);
+    navbar_nav.removeChild(navbar_nav.children[3]); 
+
+    //Add class admin-header to navbar-header for css purposes
+    var header = document.getElementsByClassName("navbar-header").item(0);
+    header.className += " admin-header";
+
+    removePjax();
+};
+
+//Side sliding navbar
 function slideNav() {
     var sidebar_nav = document.getElementsByClassName("sidebar-nav").item(0);
+    var top_nav = document.getElementsByClassName("navbar-collapse").item(0);
+
+    if (top_nav.classList.contains("in"))
+        top_nav.classList.remove("in");
+
     if (sidebar_nav.classList.contains("toggle-nav"))
         sidebar_nav.classList.remove("toggle-nav");
     else
         sidebar_nav.classList.add("toggle-nav");
 
+    changeIcon();
 }
 
 function propogateHeaders() {
@@ -63,7 +92,7 @@ function propogateHeaders() {
         header_names.push("Expand");
     header_names.push("Options");
 
-    var rows = document.getElementsByClassName("group_row");
+    var rows = document.getElementsByTagName("tr");
     for (var i = 0; i < rows.length; i++) {
         var tds = rows.item(i).getElementsByTagName("td");
         for (var j = 0; j < tds.length; j++) {
@@ -72,11 +101,36 @@ function propogateHeaders() {
             tds.item(j).setAttributeNode(att);
             var children = tds.item(j).getElementsByTagName("a");
 
-            for (var k = 0; k < children.length; k++) {
-                children.item(k).classList.remove("pjax");
-            }
+            //for (var k = 0; k < children.length; k++) {
+            //    children.item(k).classList.remove("pjax");
+            //}
             if (tds.item(j).innerHTML == "" || (children.length != 0 && children.item(0).innerText == ""))
                 tds.item(j).innerHTML = "&nbsp";
         }
+    }
+}
+//Top sliding navbar
+function showNav() {
+    var sidebar_nav = document.getElementsByClassName("sidebar-nav").item(0);
+
+    if (sidebar_nav.classList.contains("toggle-nav"))
+        sidebar_nav.classList.remove("toggle-nav");
+}
+
+function changeIcon() {
+    var icon = document.getElementById("navbar-icon");
+
+    if(icon.className == "icon-chevron-right") {
+        icon.setAttribute("class", "icon-chevron-left");
+    }
+    else {
+        icon.setAttribute("class", "icon-chevron-right");
+    }
+
+}
+function removePjax() {
+    var pjax = document.getElementsByClassName("pjax");
+    for (var i = 0; i < pjax.length; i++) {
+        pjax.item(i).classList.remove("pjax");
     }
 }
