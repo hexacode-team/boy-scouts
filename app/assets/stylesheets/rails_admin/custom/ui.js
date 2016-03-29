@@ -8,6 +8,10 @@ window.onload = function(e) {
     sidebar_button.setAttribute("id", "sidebar-button");
     sidebar_button.setAttribute("type", "button");
     sidebar_button.setAttribute("onclick", "javascript: slideNav();");
+    var icon = document.createElement("i");
+    icon.setAttribute("class", "icon-chevron-right");
+    icon.setAttribute("id", "navbar-icon")
+    sidebar_button.appendChild(icon);
     document.body.appendChild(sidebar_button);
 
     //Creating top navigation
@@ -58,6 +62,8 @@ function slideNav() {
         sidebar_nav.classList.remove("toggle-nav");
     else
         sidebar_nav.classList.add("toggle-nav");
+
+    changeIcon();
 }
 
 //Top sliding navbar
@@ -66,4 +72,16 @@ function showNav() {
 
     if (sidebar_nav.classList.contains("toggle-nav"))
         sidebar_nav.classList.remove("toggle-nav");
+}
+
+function changeIcon() {
+    var icon = document.getElementById("navbar-icon");
+
+    if(icon.className == "icon-chevron-right") {
+        icon.setAttribute("class", "icon-chevron-left");
+    }
+    else {
+        icon.setAttribute("class", "icon-chevron-right");
+    }
+
 }
