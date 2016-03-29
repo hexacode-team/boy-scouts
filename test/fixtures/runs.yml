@@ -2,12 +2,12 @@
 
 one:
   route_id: 1
-  date: 2015-04-05 13:30:08
-  time_taken: 1
-  am_pm: MyString
+  datetime_started: 2015-04-05 13:30:08
+  datetime_ended: 2015-04-05 15:30:08
+  am_pm: am
 
 two:
   route_id: 1
-  date: 2015-04-05 13:30:08
-  time_taken: 1
-  am_pm: MyString
+  datetime_started: 2015-04-05 13:30:08
+  datetime_ended: 2015-04-05 14:30:08
+  am_pm: pm

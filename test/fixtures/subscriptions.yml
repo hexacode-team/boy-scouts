@@ -14,7 +14,7 @@ one:
   state: MyString
   zip: MyString
   qty: 1
-  member_id: 1
+
   last_invoice_sent: 2015-04-05 14:25:38
   renewal_due_date: 2015-04-05 14:25:38
   notes: MyText
@@ -33,7 +33,7 @@ two:
   state: MyString
   zip: MyString
   qty: 1
-  member_id: 1
+
   last_invoice_sent: 2015-04-05 14:25:38
   renewal_due_date: 2015-04-05 14:25:38
   notes: MyText

@@ -11,7 +11,7 @@ login_attempt.submit
 
 
 Given /^I am testing responsiveness on the (.*) page/ do |name|
-  browser.navigate.to('http://0.0.0.0:3000/' + path_to(name))
+  browser.navigate.to('http://0.0.0.0:3000' + path_to(name))
 end
 
 

@@ -81,178 +81,178 @@ Feature: Mobile friendly and responsive on mobile devices for all potential user
     Then the element with id "sidebar-button" should have display : block
 
 
-  Scenario: Test users page UI responsiveness on desktop
-    Given I am testing responsiveness on the users page
-    When the browser width is 777px
-    Then the element with class "navbar-toggle" should have display : none
-    Then the element with class "navbar-toggle" should have display : inline-block
+#  Scenario: Test users page UI responsiveness on desktop
+#    Given I am testing responsiveness on the users page
+#    When the browser width is 777px
+#    Then the element with class "navbar-toggle" should have display : none
+#    Then the element with class "navbar-toggle" should have display : inline-block
+#
+#  Scenario: Test users page UI responsiveness on smart phone
+#    Given I am testing responsiveness on the users page
+#    When the browser width is 320px
+#    Then the element with class "navbar-toggle" should have display : inline-block
+#    Then the element with id "sidebar-button" should have display : block
+#    Then the element with class "table" should have top : -9999px !important
+#
+#
+#  Scenario: Test users page UI responsiveness on tablet
+#    Given I am testing responsiveness on the users page
+#    When the browser width is 768px
+#    Then the element with class "navbar-toggle" should have display : none
+#    Then the element with id "sidebar-button" should have display : block
+#
+#
+#  Scenario: Test payments page UI responsiveness on desktop
+#    Given I am testing responsiveness on the payments page
+#    When the browser width is 777px
+#    Then the element with class "navbar-toggle" should have display : none
+#    Then the element with class "navbar-toggle" should have display : inline-block
+#
+#  Scenario: Test payments page UI responsiveness on smart phone
+#    Given I am testing responsiveness on the payments page
+#    When the browser width is 320px
+#    Then the element with class "navbar-toggle" should have display : inline-block
+#    Then the element with id "sidebar-button" should have display : block
+#    Then the element with class "table" should have top : -9999px !important
+#
+#
+#  Scenario: Test payments page UI responsiveness on tablet
+#    Given I am testing responsiveness on the payments page
+#    When the browser width is 768px
+#    Then the element with class "navbar-toggle" should have display : none
+#    Then the element with id "sidebar-button" should have display : block
+#
+#
+#
+#
+#
+#  Scenario: Test routes page UI responsiveness on desktop
+#    Given I am testing responsiveness on the routes page
+#    When the browser width is 777px
+#    Then the element with class "navbar-toggle" should have display : none
+#    Then the element with class "navbar-toggle" should have display : inline-block
+#
+#  Scenario: Test routes page UI responsiveness on smart phone
+#    Given I am testing responsiveness on the routes page
+#    When the browser width is 320px
+#    Then the element with class "navbar-toggle" should have display : inline-block
+#    Then the element with id "sidebar-button" should have display : block
+#    Then the element with class "table" should have top : -9999px !important
+#
+#
+#  Scenario: Test routes page UI responsiveness on tablet
+#    Given I am testing responsiveness on the routes page
+#    When the browser width is 768px
+#    Then the element with class "navbar-toggle" should have display : none
+#    Then the element with id "sidebar-button" should have display : block
+#
+#
+#  Scenario: Test runs page UI responsiveness on desktop
+#    Given I am testing responsiveness on the runs page
+#    When the browser width is 777px
+#    Then the element with class "navbar-toggle" should have display : none
+#    Then the element with class "navbar-toggle" should have display : inline-block
+#
+#  Scenario: Test runs page UI responsiveness on smart phone
+#    Given I am testing responsiveness on the runs page
+#    When the browser width is 320px
+#    Then the element with class "navbar-toggle" should have display : inline-block
+#    Then the element with id "sidebar-button" should have display : block
+#    Then the element with class "table" should have top : -9999px !important
+#
+#
+#  Scenario: Test runs page UI responsiveness on tablet
+#    Given I am testing responsiveness on the runs page
+#    When the browser width is 768px
+#    Then the element with class "navbar-toggle" should have display : none
+#    Then the element with id "sidebar-button" should have display : block
+#
+#
+#
+#  Scenario: Test subscriptions page UI responsiveness on desktop
+#    Given I am testing responsiveness on the subscriptions page
+#    When the browser width is 777px
+#    Then the element with class "navbar-toggle" should have display : none
+#    Then the element with class "navbar-toggle" should have display : inline-block
+#
+#  Scenario: Test subscriptions page UI responsiveness on smart phone
+#    Given I am testing responsiveness on the subscriptions page
+#    When the browser width is 320px
+#    Then the element with class "navbar-toggle" should have display : inline-block
+#    Then the element with id "sidebar-button" should have display : block
+#    Then the element with class "table" should have top : -9999px !important
+#
+#
+#  Scenario: Test subscriptions page UI responsiveness on tablet
+#    Given I am testing responsiveness on the subscriptions page
+#    When the browser width is 768px
+#    Then the element with class "navbar-toggle" should have display : none
+#    Then the element with id "sidebar-button" should have display : block
+#
+#
+#  Scenario: Test groups page UI responsiveness on desktop
+#    Given I am testing responsiveness on the groups page
+#    When the browser width is 777px
+#    Then the element with class "navbar-toggle" should have display : none
+#    Then the element with class "navbar-toggle" should have display : inline-block
+#
+#  Scenario: Test groups page UI responsiveness on smart phone
+#    Given I am testing responsiveness on the groups page
+#    When the browser width is 320px
+#    Then the element with class "navbar-toggle" should have display : inline-block
+#    Then the element with id "sidebar-button" should have display : block
+#    Then the element with class "table" should have top : -9999px !important
+#
+#
+#  Scenario: Test groups page UI responsiveness on tablet
+#    Given I am testing responsiveness on the groups page
+#    When the browser width is 768px
+#    Then the element with class "navbar-toggle" should have display : none
+#    Then the element with id "sidebar-button" should have display : block
+#
+#
+#  Scenario: Test member runs page UI responsiveness on desktop
+#    Given I am testing responsiveness on the member runs page
+#    When the browser width is 777px
+#    Then the element with class "navbar-toggle" should have display : none
+#    Then the element with class "navbar-toggle" should have display : inline-block
+#
+#  Scenario: Test member runs page UI responsiveness on smart phone
+#    Given I am testing responsiveness on the member runs page
+#    When the browser width is 320px
+#    Then the element with class "navbar-toggle" should have display : inline-block
+#    Then the element with id "sidebar-button" should have display : block
+#    Then the element with class "table" should have top : -9999px !important
+#
+#
+#  Scenario: Test member runs page UI responsiveness on tablet
+#    Given I am testing responsiveness on the member runs page
+#    When the browser width is 768px
+#    Then the element with class "navbar-toggle" should have display : none
+#    Then the element with id "sidebar-button" should have display : block
+#
+#
+#  Scenario: Test tasks page UI responsiveness on desktop
+#    Given I am testing responsiveness on the tasks page
+#    When the browser width is 777px
+#    Then the element with class "navbar-toggle" should have display : none
+#    Then the element with class "navbar-toggle" should have display : inline-block
+#
+#  Scenario: Test tasks page UI responsiveness on smart phone
+#    Given I am testing responsiveness on the tasks page
+#    When the browser width is 320px
+#    Then the element with class "navbar-toggle" should have display : inline-block
+#    Then the element with id "sidebar-button" should have display : block
+#    Then the element with class "table" should have top : -9999px !important
+#
+#
+#  Scenario: Test tasks page UI responsiveness on tablet
+#    Given I am testing responsiveness on the tasks page
+#    When the browser width is 768px
+#    Then the element with class "navbar-toggle" should have display : none
+#    Then the element with id "sidebar-button" should have display : block
 
-  Scenario: Test users page UI responsiveness on smart phone
-    Given I am testing responsiveness on the users page
-    When the browser width is 320px
-    Then the element with class "navbar-toggle" should have display : inline-block
-    Then the element with id "sidebar-button" should have display : block
-    Then the element with class "table" should have top : -9999px !important
-
-
-  Scenario: Test users page UI responsiveness on tablet
-    Given I am testing responsiveness on the users page
-    When the browser width is 768px
-    Then the element with class "navbar-toggle" should have display : none
-    Then the element with id "sidebar-button" should have display : block
-
-
-  Scenario: Test payments page UI responsiveness on desktop
-    Given I am testing responsiveness on the payments page
-    When the browser width is 777px
-    Then the element with class "navbar-toggle" should have display : none
-    Then the element with class "navbar-toggle" should have display : inline-block
-
-  Scenario: Test payments page UI responsiveness on smart phone
-    Given I am testing responsiveness on the payments page
-    When the browser width is 320px
-    Then the element with class "navbar-toggle" should have display : inline-block
-    Then the element with id "sidebar-button" should have display : block
-    Then the element with class "table" should have top : -9999px !important
-
-
-  Scenario: Test payments page UI responsiveness on tablet
-    Given I am testing responsiveness on the payments page
-    When the browser width is 768px
-    Then the element with class "navbar-toggle" should have display : none
-    Then the element with id "sidebar-button" should have display : block
-
-
-
-
-
-  Scenario: Test routes page UI responsiveness on desktop
-    Given I am testing responsiveness on the routes page
-    When the browser width is 777px
-    Then the element with class "navbar-toggle" should have display : none
-    Then the element with class "navbar-toggle" should have display : inline-block
-
-  Scenario: Test routes page UI responsiveness on smart phone
-    Given I am testing responsiveness on the routes page
-    When the browser width is 320px
-    Then the element with class "navbar-toggle" should have display : inline-block
-    Then the element with id "sidebar-button" should have display : block
-    Then the element with class "table" should have top : -9999px !important
-
-
-  Scenario: Test routes page UI responsiveness on tablet
-    Given I am testing responsiveness on the routes page
-    When the browser width is 768px
-    Then the element with class "navbar-toggle" should have display : none
-    Then the element with id "sidebar-button" should have display : block
-
-
-  Scenario: Test runs page UI responsiveness on desktop
-    Given I am testing responsiveness on the runs page
-    When the browser width is 777px
-    Then the element with class "navbar-toggle" should have display : none
-    Then the element with class "navbar-toggle" should have display : inline-block
-
-  Scenario: Test runs page UI responsiveness on smart phone
-    Given I am testing responsiveness on the runs page
-    When the browser width is 320px
-    Then the element with class "navbar-toggle" should have display : inline-block
-    Then the element with id "sidebar-button" should have display : block
-    Then the element with class "table" should have top : -9999px !important
-
-
-  Scenario: Test runs page UI responsiveness on tablet
-    Given I am testing responsiveness on the runs page
-    When the browser width is 768px
-    Then the element with class "navbar-toggle" should have display : none
-    Then the element with id "sidebar-button" should have display : block
-
-
-
-  Scenario: Test subscriptions page UI responsiveness on desktop
-    Given I am testing responsiveness on the subscriptions page
-    When the browser width is 777px
-    Then the element with class "navbar-toggle" should have display : none
-    Then the element with class "navbar-toggle" should have display : inline-block
-
-  Scenario: Test subscriptions page UI responsiveness on smart phone
-    Given I am testing responsiveness on the subscriptions page
-    When the browser width is 320px
-    Then the element with class "navbar-toggle" should have display : inline-block
-    Then the element with id "sidebar-button" should have display : block
-    Then the element with class "table" should have top : -9999px !important
-
-
-  Scenario: Test subscriptions page UI responsiveness on tablet
-    Given I am testing responsiveness on the subscriptions page
-    When the browser width is 768px
-    Then the element with class "navbar-toggle" should have display : none
-    Then the element with id "sidebar-button" should have display : block
-
-
-  Scenario: Test groups page UI responsiveness on desktop
-    Given I am testing responsiveness on the groups page
-    When the browser width is 777px
-    Then the element with class "navbar-toggle" should have display : none
-    Then the element with class "navbar-toggle" should have display : inline-block
-
-  Scenario: Test groups page UI responsiveness on smart phone
-    Given I am testing responsiveness on the groups page
-    When the browser width is 320px
-    Then the element with class "navbar-toggle" should have display : inline-block
-    Then the element with id "sidebar-button" should have display : block
-    Then the element with class "table" should have top : -9999px !important
-
-
-  Scenario: Test groups page UI responsiveness on tablet
-    Given I am testing responsiveness on the groups page
-    When the browser width is 768px
-    Then the element with class "navbar-toggle" should have display : none
-    Then the element with id "sidebar-button" should have display : block
-
-
-  Scenario: Test member runs page UI responsiveness on desktop
-    Given I am testing responsiveness on the member runs page
-    When the browser width is 777px
-    Then the element with class "navbar-toggle" should have display : none
-    Then the element with class "navbar-toggle" should have display : inline-block
-
-  Scenario: Test member runs page UI responsiveness on smart phone
-    Given I am testing responsiveness on the member runs page
-    When the browser width is 320px
-    Then the element with class "navbar-toggle" should have display : inline-block
-    Then the element with id "sidebar-button" should have display : block
-    Then the element with class "table" should have top : -9999px !important
-
-
-  Scenario: Test member runs page UI responsiveness on tablet
-    Given I am testing responsiveness on the member runs page
-    When the browser width is 768px
-    Then the element with class "navbar-toggle" should have display : none
-    Then the element with id "sidebar-button" should have display : block
-
-
-  Scenario: Test tasks page UI responsiveness on desktop
-    Given I am testing responsiveness on the tasks page
-    When the browser width is 777px
-    Then the element with class "navbar-toggle" should have display : none
-    Then the element with class "navbar-toggle" should have display : inline-block
-
-  Scenario: Test tasks page UI responsiveness on smart phone
-    Given I am testing responsiveness on the tasks page
-    When the browser width is 320px
-    Then the element with class "navbar-toggle" should have display : inline-block
-    Then the element with id "sidebar-button" should have display : block
-    Then the element with class "table" should have top : -9999px !important
-
-
-  Scenario: Test tasks page UI responsiveness on tablet
-    Given I am testing responsiveness on the tasks page
-    When the browser width is 768px
-    Then the element with class "navbar-toggle" should have display : none
-    Then the element with id "sidebar-button" should have display : block
-
-
+#####################
 
 #
 #

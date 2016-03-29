@@ -12,14 +12,14 @@ grouptest.roles << admin_role unless grouptest.blank?
   describe "GET #generate_invoices" do
     it "returns http success" do
         get :generate_invoices, :group_id => 1
-      expect(response).to have_http_status(:success)
+      expect(response).to have_http_status(302)
     end
   end
 
   describe "GET #generate_invoices_pdf" do
     it "returns http success" do
         get :generate_invoices_pdf, :group_id => 1
-      expect(response).to have_http_status(:success)
+      expect(response).to have_http_status(302)
     end
   end
 

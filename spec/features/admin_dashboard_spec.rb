@@ -1,6 +1,8 @@
 # spec/features/admin_dashboard_spec.rb
+require 'spec_helper'
+require 'rails_helper'
 feature "Admin dashboard" do
-    
+
     scenario "visitor is admin" do
         #Create a test Admin user
         admin = User.create :email => 'a@b.com', :password => 'tests', :first_name => "First", :last_name => "Last"
