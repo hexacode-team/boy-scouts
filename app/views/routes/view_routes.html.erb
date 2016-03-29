@@ -2,6 +2,7 @@
   <div class="alert alert-info" role="alert">
     <p>No routes to show.</p>
   </div>
+  <div class = "page" style="display: none;">grouppage</div>
 <% else %>
   <% @routes.each do |route| %>
     <div class="callout">
@@ -11,4 +12,5 @@
     <p class=""><%= route.group.name %></p>
     </div>
   <% end %>
+  <div id="page" style="display: none;">routepage</div>
 <% end %>

@@ -12,8 +12,8 @@ window.onload = function(e) {
     icon.setAttribute("class", "icon-chevron-right");
     icon.setAttribute("id", "navbar-icon")
     sidebar_button.appendChild(icon);
-    document.body.appendChild(sidebar_button);
-
+    
+    
     //Creating top navigation
     var meta = document.createElement("meta");
     meta.setAttribute("name", "viewport");
@@ -35,11 +35,9 @@ window.onload = function(e) {
     navbar_button.innerHTML = "<span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span>";
 
     var navbar_header = document.getElementsByClassName("navbar-header").item(0);
-    navbar_header.appendChild(navbar_button);
-
+    page_check(sidebar_button, navbar_header, navbar_button)
     propogateHeaders();
-    //Changes navbar title to "Boy Scout Flags"
-    document.getElementsByClassName("navbar-brand")[0].textContent = "Boy Scouts Flags: Admin";
+    
 
     //Removes G image from navbar
     var navbar_nav = document.getElementsByClassName("navbar-nav").item(0);
@@ -132,5 +130,33 @@ function removePjax() {
     var pjax = document.getElementsByTagName("a");
     for (var i = 0; i < pjax.length; i++) {
         pjax.item(i).classList.remove("pjax");
+    }
+}
+
+//Check for different pages and populate nav depending on page
+function page_check(sidebar_button, navbar_header, navbar_button) {
+    var page = document.getElementById("page");
+    if (page != null) {
+        page = page.innerHTML;
+    }
+    else {
+        page = "adminpage";
+    }
+    if (page == "homepage") {
+        document.getElementsByClassName("navbar-brand")[0].textContent = "Boy Scouts Flags";
+    }
+    else if (page == "grouppage") {
+        document.getElementsByClassName("navbar-brand")[0].textContent = "Boy Scouts Flags: My Troops";
+    }
+    else if (page == "routepage") {
+        document.getElementsByClassName("navbar-brand")[0].textContent = "Boy Scouts Flags: My Routes";
+    }
+    else if (page == "signinpage") {
+        document.getElementsByClassName("navbar-brand")[0].textContent = "Boy Scouts Flags: Sign In";
+    }
+    else {
+        document.body.appendChild(sidebar_button);
+        navbar_header.appendChild(navbar_button);
+        document.getElementsByClassName("navbar-brand")[0].textContent = "Boy Scouts Flags: Admin";
     }
 }
