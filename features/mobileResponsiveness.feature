@@ -6,32 +6,59 @@ Feature: Mobile friendly and responsive on mobile devices for all potential user
 
 
   Scenario: Test home page UI responsiveness on desktop
-    Given I am on the home page
-    When the browser width is greater than or equal to 768px
-    Then the element with id "1254" should have padding-left : 15px
+    Given I am testing responsiveness on the home page
+    When the browser width is 768px
+    Then the element with class "navbar-toggle" should have display : none
 
-#
-#  Scenario: Access admin page on smart phone vertical
-#    Given I am on the home page
-#    When the browser width is 320px
-#    Then the element #bs-example-navbar-collapse-1 should have margin-right : -15px
-#
-#  Scenario: Access admin page on smart phone horizontal
-#    Given I am on the home page
-#    When the browser width is 480px
-#    Then the element #bs-example-navbar-collapse-1 should have margin-right : -15px
-#
-#
-#  Scenario: Access admin page on tablet vertical
-#    Given I am on the home page
-#    When the browser width is 768px
-#    Then the element #bs-example-navbar-collapse-1 should have margin-right : 0px
-#
-#
-#  Scenario: Access admin page on tablet horizontal
-#    Given I am on the home page
-#    When the browser width is 1024px
-#    Then the element #bs-example-navbar-collapse-1 should have margin-right : 0px
+
+  Scenario: Test home page UI responsiveness on smart phone
+    Given I am testing responsiveness on the home page
+    When the browser width is 320px
+    Then the element with class "navbar-toggle" should have display : inline-block
+
+
+  Scenario: Test home page UI responsiveness on tablet
+    Given I am testing responsiveness on the home page
+    When the browser width is 768px
+    Then the element with class "navbar-toggle" should have display : none
+
+
+
+  Scenario: Test groupList page UI responsiveness on desktop
+    Given I am testing responsiveness on the groupList page
+    When the browser width is 768px
+    Then the element with class "navbar-toggle" should have display : none
+
+
+  Scenario: Test groupList page UI responsiveness on smart phone
+    Given I am testing responsiveness on the groupList page
+    When the browser width is 320px
+    Then the element with class "navbar-toggle" should have display : inline-block
+
+
+  Scenario: Test groupList page UI responsiveness on tablet
+    Given I am testing responsiveness on the groupList page
+    When the browser width is 768px
+    Then the element with class "navbar-toggle" should have display : none
+
+
+  Scenario: Test routeList page UI responsiveness on desktop
+    Given I am testing responsiveness on the routeList page
+    When the browser width is 768px
+    Then the element with class "navbar-toggle" should have display : none
+
+
+  Scenario: Test routeList page UI responsiveness on smart phone
+    Given I am testing responsiveness on the routeList page
+    When the browser width is 320px
+    Then the element with class "navbar-toggle" should have display : inline-block
+
+
+  Scenario: Test routeList page UI responsiveness on tablet
+    Given I am testing responsiveness on the routeList page
+    When the browser width is 768px
+    Then the element with class "navbar-toggle" should have display : none
+
 #
 #
 #

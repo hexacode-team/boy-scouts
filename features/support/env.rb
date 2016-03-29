@@ -8,6 +8,19 @@ require 'rubygems'
 require 'cucumber/rails'
 require 'selenium-webdriver'
 
+# require 'simplecov'
+# SimpleCov.start do
+#   add_filter '/spec/'
+#   add_filter '/config/'
+#   add_filter '/lib/'
+#   add_filter '/vendor/'
+#
+#   add_group 'Controllers', 'app/controllers'
+#   add_group 'Models', 'app/models'
+#   add_group 'Helpers', 'app/helpers'
+#   add_group 'Mailers', 'app/mailers'
+#   add_group 'Views', 'app/views'
+# end
 
 # Capybara defaults to CSS3 selectors rather than XPath.
 # If you'd prefer to use XPath, just uncomment this line and adjust any

@@ -1,15 +1,26 @@
 
 #driver to run test in firefox
 browser = Selenium::WebDriver.for :firefox
+browser.navigate.to('http://0.0.0.0:3000/sign_in')
+username = browser.find_element(:id, "session_email")
+password = browser.find_element(:id, "session_password")
+username.send_keys("admin@boyscoutsfd.com")
+password.send_keys("secret")
+login_attempt = browser.find_element(:xpath, "//*[@id='clearance']/form/input[5]")
+login_attempt.submit
 
 
-When /^the browser width is greater than or equal to (.*)px/ do |width|
-
-    browser.manage.window.resize_to(width, 1080)
-    browser.navigate.to('http://0.0.0.0:3000/')
+Given /^I am testing responsiveness on the (.*) page/ do |name|
+  browser.navigate.to('http://0.0.0.0:3000/' + path_to(name))
 end
 
-#when side bar is less than 786 check width is zero if greater than then
+
+When /^the browser width is (.*)px/ do |width|
+
+  browser.manage.window.resize_to(width, 1080)
+
+end
+
 Then /^the element with (.*) "(.*)" should have (.*) : (.*)/ do |attr, attr_val, prop, prop_val|
 
   if(attr == 'id')
