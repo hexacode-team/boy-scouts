@@ -7,19 +7,19 @@
     width: 0 !important;
     padding: 0 !important;
     //left: -100px;
-    transition:         width 500ms ease;
-    -moz-transition:    width 500ms ease;
-    -ms-transition:     width 500ms ease;
-    -o-transition:      width 500ms ease;
+    transition: width 500ms ease;
+    -moz-transition: width 500ms ease;
+    -ms-transition: width 500ms ease;
+    -o-transition: width 500ms ease;
     -webkit-transition: width 500ms ease;
   }
   .toggle-nav {
     width: 150px !important;
     padding: 9px !important;
-    transition:         width 500ms ease;
-    -moz-transition:    width 500ms ease;
-    -ms-transition:     width 500ms ease;
-    -o-transition:      width 500ms ease;
+    transition: width 500ms ease;
+    -moz-transition: width 500ms ease;
+    -ms-transition: width 500ms ease;
+    -o-transition: width 500ms ease;
     -webkit-transition: width 500ms ease;
   }
   .admin-header {
@@ -35,11 +35,40 @@
     display: block;
     z-index: 100000;
   }
+
   .table th {
     display: none;
   }
   .table td {
     display: block;
     margin-left: 10%;
+  }
+
+/* This is to keep the Export found Routes button from mashing itself against the Refresh button */
+  .btn.btn-info {
+    margin-top: -54px;
+  }
+
+/* This pads the content so that it is not mashed against the side of the mobile screen */
+  .content {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+/* This keeps the EfR button in the same visual div as the Refresh button */
+  .input-group {
+    padding-bottom: 57px;
+  }
+
+/* Centers the title of the data you are looking at when in mobile view */
+  .page-header h1 {
+    text-align: center;
+  }
+}
+
+/* This drops the title of the data down more when the nav bar at the top needs more room */
+@media only screen and (max-width: 364px) {
+  .page-header{
+    margin-top: 69px;
   }
 }
