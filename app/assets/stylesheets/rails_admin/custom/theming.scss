@@ -2,34 +2,7 @@
   display: none;
 }
 
-/*
-    EDIT PAGE STYLING
-*/
-.ra-multiselect .ra-multiselect-left,
-.ra-multiselect .ra-multiselect-right,
-.ra-multiselect .ra-multiselect-center {
-  float: none;
-  display: inline-block;
-  vertical-align: top;
-
-}
-.ra-multiselect .ra-multiselect-left,
-.ra-multiselect .ra-multiselect-right {
-  width: 40%;
-}
-.filtering-select {
-  float: none !important;
-}
-div > .btn-info {
-  margin-top: 10px;
-}
-
 @media only screen and (max-width: 768px) {
-
-  div > .btn-info {
-    display: block;
-    width: 200px;
-  }
   /*
       SIDE NAV BAR STYLING
   */
@@ -112,6 +85,11 @@ div > .btn-info {
   td:nth-of-type(9):before { content: attr(data-header); }
   td:nth-of-type(10):before { content: attr(data-header); }
 
+/* This is to keep the Export found Routes button from mashing itself against the Refresh button */
+  .btn.btn-info {
+    margin-top: -54px;
+  }
+
 /* This pads the content so that it is not mashed against the side of the mobile screen */
   .content {
     padding-left: 10px;
@@ -120,15 +98,12 @@ div > .btn-info {
 
 /* This keeps the EfR button in the same visual div as the Refresh button */
   .input-group {
-    padding-bottom: 20px;
+    padding-bottom: 57px;
   }
 
 /* Centers the title of the data you are looking at when in mobile view */
   .page-header h1 {
     text-align: center;
-  }
-  .well > span {
-    float: none !important;
   }
 }
 
