@@ -71,9 +71,6 @@ group :development, :test do
   gem 'unicorn'
   gem 'puma'
   gem 'pg'
-
-  #Rails ERD Documentation Gem
-  gem "rails-erd"
 end
 
 group :production do
