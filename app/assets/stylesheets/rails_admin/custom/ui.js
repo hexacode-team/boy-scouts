@@ -90,10 +90,12 @@ function propogateHeaders() {
             var att = document.createAttribute("data-header");
             att.value = header_names[j];
             tds.item(j).setAttributeNode(att);
-            var children = tds.item(j).getElementsByTagName("a");
 
             //Add &nbsp to empty tds to fix styling issue
-            if (tds.item(j).innerHTML == "" || tds.item(j).innerHTML == "\n" || (children.length != 0 && children.item(0).innerText == ""))
+            var item = tds.item(j);
+            var children = item.getElementsByTagName("a");
+            var list = item.getElementsByTagName("ul");
+            if (item.innerHTML == "" || item.innerHTML == "\n" || (children.length != 0 && children.item(0).innerText == "") && list.length == 0)
                 tds.item(j).innerHTML = "&nbsp";
         }
     }
