@@ -25,3 +25,16 @@
 .subscriber.row {
   padding-bottom: 1.5em;
 }
+
+.gmap {
+  width: 800px;
+}
+
+@media only screen and (max-width: 768px) {
+  .gmap {
+    width: 95%;
+  }
+  .gmap #map {
+    width: 100% !important;
+  }
+}
