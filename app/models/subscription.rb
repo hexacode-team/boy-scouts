@@ -8,11 +8,7 @@ class Subscription < ActiveRecord::Base
 
 
     def street_address
-      if address_line_2 != nil
-        return address_line_1 + ' ' + address_line_2
-      else
-        return address_line_1 + " Texas"
-      end
+      "#{address_line_1}, #{city}, #{state}, #{zip}"
     end
 
     def name

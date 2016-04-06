@@ -20,6 +20,8 @@ class RoutesController < ApplicationController
 
   def view_route
     @route = Route.find(params[:id])
+
+    #Building markers for google maps
     @hash = Gmaps4rails.build_markers(@route.subscriptions) do |subscription, marker|
       marker.lat subscription.latitude
       marker.lng subscription.longitude
