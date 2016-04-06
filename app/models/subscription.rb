@@ -3,17 +3,23 @@ class Subscription < ActiveRecord::Base
     belongs_to :group
     has_many :payments
 
-    def name
-      return last_name + ', ' + first_name 
-    end
+    geocoded_by :street_address
+    after_validation :geocode
+
 
     def street_address
       if address_line_2 != nil
         return address_line_1 + ' ' + address_line_2
       else
-        return address_line_1
+        return address_line_1 + " Texas"
       end
     end
+
+    def name
+      return last_name + ', ' + first_name 
+    end
+
+
 
     def status
       today = Date.today()

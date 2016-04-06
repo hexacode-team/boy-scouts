@@ -44,6 +44,11 @@ gem 'wicked_pdf'
 
 gem 'acts_as_tree'
 
+gem 'figaro'
+
+gem 'gmaps4rails'
+gem 'geocoder'
+
 group :development, :test do
   # Include Capybara
   gem 'capybara'

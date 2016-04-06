@@ -67,3 +67,6 @@ build/
 .rvmrc
 bbackup_scoutsfd.sql
 .rbenv-gemsets
+
+# Ignore application configuration
+/config/application.yml

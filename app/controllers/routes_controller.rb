@@ -20,7 +20,10 @@ class RoutesController < ApplicationController
 
   def view_route
     @route = Route.find(params[:id])
-
+    @hash = Gmaps4rails.build_markers(@route.subscriptions) do |subscription, marker|
+      marker.lat subscription.latitude
+      marker.lng subscription.longitude
+    end
     #If the user doesn't have access to view this information for the given group, then raise an access denied error.
     raise CanCan::AccessDenied.new("You are not authorized to view the requested group!") unless current_user.can_view_route(@route)
   end
