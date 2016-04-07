@@ -59,6 +59,9 @@
         </div>
       <% end %>
 
+      <input type="text" id="centre_latitude">
+      <input type="text" id="centre_longitude">
+      <input type="text" id="centre_gmaps_zoom">
 
     </div>
     <div id="route-footer">
@@ -342,5 +345,22 @@
     markers = handler.addMarkers(<%=raw @hash.to_json %>, { draggable: true });
     handler.bounds.extendWith(markers);
     handler.fitMapToBounds();
+
+    // Callback function
+    _.each(markers, listenToDragDrop)
   });
+
+  function listenToDragDrop(marker){
+    google.maps.event.addListener(marker.getServiceObject(), 'dragend', function() {
+      updateFormLocation(marker.getServiceObject().getPosition());
+    });
+  }
+
+  // Other functions
+  // Update form attributes with given coordinates
+  function updateFormLocation(latLng) {
+    $('#centre_latitude').val(latLng.lat());
+    $('#centre_longitude').val(latLng.lng());
+    $('#centre_gmaps_zoom').val(handler.getMap().getZoom());
+  }
 </script>
