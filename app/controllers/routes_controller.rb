@@ -26,6 +26,13 @@ class RoutesController < ApplicationController
       marker.lat subscription.latitude
       marker.lng subscription.longitude
       marker.infowindow subscription.name
+      #TODO: Add 'subscription.marker into db and assign pngs for each subscription'
+      #TODO: Create a form to update subscription coordinates from the draggable icons
+      marker.picture({
+                         :url => "http://maps.google.com/mapfiles/kml/paddle/blu-blank-lv.png",
+                         :width   => 32,
+                         :height  => 32
+                     })
     end
     #If the user doesn't have access to view this information for the given group, then raise an access denied error.
     raise CanCan::AccessDenied.new("You are not authorized to view the requested group!") unless current_user.can_view_route(@route)
