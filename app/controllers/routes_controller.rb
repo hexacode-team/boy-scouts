@@ -26,6 +26,7 @@ class RoutesController < ApplicationController
       marker.lat subscription.latitude
       marker.lng subscription.longitude
       marker.infowindow subscription.name
+      marker.json({ id: subscription.id})
       #TODO: Add 'subscription.marker into db and assign pngs for each subscription'
       #TODO: Create a form to update subscription coordinates from the draggable icons
       marker.picture({
@@ -36,6 +37,26 @@ class RoutesController < ApplicationController
     end
     #If the user doesn't have access to view this information for the given group, then raise an access denied error.
     raise CanCan::AccessDenied.new("You are not authorized to view the requested group!") unless current_user.can_view_route(@route)
+  end
+
+  def update_route
+    @route = Route.find(params[:route_id])
+    @subscription = @route.subscriptions.find(params[:sub_id])
+    @subscription.update_attribute(:latitude, params[:lat])
+    @subscription.update_attribute(:longitude, params[:lon])
+
+    lat = params[:lat]
+    lon = params[:lon]
+    query = "#{lat},#{lon}"
+    first_result = Geocoder.search(query).first
+    if first_result.present?
+      @subscription.update_attribute(:address_line_1, first_result.street_address)
+    end
+
+    @subscription.save
+    redirect_to view_route_path(params[:route_id])
+    #If the user id not a troop leader or an admin, they cannot change markers
+    raise CanCan::AccessDenied.new("You are not authorized to change marker locations!") unless current_user.troop_leader? || current_user.admin?
   end
 
   def get_run_info

@@ -342,7 +342,12 @@
   //    Google Maps set up
   handler = Gmaps.build('Google');
   handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-    markers = handler.addMarkers(<%=raw @hash.to_json %>, { draggable: true });
+    markers_json = <%=raw @hash.to_json %>;
+    markers = _.map(markers_json, function(marker_json){
+      marker = handler.addMarker(marker_json, { draggable: true });
+      _.extend(marker, marker_json);
+      return marker;
+    });
     handler.bounds.extendWith(markers);
     handler.fitMapToBounds();
 
@@ -352,15 +357,24 @@
 
   function listenToDragDrop(marker){
     google.maps.event.addListener(marker.getServiceObject(), 'dragend', function() {
-      updateFormLocation(marker.getServiceObject().getPosition());
+      updateFormLocation(marker.getServiceObject().getPosition(), marker.id);
     });
   }
 
   // Other functions
   // Update form attributes with given coordinates
-  function updateFormLocation(latLng) {
+  function updateFormLocation(latLng, sub_id) {
+    var route_id = $("#begin_run_button").val();
+    $.ajax({
+      url : 'update_route',
+      type : "post",
+      data : { lat: latLng.lat(), lon: latLng.lng(), route_id: route_id, sub_id: sub_id}
+    });
+
     $('#centre_latitude').val(latLng.lat());
     $('#centre_longitude').val(latLng.lng());
     $('#centre_gmaps_zoom').val(handler.getMap().getZoom());
   }
+
+
 </script>
