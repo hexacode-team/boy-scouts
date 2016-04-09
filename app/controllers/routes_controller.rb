@@ -21,6 +21,8 @@ class RoutesController < ApplicationController
   def view_route
     @route = Route.find(params[:id])
 
+    @marker_url = @route.marker
+
     #Building markers for google maps
     @hash = Gmaps4rails.build_markers(@route.subscriptions) do |subscription, marker|
       marker.lat subscription.latitude
@@ -30,13 +32,21 @@ class RoutesController < ApplicationController
       #TODO: Add 'subscription.marker into db and assign pngs for each subscription'
       #TODO: Create a form to update subscription coordinates from the draggable icons
       marker.picture({
-                         :url => "http://maps.google.com/mapfiles/kml/paddle/blu-blank-lv.png",
+                         :url => @marker_url,
                          :width   => 32,
                          :height  => 32
                      })
     end
     #If the user doesn't have access to view this information for the given group, then raise an access denied error.
     raise CanCan::AccessDenied.new("You are not authorized to view the requested group!") unless current_user.can_view_route(@route)
+  end
+
+  def modify_marker
+    @route = Route.find(params[:route_id])
+    @route.update_attribute(:marker, params[:marker_url])
+    @route.save
+    redirect_to view_route_path(params[:route_id])
+    raise CanCan::AccessDenied.new("You are not authorized to change marker images!") unless current_user.troop_leader? || current_user.admin?
   end
 
   def update_route

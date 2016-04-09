@@ -45,7 +45,7 @@
           <%= sub.cell_phone %>
         </div>
         <div class="col-md-3">
-          <%- sub.maintenance_notes %>
+          <%= sub.maintenance_notes %>
         </div>
       </div>
 
@@ -59,6 +59,9 @@
         </div>
       <% end %>
 
+      <div class="gmap-help">Use icons from <a href="http://kml4earth.appspot.com/icons.html" target="_blank">here</a></div>
+      <input class="marker-url" value="<%= @route.marker %>">
+      <div class="save-marker">Save Marker</div>
     </div>
     <div id="route-footer">
 
@@ -372,5 +375,14 @@
     $('#centre_gmaps_zoom').val(handler.getMap().getZoom());
   }
 
-
+  $(".save-marker").click( function() {
+    if ($(".marker-url").val() != "")
+    {
+      $.ajax({
+        url : 'modify_marker',
+        type : "post",
+        data : { marker_url: $(".marker-url").val(), route_id: $("#begin_run_button").val()}
+      });
+    }
+  } );
 </script>
