@@ -8,35 +8,35 @@ Feature: Integration with Google Maps
   So that I can monitor and edit routes collectively or selectively,
   I want access to all routes through the application using Google Maps.
 
-  Scenario: Test Google Map functionality with a route with no stops
-  Given I am testing googleMaps on the routes 399 page
-  When I am admin user
-  Then the element with xpath "//*[@id="route-content"]/div[1]" should have div1 : No routes available!
-
-  Scenario: Test Google Map functionality with a route with multiple stops
-    Given I am testing googleMaps on the routes 395 page
-    When I am admin user
-    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[1]" should exist
-    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[2]" should exist
-    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[3]" should exist
-    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[4]" should exist
-    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[5]" should exist
-    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[6]" should exist
-    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[7]" should exist
-    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[8]" should exist
-    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[9]" should exist
-    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[10]" should exist
-    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[11]" should exist
-    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[12]" should exist
-    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[13]" should exist
-    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[14]" should exist
-    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[15]" should exist
-    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[16]" should exist
+#  Scenario: Test Google Map functionality with a route with no stops
+#  Given I am testing googleMaps on the routes 399 page
+#  When I am admin user
+#  Then the element with xpath "//*[@id="route-content"]/div[1]" should have div1 : No routes available!
+#
+#  Scenario: Test Google Map functionality with a route with multiple stops
+#    Given I am testing googleMaps on the routes 395 page
+#    When I am admin user
+#    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[1]" should exist
+#    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[2]" should exist
+#    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[3]" should exist
+#    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[4]" should exist
+#    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[5]" should exist
+#    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[6]" should exist
+#    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[7]" should exist
+#    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[8]" should exist
+#    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[9]" should exist
+#    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[10]" should exist
+#    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[11]" should exist
+#    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[12]" should exist
+#    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[13]" should exist
+#    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[14]" should exist
+#    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[15]" should exist
+#    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[16]" should exist
 
 
   Scenario: Test Change Icon on google map
-    Given I am testing googleMaps on the routes 399 page
+    Given I am testing googleMaps on the routes 395 page
     When I am admin user
-    Then the element with xpath "//*[@id="route-content"]/div[1]" should have div1 : No r
+    Then change the icons on the map to "http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_purple.png"
 
 
