@@ -72,3 +72,13 @@ end
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
+#driver to run test in firefox
+$browser = Selenium::WebDriver.for :firefox
+$browser.navigate.to('http://0.0.0.0:3000/sign_in')
+username = $browser.find_element(:id, "session_email")
+password = $browser.find_element(:id, "session_password")
+username.send_keys("admin@boyscoutsfd.com")
+password.send_keys("secret")
+login_attempt = $browser.find_element(:xpath, "//*[@id='clearance']/form/input[5]")
+login_attempt.submit
+
