@@ -32,11 +32,16 @@ Feature: Integration with Google Maps
 #    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[14]" should exist
 #    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[15]" should exist
 #    Then the element with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[16]" should exist
+#
+#
+#  Scenario: Test Change Icon on google map
+#    Given I am testing googleMaps on the routes 395 page
+#    When I am admin user
+#    Then change the icons on the map to "http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_purple.png"
 
 
-  Scenario: Test Change Icon on google map
+  Scenario: Test change location on google map
     Given I am testing googleMaps on the routes 395 page
     When I am admin user
-    Then change the icons on the map to "http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_purple.png"
-
+    Then change the drop pin with xpath "//*[@id="map"]/div/div[1]/div[3]/div[3]/div[1]" loc "802 Welsh Avenue, College Station, TX, 77840" to loc "1005 Holleman Drive, College Station, TX, 77840" and check for a change
 
