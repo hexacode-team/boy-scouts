@@ -8,11 +8,11 @@ Feature: Integration with Google Maps
   So that I can monitor and edit routes collectively or selectively,
   I want access to all routes through the application using Google Maps.
 
-#  Scenario: Test Google Map functionality with a route with no stops
-#  Given I am testing googleMaps on the routes 399 page
-#  When I am admin user
-#  Then the element with xpath "//*[@id="route-content"]/div[1]" should have div1 : No routes available!
-#
+  Scenario: Test Google Map functionality with a route with no stops
+  Given I am testing googleMaps on the routes 399 page
+  When I am admin user
+  Then the element with xpath "//*[@id="route-content"]/div[1]" should have div1 : No routes available!
+
 #  Scenario: Test Google Map functionality with a route with multiple stops
 #    Given I am testing googleMaps on the routes 395 page
 #    When I am admin user
@@ -38,7 +38,7 @@ Feature: Integration with Google Maps
 #    Given I am testing googleMaps on the routes 395 page
 #    When I am admin user
 #    Then change the icons on the map to "http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_purple.png"
-
+#
 
   Scenario: Test change location on google map
     Given I am testing googleMaps on the routes 395 page

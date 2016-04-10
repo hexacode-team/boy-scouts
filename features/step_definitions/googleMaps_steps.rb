@@ -41,6 +41,10 @@ Then /^change the drop pin with xpath "(.*)" loc "(.*)" to loc "(.*)" and check 
 
   pin = $browser.find_element(:xpath, xpath)
   pin2 = $browser.find_element(:xpath, "//*[@id='map']/div/div[1]/div[3]/div[3]/div[2]")
+  # $browser.action.click_and_hold(pin)
+  # $browser.action.move_to(pin2)
+  # $browser.action.release()
+
   $browser.action.drag_and_drop(pin, pin2).perform
 
 
