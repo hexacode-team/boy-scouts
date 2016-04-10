@@ -13,6 +13,7 @@ Feature: Integration with Google Maps
   When I am admin user
   Then the element with xpath "//*[@id="route-content"]/div[1]" should have div1 : No routes available!
 
+    
   Scenario: Test Google Map functionality with a route with multiple stops
     Given I am testing googleMaps on the routes 395 page
     When I am admin user
