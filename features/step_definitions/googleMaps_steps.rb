@@ -47,9 +47,6 @@ Then /^change the drop pin with xpath "(.*)" loc "(.*)" to loc "(.*)" and check 
 
   $browser.action.drag_and_drop(pin, pin2).perform
 
-
-
-
 end
 
 
