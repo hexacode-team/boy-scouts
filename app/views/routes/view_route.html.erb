@@ -4,39 +4,39 @@
 
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
-<div id="content">
+
     <div id="message">
 
     </div>
-    <div id="route-header" class="row">
-      <div class="col-md-3">
-        <h1 id="route-name"><%= @route.name %></h1>
+<div class="container-fluid">
+  <div id="route-header" class="row">
+    <div class="col-md-12">
+      <h1 id="route-name"><%= @route.name %></h1> 
+    </div>    
+    <div class="col-md-3">
+      <button class="btn btn-primary btn-lg" id="begin_run_button" value="<%= @route.id %>" data-toggle="modal" data-target="#select-scouts-modal" >Begin Run!</button>
+      <button class="btn btn-primary btn-lg" id="end_run_button"   value="<%= @route.id %>" style="display:none;" >Finish Run!</button>
+    </div>
+  </div>
+
+  <div id="route-content">
+    <div class="list-group">
+    <% @route.subscriptions.each do | sub |  %>
+    <div id="subscriber_<%=sub.id %>" class="row subscriber">
+      <div class="col-md-3 col-sm-6 col-xs-12 route-address" value="<%=sub.id %>">
+        <%= sub.street_address %>   
       </div>
-      <div class="col-md-3">
-        <button class="btn btn-primary btn-lg" id="begin_run_button" value="<%= @route.id %>" data-toggle="modal" data-target="#select-scouts-modal" >Begin Run!</button>
-        <button class="btn btn-primary btn-lg" id="end_run_button"   value="<%= @route.id %>" style="display:none;" >Finish Run!</button>
-      </div>
-      <div class="col-md-6">
-      </div>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <span class="hide-unless-run">
+            <input id="subscriber_<%=sub.id %>_checkbox" value="<%=sub.id %>"  type="checkbox" class="task-complete-checkbox" />
+        </span>
+        <span class="hide-unless-run">
+          <button class="add-maintenance-note" value="<%=sub.id %>" data-toggle="modal" data-target="#maintenance-note-modal" >
+            Add Maintenance Note
+          </button>
+        </span>
       </div>
     </div>
-    <div id="route-content">
-      <% @route.subscriptions.each do | sub |  %>
-      <div id="subscriber_<%=sub.id %>" class="row subscriber">
-        <div class="col-xs-3">
-          <span class="hide-unless-run">
-              <input id="subscriber_<%=sub.id %>_checkbox" value="<%=sub.id %>"  type="checkbox" class="task-complete-checkbox" />
-          </span>
-        </div>
-        <div class="col-xs-3 route-address" value="<%=sub.id %>" class="col-xs-3">
-          <%= sub.street_address %>
-        </div>
-        <div class="col-xs-3">
-          <span class="hide-unless-run">
-            <button class="add-maintenance-note" value="<%=sub.id %>" data-toggle="modal" data-target="#maintenance-note-modal" >Add Maintenance Note</button>
-          </span>
-        </div>
-      </div>
       <div id="subscriber_<%=sub.id %>_info" style="display:none;" class="row subscriber_info">
         <div class="col-md-3">
           <%= sub.street_address %>
@@ -50,9 +50,10 @@
       </div>
 
       <% end %>
+      </div>
 
       <% if @hash.empty? %>
-        <div>No routes available!</div>
+        <div>Empty Route!</div>
       <% else%>
         <div class="gmap">
           <div id="map" style='width: 800px; height: 400px;'></div>
@@ -65,6 +66,7 @@
       <div id="my-icon-select"></div>
       <!--<div class="save-marker">Save Marker</div>-->
     </div>
+    
     <div id="route-footer">
 
     </div>
