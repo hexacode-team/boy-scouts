@@ -14,5 +14,7 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require underscore.js
+//= require iconselect.js
+//= require iscroll.js
 //= require gmaps/google
 //= require_tree .

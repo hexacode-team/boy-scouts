@@ -45,7 +45,8 @@ class RoutesController < ApplicationController
     @route = Route.find(params[:route_id])
     @route.update_attribute(:marker, params[:marker_url])
     @route.save
-    redirect_to view_route_path(params[:route_id])
+    render :js => "window.location = '#{view_route_path(params[:route_id])}'"
+    #redirect_to view_route_path(params[:route_id])
     raise CanCan::AccessDenied.new("You are not authorized to change marker images!") unless current_user.troop_leader? || current_user.admin?
   end
 

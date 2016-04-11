@@ -59,9 +59,11 @@
         </div>
       <% end %>
 
-      <div class="gmap-help">Use icons from <a href="http://kml4earth.appspot.com/icons.html" target="_blank">here</a></div>
-      <input class="marker-url" value="<%= @route.marker %>">
-      <div class="save-marker">Save Marker</div>
+      <!--<div class="gmap-help">Use icons from <a href="http://kml4earth.appspot.com/icons.html" target="_blank">here</a></div>-->
+      <!--<input class="marker-url" value="<%= @route.marker %>">-->
+      <div>Select an icon:</div>
+      <div id="my-icon-select"></div>
+      <!--<div class="save-marker">Save Marker</div>-->
     </div>
     <div id="route-footer">
 
@@ -140,6 +142,47 @@
       var run; //Which run are we currently displaying information for.
       var route_id = <%= @route.id %>;
       var run_is_started = false;
+
+      iconSelect = new IconSelect("my-icon-select",
+          {'selectedIconWidth':32,
+            'selectedIconHeight':32,
+            'selectedBoxPadding':5,
+            'iconsWidth':32,
+            'iconsHeight':32,
+            'boxIconSpace':3,
+            'vectoralIconNumber':8,
+            'horizontalIconNumber':1});
+
+      var icons = [];
+      icons.push({'iconFilePath':'https://mt.googleapis.com/vt/icon/name=icons/onion/1494-wht-circle-blank-4x.png&filter=ff009D57&scale=1.0', 'iconValue':'https://mt.googleapis.com/vt/icon/name=icons/onion/1494-wht-circle-blank-4x.png&filter=ff009D57&scale=1.0'});
+      icons.push({'iconFilePath':'https://mt.googleapis.com/vt/icon/name=icons/onion/1497-wht-diamond-blank-4x.png&filter=ff4186F0&scale=1.0', 'iconValue':'https://mt.googleapis.com/vt/icon/name=icons/onion/1497-wht-diamond-blank-4x.png&filter=ff4186F0&scale=1.0'});
+      icons.push({'iconFilePath':'https://mt.googleapis.com/vt/icon/name=icons/onion/1496-wht-square-blank-4x.png&filter=ff62AF44&scale=1.0', 'iconValue':'https://mt.googleapis.com/vt/icon/name=icons/onion/1496-wht-square-blank-4x.png&filter=ff62AF44&scale=1.0'});
+      icons.push({'iconFilePath':'https://mt.googleapis.com/vt/icon/name=icons/onion/1493-wht-blank_maps-4x.png&filter=ffDB4436&scale=1.0', 'iconValue':'https://mt.googleapis.com/vt/icon/name=icons/onion/1493-wht-blank_maps-4x.png&filter=ffDB4436&scale=1.0'});
+      icons.push({'iconFilePath':'https://mt.googleapis.com/vt/icon/name=icons/onion/1495-wht-star-blank-4x.png&filter=ff795046&scale=1.0', 'iconValue':'https://mt.googleapis.com/vt/icon/name=icons/onion/1495-wht-star-blank-4x.png&filter=ff795046&scale=1.0'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/dir_0.png', 'iconValue':'http://maps.google.com/mapfiles/dir_0.png'});
+      icons.push({'iconFilePath':'http://www.google.com/mapfiles/arrow.png', 'iconValue':'http://www.google.com/mapfiles/arrow.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/pal4/icon53.png', 'iconValue':'http://maps.google.com/mapfiles/kml/pal4/icon53.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/pal4/icon52.png', 'iconValue':'http://maps.google.com/mapfiles/kml/pal4/icon52.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/pal4/icon48.png', 'iconValue':'http://maps.google.com/mapfiles/kml/pal4/icon48.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/pal4/icon49.png', 'iconValue':'http://maps.google.com/mapfiles/kml/pal4/icon49.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/pal4/icon61.png', 'iconValue':'http://maps.google.com/mapfiles/kml/pal4/icon61.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/pal2/icon7.png', 'iconValue':'http://maps.google.com/mapfiles/kml/pal2/icon7.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/shapes/capital_big.png', 'iconValue':'http://maps.google.com/mapfiles/kml/shapes/capital_big.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/shapes/capital_small_highlight.png', 'iconValue':'http://maps.google.com/mapfiles/kml/shapes/capital_small_highlight.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/paddle/purple-stars-lv.png', 'iconValue':'http://maps.google.com/mapfiles/kml/paddle/purple-stars-lv.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/pal3/icon55.png', 'iconValue':'http://maps.google.com/mapfiles/kml/pal3/icon55.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/dir_walk_57.png', 'iconValue':'http://maps.google.com/mapfiles/dir_walk_57.png'});
+
+      iconSelect.refresh(icons);
+
+     $('#my-icon-select').on('changed', function() {
+        var marker_url = iconSelect.getSelectedValue();
+        $.ajax({
+          url : 'modify_marker',
+          type : "post",
+          data : { marker_url: marker_url, route_id: $("#begin_run_button").val()}
+        });
+      });
 
       function populate_scouts(){
           var scout_html = '<label class="radio-inline"><input type="radio" checked="checked" name="ampmradio" value="am">AM</label>'

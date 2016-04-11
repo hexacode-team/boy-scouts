@@ -38,7 +38,6 @@ RSpec.describe RoutesController, type: :controller do
       expect(@route).to receive(:update_attribute).and_return(true)
       expect(@route).to receive(:save).and_return(true)
       post :modify_marker, {:route_id => 10, :marker_url => 'http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_purple.png'}
-      expect(response).to redirect_to(view_route_path(10))
     end
   end
 
