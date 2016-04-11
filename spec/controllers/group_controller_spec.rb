@@ -16,4 +16,5 @@ RSpec.describe GroupController, type: :controller do
     end
   end
 
+
 end

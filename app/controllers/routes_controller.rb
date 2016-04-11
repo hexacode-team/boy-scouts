@@ -51,7 +51,7 @@ class RoutesController < ApplicationController
 
   def update_route
     @route = Route.find(params[:route_id])
-    @subscription = @route.subscriptions.find(params[:sub_id])
+    @subscription = Subscription.find(params[:sub_id])
     @subscription.update_attribute(:latitude, params[:lat])
     @subscription.update_attribute(:longitude, params[:lon])
 
