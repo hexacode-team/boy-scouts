@@ -3,7 +3,7 @@ class RoutesController < ApplicationController
 
   def view_routes
     #displays list of routes that signed in user has ability to see.
-    @routes = Route.routes_for(current_user) || [] unless current_user.nil?
+    @routes = Route.routes_for(current_user).order(:name) || [] unless current_user.nil?
 
     @hash = []
 
