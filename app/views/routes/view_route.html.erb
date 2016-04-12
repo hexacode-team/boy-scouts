@@ -31,8 +31,9 @@
             <input id="subscriber_<%=sub.id %>_checkbox" value="<%=sub.id %>"  type="checkbox" class="task-complete-checkbox" />
         </span>
         <span class="hide-unless-run">
-          <button class="add-maintenance-note" value="<%=sub.id %>" data-toggle="modal" data-target="#maintenance-note-modal" >
-            Add Maintenance Note
+          <button class="add-maintenance-note btn btn-warning" value="<%=sub.id %>" data-toggle="modal" data-target="#maintenance-note-modal" >
+            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+            Maintenance Note
           </button>
         </span>
       </div>
