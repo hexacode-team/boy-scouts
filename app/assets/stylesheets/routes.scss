@@ -4,7 +4,9 @@
 .hide-unless-run{
 
 }
-
+.callouts {
+  display: inline-block;
+}
 #route-header div button{
   margin-top:1.5em;
   margin-left:1em;
@@ -25,8 +27,12 @@
 
 .gmap {
   width: 800px;
+  display: inline-block;
+  vertical-align: top;
 }
-
+.gmap.all-routes {
+  margin: 30px;
+}
 .save-marker{
   width: 145px;
   height: 50px;
@@ -51,7 +57,7 @@
 @media only screen and (max-width: 768px) {
   .gmap {
     width: 95%;
-    margin-bottom: 20px;
+    margin: 0 0 20px !important;
   }
   .gmap #map {
     width: 100% !important;
