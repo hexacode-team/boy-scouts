@@ -1,4 +1,5 @@
 Clearance.configure do |config|
+  config.routes = false
     
   # Specify some defaults for the user authentication.
   config.user_model = User

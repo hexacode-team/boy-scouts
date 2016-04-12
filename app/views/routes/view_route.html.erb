@@ -4,39 +4,40 @@
 
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
-<div id="content">
+
     <div id="message">
 
     </div>
-    <div id="route-header" class="row">
-      <div class="col-md-3">
-        <h1 id="route-name"><%= @route.name %></h1>
+<div class="container-fluid">
+  <div id="route-header" class="row">
+    <div class="col-md-12">
+      <h1 id="route-name"><%= @route.name %></h1> 
+    </div>    
+    <div class="col-md-3">
+      <button class="btn btn-primary btn-lg" id="begin_run_button" value="<%= @route.id %>" data-toggle="modal" data-target="#select-scouts-modal" >Begin Run!</button>
+      <button class="btn btn-primary btn-lg" id="end_run_button"   value="<%= @route.id %>" style="display:none;" >Finish Run!</button>
+    </div>
+  </div>
+
+  <div id="route-content">
+    <div class="list-group">
+    <% @route.subscriptions.each do | sub |  %>
+    <div id="subscriber_<%=sub.id %>" class="row subscriber">
+      <div class="col-md-3 col-sm-6 col-xs-12 route-address" value="<%=sub.id %>">
+        <%= sub.street_address %>   
       </div>
-      <div class="col-md-3">
-        <button class="btn btn-primary btn-lg" id="begin_run_button" value="<%= @route.id %>" data-toggle="modal" data-target="#select-scouts-modal" >Begin Run!</button>
-        <button class="btn btn-primary btn-lg" id="end_run_button"   value="<%= @route.id %>" style="display:none;" >Finish Run!</button>
-      </div>
-      <div class="col-md-6">
-      </div>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <span class="hide-unless-run">
+            <input id="subscriber_<%=sub.id %>_checkbox" value="<%=sub.id %>"  type="checkbox" class="task-complete-checkbox" />
+        </span>
+        <span class="hide-unless-run">
+          <button class="add-maintenance-note btn btn-warning" value="<%=sub.id %>" data-toggle="modal" data-target="#maintenance-note-modal" >
+            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+            Maintenance Note
+          </button>
+        </span>
       </div>
     </div>
-    <div id="route-content">
-      <% @route.subscriptions.each do | sub |  %>
-      <div id="subscriber_<%=sub.id %>" class="row subscriber">
-        <div class="col-xs-3">
-          <span class="hide-unless-run">
-              <input id="subscriber_<%=sub.id %>_checkbox" value="<%=sub.id %>"  type="checkbox" class="task-complete-checkbox" />
-          </span>
-        </div>
-        <div class="col-xs-3 route-address" value="<%=sub.id %>" class="col-xs-3">
-          <%= sub.street_address %>
-        </div>
-        <div class="col-xs-3">
-          <span class="hide-unless-run">
-            <button class="add-maintenance-note" value="<%=sub.id %>" data-toggle="modal" data-target="#maintenance-note-modal" >Add Maintenance Note</button>
-          </span>
-        </div>
-      </div>
       <div id="subscriber_<%=sub.id %>_info" style="display:none;" class="row subscriber_info">
         <div class="col-md-3">
           <%= sub.street_address %>
@@ -45,25 +46,29 @@
           <%= sub.cell_phone %>
         </div>
         <div class="col-md-3">
-          <%- sub.maintenance_notes %>
+          <%= sub.maintenance_notes %>
         </div>
       </div>
 
       <% end %>
+      </div>
 
       <% if @hash.empty? %>
-        <div>No routes available!</div>
+        <div>Empty Route!</div>
       <% else%>
         <div class="gmap">
+          <h4 id="marker-message">Marker location saved</h4>
           <div id="map" style='width: 800px; height: 400px;'></div>
         </div>
       <% end %>
 
-      <input type="text" id="centre_latitude">
-      <input type="text" id="centre_longitude">
-      <input type="text" id="centre_gmaps_zoom">
-
+      <!--<div class="gmap-help">Use icons from <a href="http://kml4earth.appspot.com/icons.html" target="_blank">here</a></div>-->
+      <!--<input class="marker-url" value="<%= @route.marker %>">-->
+      <div>Select an icon:</div>
+      <div id="my-icon-select"></div>
+      <!--<div class="save-marker">Save Marker</div>-->
     </div>
+    
     <div id="route-footer">
 
     </div>
@@ -141,6 +146,50 @@
       var run; //Which run are we currently displaying information for.
       var route_id = <%= @route.id %>;
       var run_is_started = false;
+
+      $('#marker-message').hide();
+
+      iconSelect = new IconSelect("my-icon-select",
+          {'selectedIconWidth':32,
+            'selectedIconHeight':32,
+            'selectedBoxPadding':5,
+            'iconsWidth':32,
+            'iconsHeight':32,
+            'boxIconSpace':3,
+            'vectoralIconNumber':8,
+            'horizontalIconNumber':1});
+
+      var icons = [];
+      icons.push({'iconFilePath':"<%= @marker_url %>", 'iconValue':"<%= @marker_url %>"});
+      icons.push({'iconFilePath':'https://mt.googleapis.com/vt/icon/name=icons/onion/1494-wht-circle-blank-4x.png&filter=ff009D57&scale=1.0', 'iconValue':'https://mt.googleapis.com/vt/icon/name=icons/onion/1494-wht-circle-blank-4x.png&filter=ff009D57&scale=1.0'});
+      icons.push({'iconFilePath':'https://mt.googleapis.com/vt/icon/name=icons/onion/1497-wht-diamond-blank-4x.png&filter=ff4186F0&scale=1.0', 'iconValue':'https://mt.googleapis.com/vt/icon/name=icons/onion/1497-wht-diamond-blank-4x.png&filter=ff4186F0&scale=1.0'});
+      icons.push({'iconFilePath':'https://mt.googleapis.com/vt/icon/name=icons/onion/1496-wht-square-blank-4x.png&filter=ff62AF44&scale=1.0', 'iconValue':'https://mt.googleapis.com/vt/icon/name=icons/onion/1496-wht-square-blank-4x.png&filter=ff62AF44&scale=1.0'});
+      icons.push({'iconFilePath':'https://mt.googleapis.com/vt/icon/name=icons/onion/1493-wht-blank_maps-4x.png&filter=ffDB4436&scale=1.0', 'iconValue':'https://mt.googleapis.com/vt/icon/name=icons/onion/1493-wht-blank_maps-4x.png&filter=ffDB4436&scale=1.0'});
+      icons.push({'iconFilePath':'https://mt.googleapis.com/vt/icon/name=icons/onion/1495-wht-star-blank-4x.png&filter=ff795046&scale=1.0', 'iconValue':'https://mt.googleapis.com/vt/icon/name=icons/onion/1495-wht-star-blank-4x.png&filter=ff795046&scale=1.0'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/dir_0.png', 'iconValue':'http://maps.google.com/mapfiles/dir_0.png'});
+      icons.push({'iconFilePath':'http://www.google.com/mapfiles/arrow.png', 'iconValue':'http://www.google.com/mapfiles/arrow.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/pal4/icon53.png', 'iconValue':'http://maps.google.com/mapfiles/kml/pal4/icon53.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/pal4/icon52.png', 'iconValue':'http://maps.google.com/mapfiles/kml/pal4/icon52.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/pal4/icon48.png', 'iconValue':'http://maps.google.com/mapfiles/kml/pal4/icon48.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/pal4/icon49.png', 'iconValue':'http://maps.google.com/mapfiles/kml/pal4/icon49.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/pal4/icon61.png', 'iconValue':'http://maps.google.com/mapfiles/kml/pal4/icon61.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/pal2/icon7.png', 'iconValue':'http://maps.google.com/mapfiles/kml/pal2/icon7.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/shapes/capital_big.png', 'iconValue':'http://maps.google.com/mapfiles/kml/shapes/capital_big.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/shapes/capital_small_highlight.png', 'iconValue':'http://maps.google.com/mapfiles/kml/shapes/capital_small_highlight.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/paddle/purple-stars-lv.png', 'iconValue':'http://maps.google.com/mapfiles/kml/paddle/purple-stars-lv.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/kml/pal3/icon55.png', 'iconValue':'http://maps.google.com/mapfiles/kml/pal3/icon55.png'});
+      icons.push({'iconFilePath':'http://maps.google.com/mapfiles/dir_walk_57.png', 'iconValue':'http://maps.google.com/mapfiles/dir_walk_57.png'});
+
+      iconSelect.refresh(icons);
+
+     $('#my-icon-select').on('changed', function() {
+        var marker_url = iconSelect.getSelectedValue();
+        $.ajax({
+          url : 'modify_marker',
+          type : "post",
+          data : { marker_url: marker_url, route_id: $("#begin_run_button").val()}
+        });
+      });
 
       function populate_scouts(){
           var scout_html = '<label class="radio-inline"><input type="radio" checked="checked" name="ampmradio" value="am">AM</label>'
@@ -342,7 +391,12 @@
   //    Google Maps set up
   handler = Gmaps.build('Google');
   handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-    markers = handler.addMarkers(<%=raw @hash.to_json %>, { draggable: true });
+    markers_json = <%=raw @hash.to_json %>;
+    markers = _.map(markers_json, function(marker_json){
+      marker = handler.addMarker(marker_json, { draggable: true });
+      _.extend(marker, marker_json);
+      return marker;
+    });
     handler.bounds.extendWith(markers);
     handler.fitMapToBounds();
 
@@ -352,15 +406,75 @@
 
   function listenToDragDrop(marker){
     google.maps.event.addListener(marker.getServiceObject(), 'dragend', function() {
-      updateFormLocation(marker.getServiceObject().getPosition());
+      updateFormLocation(marker.getServiceObject().getPosition(), marker.id);
     });
   }
 
   // Other functions
   // Update form attributes with given coordinates
-  function updateFormLocation(latLng) {
+  function updateFormLocation(latLng, sub_id) {
+    var route_id = $("#begin_run_button").val();
+
+    fancyConfirm("Are you sure you want to move this marker?", function (ret) {
+      if (ret) {
+        $.ajax({
+          url : 'update_route',
+          type : "post",
+          data : { lat: latLng.lat(), lon: latLng.lng(), route_id: route_id, sub_id: sub_id}
+        });
+        $('#marker-message').show();
+        setTimeout(function() {
+          $('#marker-message').fadeOut();
+        }, 4000);
+
+      }
+
+    });
+
     $('#centre_latitude').val(latLng.lat());
     $('#centre_longitude').val(latLng.lng());
     $('#centre_gmaps_zoom').val(handler.getMap().getZoom());
+  }
+
+  $(".save-marker").click( function() {
+    if ($(".marker-url").val() != "")
+    {
+      $.ajax({
+        url : 'modify_marker',
+        type : "post",
+        data : { marker_url: $(".marker-url").val(), route_id: $("#begin_run_button").val()}
+      });
+    }
+  } );
+  function fancyConfirm(msg, callback) {
+    var ret;
+    var myContent = "" +
+        "<div id=\"fancyConfirm_Box\">" +
+        "<div id=\"fancyConfirm_Title\">Are you sure?</div>" +
+        "<div id=\"fancyConfirm_Inner\">" + msg + "</div>" +
+        "<div id=\"fancyConfirm_Buttons\">" +
+        "<input id=\"fancyConfirm_Yes\" type=\"button\" value=\"Yes\">" +
+        "<input id=\"fancyConfirm_No\" type=\"button\" value=\"No\">" +
+        "</div></div>";
+
+    $.fancybox({
+      modal: true,
+      content: myContent,
+      padding: 0,
+      afterShow: function () {
+        $("#fancyConfirm_No").click(function () {
+          ret = false;
+          $.fancybox.close();
+        });
+        $("#fancyConfirm_Yes").click(function () {
+          ret = true;
+          $.fancybox.close();
+        });
+      },
+      beforeClose: function () {
+        callback.call(this, ret);
+      }
+    });
+
   }
 </script>

@@ -1,9 +1,39 @@
+# Clearance testing.
+# https://robots.thoughtbot.com/faster-tests-sign-in-through-the-back-door
+class ClearanceBackDoor
+  def initialize(app)
+    @app = app
+  end
+
+  def call(env)
+    @env = env
+    sign_in_through_the_back_door
+    @app.call(@env)
+  end
+
+  private
+
+  def sign_in_through_the_back_door
+    if user_id = params['as']
+      user = User.find(user_id)
+      @env[:clearance].sign_in(user)
+    end
+  end
+
+  def params
+    Rack::Utils.parse_query(@env['QUERY_STRING'])
+  end
+end
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
+
+  config.middleware.use Clearance::BackDoor
+
   config.cache_classes = false
 
   # Do not eager load code on boot.

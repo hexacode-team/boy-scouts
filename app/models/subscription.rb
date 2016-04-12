@@ -3,7 +3,7 @@ class Subscription < ActiveRecord::Base
     belongs_to :group
     has_many :payments
 
-    geocoded_by :street_address
+    reverse_geocoded_by :latitude, :longitude
     after_validation :geocode
 
 

@@ -1,5 +1,17 @@
 Rails.application.routes.draw do
 
+  resources :passwords, controller: "clearance/passwords", only: [:create, :new]
+  resource :session, controller: "clearance/sessions", only: [:create]
+
+  resources :users, controller: "clearance/users", only: [:create] do
+    resource :password,
+      controller: "clearance/passwords",
+      only: [:create, :edit, :update]
+  end
+
+  get "/sign_in" => "clearance/sessions#new", as: "sign_in"
+  delete "/sign_out" => "clearance/sessions#destroy", as: "sign_out"
+  get "/sign_up" => "clearance/users#new", as: "sign_up"
   get 'welcome/index'
   root 'welcome#index'
   
@@ -7,6 +19,8 @@ Rails.application.routes.draw do
   get 'routes/view_routes/:id/' => 'routes#view_routes_for_group', as: :view_routes_for_group
   get 'routes/:id/' => 'routes#view_route', as: :view_route
   post 'routes/run' => 'routes#get_run_info', as: :view_route_run_info
+  post 'routes/update_route' => 'routes#update_route', as: :update_route
+  post 'routes/modify_marker' => 'routes#modify_marker', as: :modify_marker
 
   get 'group/view_groups' => 'group#view_groups', as: :view_groups
   get 'group/view_group'
@@ -34,7 +48,6 @@ Rails.application.routes.draw do
 
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

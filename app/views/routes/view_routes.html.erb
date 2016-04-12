@@ -4,13 +4,16 @@
   </div>
   <div class = "page" style="display: none;">grouppage</div>
 <% else %>
-  <% @routes.each do |route| %>
-    <div class="callout">
-    <a href="<%= view_route_url(route.id) %>">
-      <h4 class=""><%= route.name %></h4>
-    </a>
-    <p class=""><%= route.group.name %></p>
+    <div class="callouts">
+      <% @routes.each do |route| %>
+        <div class="callout">
+        <a href="<%= view_route_url(route.id) %>">
+          <h4 class=""><%= route.name %>&nbsp&nbsp<img src="<%= route.marker %>"></h4>
+        </a>
+        <p class=""><%= route.group.name %></p>
+        </div>
+      <% end %>
     </div>
-  <% end %>
   <div id="page" style="display: none;">routepage</div>
+    <%= render partial: "routes_partial" %>
 <% end %>

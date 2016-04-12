@@ -4,18 +4,17 @@
 .hide-unless-run{
 
 }
-
-#route-header{
-  margin: 5em 3em 5em 3em;
+.callouts {
+  display: inline-block;
 }
-
 #route-header div button{
   margin-top:1.5em;
   margin-left:1em;
 }
 
 #route-content{
-  margin-left:5%;
+  margin-top: 20px;
+  margin-left:20px;
 }
 
 #route-name{
@@ -28,13 +27,138 @@
 
 .gmap {
   width: 800px;
+  display: inline-block;
+  vertical-align: top;
+}
+.gmap.all-routes {
+  margin: 30px;
+}
+.save-marker{
+  width: 145px;
+  height: 50px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 30px;
+  border-radius: 6px;
+}
+
+.add-maintenance-note {
+  height: 34px;
+}
+
+#my-icon-select {
+  height: 400px;
+}
+
+/*  Fancybox
+----------------------- */
+
+.fancy-pop-up {
+  display: none;
+}
+
+#fancyConfirm_Box {
+  width: 450px;
+  min-height: 100px;
+  padding: 0;
+}
+#fancyConfirm_Title {
+  background: #f2f2f2;
+  text-align: center;
+  padding: 10px 25px;
+  border-bottom:1px solid #d2d2d2;
+  color: #222;
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  -webkit-border-radius: 10px 10px 0 0;
+  -moz-border-radius: 10px 10px 0 0;
+  border-radius: 10px 10px 0 0;
+}
+#fancyConfirm_Inner {
+  padding: 35px 25px;
+  text-align: center;
+  font-weight: bold;
+}
+#fancyConfirm_Buttons {
+  padding: 0 25px 25px;
+  text-align: center;
+}
+#fancyConfirm_Yes {
+  color: #333;
+  background:#ddd;
+  border:1px solid #bbb;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  padding: 7px 28px;
+  margin: 15px;
+  outline: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  text-decoration: none;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -ms-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+#fancyConfirm_Yes:hover {
+  border: 1px solid #09467e;
+  background: #2884d8;
+  color:#fff;
+}
+#fancyConfirm_No {
+  color: #333;
+  background:#ddd;
+  border:1px solid #bbb;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  padding: 7px 28px;
+  margin: 15px;
+  outline: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  text-decoration: none;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -ms-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+#fancyConfirm_No:hover {
+  border: 1px solid #09467e;
+  background: #2884d8;
+  color:#fff;
+}
+.fancybox-overlay .fancybox-skin {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
 }
 
 @media only screen and (max-width: 768px) {
   .gmap {
     width: 95%;
+    margin: 0 0 20px !important;
   }
   .gmap #map {
     width: 100% !important;
+  }
+  .gmap-help {
+    display: none;
+  }
+  .marker-url {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 370px) {
+  .col-xs-3 {
+    text-align: center;
+    min-width: 100px;
   }
 }
