@@ -57,6 +57,7 @@
         <div>Empty Route!</div>
       <% else%>
         <div class="gmap">
+          <h4 id="marker-message">Marker location saved</h4>
           <div id="map" style='width: 800px; height: 400px;'></div>
         </div>
       <% end %>
@@ -145,6 +146,8 @@
       var run; //Which run are we currently displaying information for.
       var route_id = <%= @route.id %>;
       var run_is_started = false;
+
+      $('#marker-message').hide();
 
       iconSelect = new IconSelect("my-icon-select",
           {'selectedIconWidth':32,
@@ -419,6 +422,11 @@
           type : "post",
           data : { lat: latLng.lat(), lon: latLng.lng(), route_id: route_id, sub_id: sub_id}
         });
+        $('#marker-message').show();
+        setTimeout(function() {
+          $('#marker-message').fadeOut();
+        }, 4000);
+
       }
 
     });
