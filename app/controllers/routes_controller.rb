@@ -74,13 +74,13 @@ class RoutesController < ApplicationController
     @subscription.update_attribute(:latitude, params[:lat])
     @subscription.update_attribute(:longitude, params[:lon])
 
-    lat = params[:lat]
-    lon = params[:lon]
-    query = "#{lat},#{lon}"
-    first_result = Geocoder.search(query).first
-    if first_result.present?
-      @subscription.update_attribute(:address_line_1, first_result.street_address)
-    end
+    # lat = params[:lat]
+    # lon = params[:lon]
+    # query = "#{lat},#{lon}"
+    # first_result = Geocoder.search(query).first
+    # if first_result.present?
+    #   @subscription.update_attribute(:address_line_1, first_result.street_address)
+    # end
 
     @subscription.save
     redirect_to view_route_path(params[:route_id])

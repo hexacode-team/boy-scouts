@@ -410,10 +410,16 @@
   // Update form attributes with given coordinates
   function updateFormLocation(latLng, sub_id) {
     var route_id = $("#begin_run_button").val();
-    $.ajax({
-      url : 'update_route',
-      type : "post",
-      data : { lat: latLng.lat(), lon: latLng.lng(), route_id: route_id, sub_id: sub_id}
+
+    fancyConfirm("Are you sure you want to move this marker?", function (ret) {
+      if (ret) {
+        $.ajax({
+          url : 'update_route',
+          type : "post",
+          data : { lat: latLng.lat(), lon: latLng.lng(), route_id: route_id, sub_id: sub_id}
+        });
+      }
+
     });
 
     $('#centre_latitude').val(latLng.lat());
@@ -431,4 +437,35 @@
       });
     }
   } );
+  function fancyConfirm(msg, callback) {
+    var ret;
+    var myContent = "" +
+        "<div id=\"fancyConfirm_Box\">" +
+        "<div id=\"fancyConfirm_Title\">Are you sure?</div>" +
+        "<div id=\"fancyConfirm_Inner\">" + msg + "</div>" +
+        "<div id=\"fancyConfirm_Buttons\">" +
+        "<input id=\"fancyConfirm_Yes\" type=\"button\" value=\"Yes\">" +
+        "<input id=\"fancyConfirm_No\" type=\"button\" value=\"No\">" +
+        "</div></div>";
+
+    $.fancybox({
+      modal: true,
+      content: myContent,
+      padding: 0,
+      afterShow: function () {
+        $("#fancyConfirm_No").click(function () {
+          ret = false;
+          $.fancybox.close();
+        });
+        $("#fancyConfirm_Yes").click(function () {
+          ret = true;
+          $.fancybox.close();
+        });
+      },
+      beforeClose: function () {
+        callback.call(this, ret);
+      }
+    });
+
+  }
 </script>
