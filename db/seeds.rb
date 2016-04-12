@@ -68,12 +68,15 @@ route3 = Route.create! :name => "Route03", :group_id => group2.id unless Route.f
 route1.users << user2
 route1.users << user3
 
-sub1 = Subscription.create! :first_name => "FirstName01", :last_name => "LastName01", :route_id => route1.id, :address_line_1 => "1234 Fake Street",
-                            :city => "Fake City", :zip => "00001", :state => "Fake Station", :qty => 1, :print_sequence => 1 unless Subscription.find_by_first_name("FirstName01")
-sub2 = Subscription.create! :first_name => "FirstName02", :last_name => "LastName02", :route_id => route1.id, :address_line_1 => "1235 Fake Street",
-                            :city => "Fake City", :zip => "00002", :state => "Fake Station", :qty => 2, :print_sequence => 3 unless Subscription.find_by_first_name("FirstName02")
-sub3 = Subscription.create! :first_name => "FirstName03", :last_name => "LastName03", :route_id => route1.id, :address_line_1 => "1236 Fake Street",
-                            :city => "Fake City", :zip => "00006", :state => "Fake Station", :qty => 3, :print_sequence => 2 unless Subscription.find_by_first_name("FirstName03")
+sub1 = Subscription.create! :first_name => "FirstName01", :last_name => "LastName01", :route_id => route1.id, :address_line_1 => "106 Walton Dr",
+                            :city => "College Station", :zip => "77840", :state => "Texas", :qty => 1, :print_sequence => 1 unless Subscription.find_by_first_name("FirstName01")
+sub2 = Subscription.create! :first_name => "FirstName02", :last_name => "LastName02", :route_id => route1.id, :address_line_1 => "1045 S Texas Ave",
+                            :city => "College Station", :zip => "77840", :state => "Texas", :qty => 2, :print_sequence => 3 unless Subscription.find_by_first_name("FirstName02")
+sub3 = Subscription.create! :first_name => "FirstName03", :last_name => "LastName03", :route_id => route2.id, :address_line_1 => "307 University Dr",
+                            :city => "College Station", :zip => "77840", :state => "Texas", :qty => 3, :print_sequence => 2 unless Subscription.find_by_first_name("FirstName03")
+sub4 = Subscription.create! :first_name => "FirstName04", :last_name => "LastName04", :route_id => route3.id, :address_line_1 => "108 Poplar St",
+                            :city => "College Station", :zip => "77840", :state => "Texas", :qty => 1, :print_sequence => 1 unless Subscription.find_by_first_name("FirstName04")
+
 
 #create a current payment for sub 1, and an old payment for sub2
 pay1 = Payment.create! :subscription_id => sub1.id, :amount_paid => sub1.qty * 30, :start_date => DateTime.now,
