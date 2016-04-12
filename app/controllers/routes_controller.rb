@@ -4,6 +4,24 @@ class RoutesController < ApplicationController
   def view_routes
     #displays list of routes that signed in user has ability to see.
     @routes = Route.routes_for(current_user) || [] unless current_user.nil?
+
+    @hash = []
+
+    @routes.each do |route|
+      @temphash = Gmaps4rails.build_markers(route.subscriptions) do |subscription, marker|
+        marker.lat subscription.latitude
+        marker.lng subscription.longitude
+        marker.infowindow subscription.name
+        marker.json({ id: subscription.id})
+        marker.picture({
+                           :url => route.marker,
+                           :width   => 32,
+                           :height  => 32
+                       })
+
+      end
+      @hash += @temphash
+    end
   end
 
   def view_routes_for_group
@@ -23,14 +41,14 @@ class RoutesController < ApplicationController
 
     @marker_url = @route.marker
 
+    @hash = []
+
     #Building markers for google maps
     @hash = Gmaps4rails.build_markers(@route.subscriptions) do |subscription, marker|
       marker.lat subscription.latitude
       marker.lng subscription.longitude
       marker.infowindow subscription.name
       marker.json({ id: subscription.id})
-      #TODO: Add 'subscription.marker into db and assign pngs for each subscription'
-      #TODO: Create a form to update subscription coordinates from the draggable icons
       marker.picture({
                          :url => @marker_url,
                          :width   => 32,
