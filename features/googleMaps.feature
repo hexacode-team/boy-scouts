@@ -37,7 +37,7 @@ Feature: Integration with Google Maps
   Scenario: Test Change Icon on google map
     Given I am testing googleMaps on the routes 395 page
     When I am admin user
-    Then change the icons on the map to "http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_purple.png"
+    Then change the icons on the map to "https://mt.googleapis.com/vt/icon/name=icons/onion/1494-wht-circle-blank-4x.png&filter=ff009D57&scale=1.0"
 
 
   Scenario: Test change location on google map
