@@ -12,8 +12,8 @@ window.onload = function(e) {
     icon.setAttribute("class", "icon-chevron-right");
     icon.setAttribute("id", "navbar-icon")
     sidebar_button.appendChild(icon);
-    
-    
+
+
     //Creating top navigation
     var meta = document.createElement("meta");
     meta.setAttribute("name", "viewport");
@@ -37,11 +37,11 @@ window.onload = function(e) {
     var navbar_header = document.getElementsByClassName("navbar-header").item(0);
     page_check(sidebar_button, navbar_header, navbar_button)
     propogateHeaders();
-    
+
 
     //Removes G image from navbar
     var navbar_nav = document.getElementsByClassName("navbar-nav").item(0);
-    navbar_nav.removeChild(navbar_nav.children[3]); 
+    navbar_nav.removeChild(navbar_nav.children[3]);
 
     //Add class admin-header to navbar-header for css purposes
     var header = document.getElementsByClassName("navbar-header").item(0);
@@ -90,10 +90,12 @@ function propogateHeaders() {
             var att = document.createAttribute("data-header");
             att.value = header_names[j];
             tds.item(j).setAttributeNode(att);
-            var children = tds.item(j).getElementsByTagName("a");
 
             //Add &nbsp to empty tds to fix styling issue
-            if (tds.item(j).innerHTML == "" || tds.item(j).innerHTML == "\n" || (children.length != 0 && children.item(0).innerText == ""))
+            var item = tds.item(j);
+            var children = item.getElementsByTagName("a");
+            var list = item.getElementsByTagName("ul");
+            if (item.innerHTML == "" || item.innerHTML == "\n" || (children.length != 0 && children.item(0).innerText == "") && list.length == 0)
                 tds.item(j).innerHTML = "&nbsp";
         }
     }
