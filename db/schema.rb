@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160409024403) do
+ActiveRecord::Schema.define(version: 20160425230604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,21 @@ ActiveRecord::Schema.define(version: 20160409024403) do
     t.integer "user_id"
   end
 
+  create_table "subscribers", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "cell_phone"
+    t.string   "landline"
+    t.string   "address_line_1"
+    t.string   "address_line_2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
   create_table "subscriptions", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -113,7 +128,10 @@ ActiveRecord::Schema.define(version: 20160409024403) do
     t.datetime "updated_at",        null: false
     t.float    "latitude"
     t.float    "longitude"
+    t.integer  "subscriber_id"
   end
+
+  add_index "subscriptions", ["subscriber_id"], name: "index_subscriptions_on_subscriber_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
     t.integer  "run_id"
@@ -148,4 +166,5 @@ ActiveRecord::Schema.define(version: 20160409024403) do
 
   add_foreign_key "members_runs", "runs"
   add_foreign_key "members_runs", "users"
+  add_foreign_key "subscriptions", "subscribers"
 end

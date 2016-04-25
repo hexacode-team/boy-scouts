@@ -1,7 +1,8 @@
 class Subscription < ActiveRecord::Base
     belongs_to :route
     belongs_to :group
-    has_many :payments
+    belongs_to    :subscriber
+    has_many   :payments
 
     reverse_geocoded_by :latitude, :longitude
     after_validation :geocode
@@ -12,6 +13,9 @@ class Subscription < ActiveRecord::Base
     end
 
     def name
+      if last_name.nil? || first_name.nil?
+        return ''
+      end
       return last_name + ', ' + first_name 
     end
 

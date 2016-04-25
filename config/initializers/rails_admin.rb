@@ -21,6 +21,12 @@ RailsAdmin.config do |config|
     end
   end
 
+  # config.model "Subscription" do
+  #   edit do
+  #     field :subscriber, :belongs_to_association
+  #   end
+  # end
+
   config.label_methods << :full_name
   config.label_methods << :role
 
