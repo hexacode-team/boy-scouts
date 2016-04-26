@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'passenger'
+
 # FACTORY GURL!
 gem 'factory_girl_rails'
 
