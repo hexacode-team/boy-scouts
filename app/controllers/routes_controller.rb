@@ -11,7 +11,7 @@ class RoutesController < ApplicationController
       @temphash = Gmaps4rails.build_markers(route.subscriptions) do |subscription, marker|
         marker.lat subscription.latitude
         marker.lng subscription.longitude
-        marker.infowindow subscription.name
+        marker.infowindow subscription.street_address
         marker.json({ id: subscription.id})
         marker.picture({
                            :url => route.marker,
@@ -47,7 +47,7 @@ class RoutesController < ApplicationController
     @hash = Gmaps4rails.build_markers(@route.subscriptions) do |subscription, marker|
       marker.lat subscription.latitude
       marker.lng subscription.longitude
-      marker.infowindow subscription.name
+      marker.infowindow subscription.street_address
       marker.json({ id: subscription.id})
       marker.picture({
                          :url => @marker_url,
@@ -85,7 +85,6 @@ class RoutesController < ApplicationController
     @subscription.save
     redirect_to view_route_path(params[:route_id])
     #If the user id not a troop leader or an admin, they cannot change markers
-    raise CanCan::AccessDenied.new("You are not authorized to change marker locations!") unless current_user.troop_leader? || current_user.admin?
   end
 
   def get_run_info

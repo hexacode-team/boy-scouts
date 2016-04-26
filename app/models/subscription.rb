@@ -4,8 +4,16 @@ class Subscription < ActiveRecord::Base
     belongs_to    :subscriber
     has_many   :payments
 
-    reverse_geocoded_by :latitude, :longitude
-    after_validation :geocode
+    geocoded_by :street_address
+
+    after_validation :check_geo
+
+    def check_geo
+      if self.latitude.nil?
+        geocode
+      end
+
+    end
 
 
     def street_address
