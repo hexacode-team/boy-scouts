@@ -432,7 +432,8 @@ CREATE TABLE subscribers (
     state character varying,
     zip character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    subscription_amount integer
 );
 
 
@@ -460,7 +461,7 @@ ALTER SEQUENCE subscribers_id_seq OWNED BY subscribers.id;
 
 
 --
--- Name: subscriptions; Type: TABLE; Schema: public; Owner: scoutsfd; Tablespace: 
+-- Name: subscriptions; Type: TABLE; Schema: public; Owner: scoutsfd; Tablespace:
 --
 
 CREATE TABLE subscriptions (
@@ -487,7 +488,11 @@ CREATE TABLE subscriptions (
     updated_at timestamp without time zone NOT NULL,
     latitude double precision,
     longitude double precision,
-    subscriber_id integer
+    subscriber_id integer,
+    status text,
+    renewal_grp real,
+    qty_comp integer,
+    subscription_notes text
 );
 
 
@@ -515,7 +520,7 @@ ALTER SEQUENCE subscriptions_id_seq OWNED BY subscriptions.id;
 
 
 --
--- Name: tasks; Type: TABLE; Schema: public; Owner: scoutsfd; Tablespace: 
+-- Name: tasks; Type: TABLE; Schema: public; Owner: scoutsfd; Tablespace:
 --
 
 CREATE TABLE tasks (
@@ -554,7 +559,7 @@ ALTER SEQUENCE tasks_id_seq OWNED BY tasks.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: scoutsfd; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: scoutsfd; Tablespace:
 --
 
 CREATE TABLE users (
@@ -1139,13 +1144,13 @@ SELECT pg_catalog.setval('roles_id_seq', 7, true);
 COPY routes (id, name, group_id, print_sequence, created_at, updated_at, marker) FROM stdin;
 399	Orange - Pebble Creek	3	102	2015-05-09 18:06:33.717433	2015-05-09 22:42:22.93207	\N
 398	GBL - George Bush Library	3	101	2015-05-09 18:06:33.717336	2015-05-09 22:42:22.933617	\N
-392	Bryan	3	20	2015-05-09 18:06:33.71673	2015-05-09 22:42:22.940685	\N
 395	Red	3	50	2015-05-09 18:06:33.717053	2016-04-10 22:40:36.850997	http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_purple.png
 393	Green 1 - South	3	30	2015-05-09 18:06:33.716841	2016-04-11 22:26:58.28428	http://www.google.com/mapfiles/arrow.png
 394	Green 2 - North	3	40	2015-05-09 18:06:33.716956	2016-04-12 03:58:21.390469	http://maps.google.com/mapfiles/dir_walk_57.png
 396	Yellow (w GBL)	3	70	2015-05-09 18:06:33.717148	2016-04-12 03:58:50.610827	http://maps.google.com/mapfiles/kml/pal4/icon53.png
 397	Flag - Outer Rim	3	100	2015-05-09 18:06:33.717243	2016-04-12 04:24:02.0302	http://maps.google.com/mapfiles/kml/pal4/icon49.png
 391	Blue	3	10	2015-05-09 18:06:33.716219	2016-04-20 19:20:39.025427	http://maps.google.com/mapfiles/kml/pal4/icon53.png
+392	Bryan	3	20	2015-05-09 18:06:33.71673	2016-05-03 00:17:37.734671	http://maps.google.com/mapfiles/kml/pal4/icon52.png
 \.
 
 
@@ -1200,6 +1205,9 @@ COPY runs (id, route_id, datetime_started, datetime_ended, am_pm, created_at, up
 21	397	2016-04-26 00:40:21.313308	2016-04-26 02:50:12.57541	am	2016-04-26 00:40:21.314816	2016-04-26 02:50:12.586527
 22	391	2016-04-26 02:50:22.986173	\N	am	2016-04-26 02:50:22.987745	2016-04-26 02:50:22.987745
 23	393	2016-05-01 23:13:35.932188	2016-05-01 23:13:48.843522	am	2016-05-01 23:13:35.945202	2016-05-01 23:13:48.844721
+24	392	2016-05-03 00:17:17.857092	2016-05-03 00:17:55.06082	am	2016-05-03 00:17:17.858418	2016-05-03 00:17:55.06211
+25	397	2016-05-03 00:25:05.509216	2016-05-03 00:25:17.923017	am	2016-05-03 00:25:05.510926	2016-05-03 00:25:17.924665
+26	396	2016-05-03 00:25:51.534778	2016-05-03 00:42:11.502655	am	2016-05-03 00:25:51.536033	2016-05-03 00:42:11.504101
 \.
 
 
@@ -1207,7 +1215,7 @@ COPY runs (id, route_id, datetime_started, datetime_ended, am_pm, created_at, up
 -- Name: runs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: scoutsfd
 --
 
-SELECT pg_catalog.setval('runs_id_seq', 23, true);
+SELECT pg_catalog.setval('runs_id_seq', 26, true);
 
 
 --
@@ -1245,6 +1253,15 @@ COPY runs_users (id, run_id, user_id) FROM stdin;
 29	21	602
 30	22	598
 31	23	595
+32	24	595
+33	24	596
+34	24	597
+35	25	599
+36	25	601
+37	25	631
+38	26	596
+39	26	598
+40	26	599
 \.
 
 
@@ -1252,7 +1269,7 @@ COPY runs_users (id, run_id, user_id) FROM stdin;
 -- Name: runs_users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: scoutsfd
 --
 
-SELECT pg_catalog.setval('runs_users_id_seq', 31, true);
+SELECT pg_catalog.setval('runs_users_id_seq', 40, true);
 
 
 --
@@ -1284,7 +1301,88 @@ COPY schema_migrations (version) FROM stdin;
 -- Data for Name: subscribers; Type: TABLE DATA; Schema: public; Owner: scoutsfd
 --
 
-COPY subscribers (id, first_name, last_name, email, cell_phone, landline, address_line_1, address_line_2, city, state, zip, created_at, updated_at) FROM stdin;
+COPY subscribers (id, first_name, last_name, email, cell_phone, landline, address_line_1, address_line_2, city, state, zip, created_at, updated_at, subscription_amount) FROM stdin;
+1	Donald G	Barker	\N	\N	\N	1100 Timm Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+2	Virginia	Bockholt	\N	\N	\N	1102 Timm Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+3	Mary	Miller	\N	\N	\N	1104 Timm Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+4	Ted/Ellen	Fox	\N	\N	\N	1103 Timm Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+5	Dorothy	Holecek	\N	\N	\N	1105 Timm Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+6	Elizabeth	Blodgett	\N	\N	\N	409 Timber St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+7	Imadel	Bachus	\N	\N	\N	306 Timber St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+8	Michael	Stavinoha	\N	\N	\N	304 Timber St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+9	Connie	Dodd	\N	\N	\N	1307 Leacrest Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+10	Bill J.	Cooley	\N	\N	\N	503 Glade St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+11	Mary	Ketchersid	\N	\N	\N	1301 Timm Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	60
+12	Parsonage?	Grace	\N	\N	\N	1406 Village Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	0
+13	Juan	Rodriguez	\N	\N	\N	1220 Orr Str	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+14	David & Diane	Chester	\N	\N	\N	1201 Glade St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+15	Jo	Engelking	\N	\N	\N	3727 East 29th	\N	Bryan	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+16	Peter	Lockett	\N	\N	\N	3727 East 29th	\N	Bryan	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+17	Michael	Eckart	\N	\N	\N	1215 Glade St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+18	Peter	Hitchcock	\N	\N	\N	1217 Glade St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+19	Christopher	Mathewson	\N	\N	\N	1307 Glade St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+20	David	Evans	\N	\N	\N	1705 Carter Creek Pkwy	\N	Bryan	TX	77802	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+21	Angela	Morehead	\N	\N	\N	1905 Carter Creek Pkwy	\N	Bryan	TX	77802	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+22	Don	Smith	\N	\N	\N	704 Inwood Dr 	\N	Bryan	TX	77802	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+23	Lesa	Colson	\N	\N	\N	506 Kyle	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+24	Ted & Nancy	Smith	\N	\N	\N	1401 Tanglewood Dr	\N	Wichita Falls	TX	76309	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+25	W.R.	Lancaster	\N	\N	\N	303 Dexter Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+26	Laura	Arth	\N	\N	\N	305 Dexter Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+27	Nancy	Schneider	\N	\N	\N	405 Dexter Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+28	Matt	Poling	\N	\N	\N	504 Dexter Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+29	Jennifer	Roberts	\N	\N	\N	505 Dexter Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+30	Ken	Matthews	\N	\N	\N	602 West Dexter Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+31	Russ	Harvell	\N	\N	\N	504 Guernsey St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+32	Quint	Floyd	\N	\N	\N	302 Fidelity St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+33	John	Lampo	\N	\N	\N	802 Hereford St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+34	Eileen	Kulvesky	\N	\N	\N	804 Hawthorn St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+35	Gayle	Schultz	\N	\N	\N	920 Hawthorn St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+36	Debbie	Fry	\N	\N	\N	912 Hawthorn St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+37	Frances	Martin	\N	\N	\N	1204 Winding Road	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+38	Brett	Giroir	\N	\N	\N	918 Hawthorn St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+39	Doug and Cindy	Roesler	\N	\N	\N	1205 Winding Road	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+40	Gayle	Schultz	\N	\N	\N	920 Hawthorn St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+41	Pam	Kelling	\N	\N	\N	911 Hawthorn St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+42	Laura	Peycke	\N	\N	\N	1002 Winding Rd	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+43	Deborah	Jasek	\N	\N	\N	1007 Winding Rd	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+44	Manda	Rosser	\N	\N	\N	104 Lee Ave	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+45	Amy and Tim	Leach	\N	\N	\N	211 Pershing Ave	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+46	F.J.	Moreno	\N	\N	\N	213 Pershing Ave	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+47	Mark & Tammy	Stein	\N	\N	\N	218 Pershing	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	60
+48	Jeannie	Barrett	\N	\N	\N	118 Pershing Ave	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+49	Gaines	West	\N	\N	\N	200 Suffolk Ave	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+50	Doug and Cindy	Roesler	\N	\N	\N	1205 Winding Road	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+51	Hays & Robin	Glover	\N	\N	\N	203 Suffolk Ave	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+52	Hays & Robin	Glover	\N	\N	\N	203 Suffolk Ave	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+53	Gail	Hensley	\N	\N	\N	310 Suffolk Ave	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+54	Greg	Gorman	\N	\N	\N	315 Suffolk Ave	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+55	Buzz	Pruit	\N	\N	\N	900 Park Place	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+56	Theresa	Schimelpfening	\N	\N	\N	316 Pershing Ave	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+57	Mark & Tammy	Stein	\N	\N	\N	218 Pershing	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+58	Will & Amber	Reed	\N	\N	\N	906 Park Place	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+59	James	Matson	\N	\N	\N	1002 Park Place	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+60	Jean	Mays	\N	\N	\N	1111 Park Place	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+61	Robert	McGehee	\N	\N	\N	311 Lee Ave	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+62	Vicky	Harrison	\N	\N	\N	207 Lee Ave	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+63	Alice	Jimenez	\N	\N	\N	1220 South Dexter Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+64	Doug and Cindy	Roesler	\N	\N	\N	1205 Winding Road	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+65	Mary	Zingaro	\N	\N	\N	1813 Medina Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+66	Kathleen	Kenefick	\N	\N	\N	1815 Medina Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+67	James	Mondshine	\N	\N	\N	1814 Hondo Dr	\N	College Station	TX	77440	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+68	Southwood	Church	\N	\N	\N	1901 Harvey Mitchell Pkwy S.	\N	College Station	TX	77845	2016-05-03 03:50:00	2016-05-03 03:50:00	0
+69	Sharon	Richmond	\N	\N	\N	1813 Hondo Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+70	Mary	Dallis	\N	\N	\N	1816 Shadowwood Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+71	Mary	Bryan	\N	\N	\N	1813 Shadowwood Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+72	Patti	Ljungdahl	\N	\N	\N	1822 Shadowwood Dr	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+73	Patricia	Rand	\N	\N	\N	1801 Sabine Ct	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	60
+74	Peggy	Crittenden	\N	\N	\N	1803 Laura Lane	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+75	Richard	Williams	\N	\N	\N	1714 Glade St	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	60
+76	Albert	Schneider	\N	\N	\N	1401 Angelina Cir	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+77	David	Jones	\N	\N	\N	1404 Angelina Cir	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	30
+78	Church	St Thomas	\N	\N	\N	906 George Bush Dr West	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	0
+79	Will King	George Bush Presidential Library	\N	\N	\N	1000 George Bush Dr West	\N	College Station	TX	77845	2016-05-03 03:50:00	2016-05-03 03:50:00	420
+80	Hillel	Foundation	\N	\N	\N	800 George Bush	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	0
+81	Grace	Church	\N	\N	\N	700 Anderson Street	\N	College Station	TX	77840	2016-05-03 03:50:00	2016-05-03 03:50:00	0
 \.
 
 
@@ -1292,132 +1390,95 @@ COPY subscribers (id, first_name, last_name, email, cell_phone, landline, addres
 -- Name: subscribers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: scoutsfd
 --
 
-SELECT pg_catalog.setval('subscribers_id_seq', 1, false);
+SELECT pg_catalog.setval('subscribers_id_seq', 1, true);
 
 
 --
 -- Data for Name: subscriptions; Type: TABLE DATA; Schema: public; Owner: scoutsfd
 --
 
-COPY subscriptions (id, first_name, last_name, email, cell_phone, landline, route_id, print_sequence, address_line_1, address_line_2, city, state, zip, qty, group_id, last_invoice_sent, renewal_due_date, notes, maintenance_notes, created_at, updated_at, latitude, longitude, subscriber_id) FROM stdin;
-5080	Manager of	Tire Max 25		979-696-3200	\N	397	20	2319 Texas Ave S	\N	College Station	TX	77840	2	\N	2013-06-12 00:00:00	2013-06-14 00:00:00	biz hrs		2015-05-09 18:06:33.728569	2016-04-07 04:16:47.867139	30.6105182000000013	-96.3119327999999939	\N
-5081	Manager of	Firestone		979-764-0004	\N	397	30	2400 Texas Ave S	\N	College Station	TX	77840	1	\N	2013-06-12 00:00:00	2013-06-14 00:00:00	biz hrs		2015-05-09 18:06:33.728705	2016-04-07 04:16:54.574424	30.6086582999999983	-96.3115174999999937	\N
-5082	Manager of	Sonic Drive In	store1851@sonicpartner.ne	979-693-0087	\N	397	40	2900 Texas Ave S	\N	College Station	TX	77845	2	\N	2013-06-12 00:00:00	2013-06-14 00:00:00	biz hrs		2015-05-09 18:06:33.728862	2016-04-07 04:16:55.18644	30.5979875999999997	-96.2985260999999895	\N
-5083	Southwood	Church			\N	395	45	2701 Sallie Lane	\N	College Station	TX	77845	4	\N	2010-01-01 00:00:00	2001-01-01 00:00:00		Need 1 cap 11/14. Facing HS on side street,	2015-05-09 18:06:33.728993	2016-04-10 22:26:40.107574	30.5820526999999984	-96.3208946000000026	\N
-5085		Feugo's			\N	392	20	101 Poplar Street	\N	College Station	TX	77840	3	\N	2013-08-07 00:00:00	2013-09-11 00:00:00			2015-05-09 18:06:33.729286	2016-04-07 04:16:56.896604	30.6273961999999997	-96.334225399999994	\N
-5086	Don	Smith			\N	392	15	704 Inwood Dr	\N	Bryan	TX	77802	1	\N	2013-10-20 00:00:00	2013-11-11 00:00:00			2015-05-09 18:06:33.729424	2016-04-07 04:16:57.531437	30.6347489999999993	-96.3417389999999898	\N
-5087	Hillary	Jessup	hillary@jessup1.com	979-693-1749	\N	394	130	115 Lee Ave	\N	College Station	TX	77840	1	\N	2013-10-20 00:00:00	2013-11-11 00:00:00	DRG Called 11/2 - she will go to web		2015-05-09 18:06:33.729552	2016-04-07 04:16:58.099043	30.6107853999999904	-96.3302229999999895	\N
-5088	Vicky	Harrison		979-696-5952	\N	394	120	207 Lee Ave	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2014-06-14 00:00:00			2015-05-09 18:06:33.729675	2016-04-07 04:16:58.663592	30.6097900000000003	-96.3291749999999922	\N
-5089	M.W.	Newman		979-696-9938	\N	391	30	211 Lee Ave	\N	College Station	TX	77840	1	\N	2014-01-11 00:00:00	2014-02-18 00:00:00			2015-05-09 18:06:33.729815	2016-04-07 04:16:59.236036	30.60961	-96.328959999999995	\N
-5090	Donald G	Barker		979-696-7962	\N	391	50	1100 Timm Dr	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2014-06-15 00:00:00			2015-05-09 18:06:33.729955	2016-04-07 04:16:59.772467	30.6071729999999995	-96.3262780000000021	\N
-5091	Virginia	Bockholt		979-696-6704	\N	391	60	1102 Timm Dr	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-05-28 00:00:00	Missed 9/11/13-  added 1 day		2015-05-09 18:06:33.730099	2016-04-07 04:17:00.355707	30.6073410000000017	-96.3260889999999961	\N
-5092	Mary	Miller		979-695-5267	\N	391	70	1104 Timm Dr	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-05-29 00:00:00			2015-05-09 18:06:33.730238	2016-04-07 04:17:00.984399	30.6075100000000013	-96.3258999999999901	\N
-5093	Ted/Ellen	Fox	ellenfox50@hotmail.com	979-696-7537	\N	391	80	1103 Timm Dr	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-05-28 00:00:00			2015-05-09 18:06:33.730373	2016-04-07 04:17:01.553192	30.6078459999999986	-96.3263260000000088	\N
-5094	Dorothy	Holecek		979-696-8120	\N	391	85	1105 Timm Dr	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-05-29 00:00:00			2015-05-09 18:06:33.730513	2016-04-07 04:17:02.147543	30.6079870000000014	-96.3261719999999997	\N
-5095	Elizabeth	Blodgett	earlywest@verizon.net	979-776-1925	\N	391	90	409 Timber St	\N	College Station	TX	77840	1	\N	2013-10-20 00:00:00	2013-11-01 00:00:00			2015-05-09 18:06:33.730723	2016-04-07 04:17:02.695442	30.6085239999999992	-96.3260889999999961	\N
-5096	Imadel	Bachus		979-696-4260	\N	391	100	306 Timber St	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-05-29 00:00:00	MOVED AWAY		2015-05-09 18:06:33.730918	2016-04-07 04:17:03.22917	30.6088989999999903	-96.3274239000000136	\N
-5097	Connie	Dodd		979-696-8351	\N	391	110	1307 Leacrest Dr	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-05-29 00:00:00		She has 1 flag of her own	2015-05-09 18:06:33.731096	2016-04-07 04:17:03.822415	30.6101589999999995	-96.3253489999999886	\N
-5098	Bill J.	Cooley		979-696-5142	\N	391	120	503 Glade St	\N	College Station	TX	77840	1	\N	2014-01-11 00:00:00	2014-02-12 00:00:00			2015-05-09 18:06:33.731239	2016-04-07 04:17:04.38052	30.6091119999999997	-96.3253929999999912	\N
-5099	Mary	Ketchersid	mlketcher2@yahoo.com	979.820.0108	\N	391	130	1301 Timm Dr	\N	College Station	TX	77840	1	\N	2013-10-20 00:00:00	2013-11-11 00:00:00		BOTH FLAGS T1300 11/2014	2015-05-09 18:06:33.731396	2016-04-07 04:17:04.957179	30.6088239999999985	-96.325228899999999	\N
-5100	Parsonage?	Grace			\N	391	135	1406 Village Dr	\N	College Station	TX	77840	1	\N	2010-01-01 00:00:00	2001-01-01 00:00:00		Well hidden, 1 ft from curb	2015-05-09 18:06:33.731519	2016-04-07 04:17:05.802528	30.6089780000000005	-96.322977999999992	\N
-5101	Damon/Krissy	Wallace		979-696-7586	\N	391	140	1405 Skrivanek Ct	\N	College Station	TX	77840	1	\N	2013-10-20 00:00:00	2013-11-11 00:00:00	DRG 11/2 Dropped - boys are scouts		2015-05-09 18:06:33.731642	2016-04-07 04:17:06.379288	30.608625	-96.3228879999999918	\N
-5102	R.J.	Hodges		979-764-7541	\N	391	150	903 Glade St	\N	College Station	TX	77840	1	\N	2014-01-11 00:00:00	2014-02-12 00:00:00			2015-05-09 18:06:33.731763	2016-04-07 04:17:07.222183	30.6078200000000002	-96.3238959999999906	\N
-5103	David & Diane	Chester		979-693-1666	\N	391	155	1201 Glade St	\N	College Station	TX	77840	1	\N	2014-01-11 00:00:00	2014-02-12 00:00:00			2015-05-09 18:06:33.731883	2016-04-07 04:17:08.230924	30.6053749999999987	-96.3209459999999922	\N
-5105	Peter	Hitchcock	mkhitch@live.com	979-255-9819	\N	391	165	1217 Glade St	\N	College Station	TX	77840	1	\N	2014-01-11 00:00:00	2014-02-12 00:00:00			2015-05-09 18:06:33.732151	2016-04-07 04:17:09.472767	30.6046960000000006	-96.3185629999999975	\N
-5106	Christopher	Mathewson	mathewson@geo.tamu.edu	979-693-5382	\N	391	170	1307 Glade St	\N	College Station	TX	77840	1	\N	2014-01-11 00:00:00	2014-02-21 00:00:00			2015-05-09 18:06:33.732284	2016-04-07 04:17:10.091901	30.6039839999999899	-96.3170729000000136	\N
-5107	Frank	Litterst		979-693-5557	\N	391	175	1603 Glade St	\N	College Station	TX	77840	1	\N	2013-06-12 00:00:00	2014-02-12 00:00:00	Renewed early with Pearl Harbor Day group. No payment since DRG took over.		2015-05-09 18:06:33.732404	2016-04-07 04:17:10.66888	30.6027449999999988	-96.3155849999999987	\N
-5108	Robert	Spoede		979-693-4166	\N	391	180	1709 Glade St	\N	College Station	TX	77840	1	\N	2014-01-11 00:00:00	2014-02-12 00:00:00			2015-05-09 18:06:33.732523	2016-04-20 19:20:46.614756	30.603080193447159	-96.314075561376967	\N
-5109	Richard	Williams	heirsonline@gmail.com	979-764-8286	\N	391	185	1714 Glade St	\N	College Station	TX	77840	2	\N	2014-01-11 00:00:00	2014-01-01 00:00:00	District Executive	Thick grass - tough to find.	2015-05-09 18:06:33.732642	2016-04-07 04:17:11.740916	30.6015049999999995	-96.3139409999999998	\N
-5110	Ted & Nancy	Smith		940-692-7420	\N	393	10	806 Aberdeen Place	\N	College Station	TX	77840	1	\N	2013-10-20 00:00:00	2013-11-11 00:00:00	Mail goes to 1401 Tanglewood Dr/Wichita Falls/76309	Pipe missing, cap missing	2015-05-09 18:06:33.732777	2016-04-11 23:15:51.299512	30.6088680000000011	-96.3331000000000017	\N
-5111	Laura	Arth		979-696-2227	\N	393	20	305 Dexter Dr	\N	College Station	TX	77840	1	\N	2014-01-11 00:00:00	2015-02-16 00:00:00	DRG Called me, chk rec'vd 11/17/13, 11/2/13 Number is not in service.  Skipped	cap missing	2015-05-09 18:06:33.7329	2016-04-07 04:17:13.14746	30.608193	-96.3325579999999917	\N
-5112	Nancy	Schneider		979-693-4538	\N	393	30	405 Dexter Dr	\N	College Station	TX	77840	1	\N	2013-10-20 00:00:00	2013-11-11 00:00:00	DRG Called 11/2 - will write check	cap missing, pipe cracked	2015-05-09 18:06:33.733037	2016-04-07 04:17:13.703276	30.6076960000000007	-96.3315999999999946	\N
-5114	Matt	Poling			\N	393	40	504 Dexter Dr	\N	College Station	TX	77840	1	\N	2014-01-11 00:00:00	2014-02-18 00:00:00		cap missing	2015-05-09 18:06:33.733276	2016-04-07 04:17:14.776733	30.6064378999999995	-96.3306570000000022	\N
-5115	Ken	Matthews	kenjeanice@yahoo.com	979-696-1535	\N	393	50	602 West Dexter Dr	\N	College Station	TX	77840	1	\N	2014-01-11 00:00:00	2014-02-18 00:00:00	Referred by Polings	cap missing	2015-05-09 18:06:33.733394	2016-04-07 04:17:15.32528	30.6059319999999992	-96.3310189999999977	\N
-5116	Lisa	Robinson		979-696-9333	\N	393	60	605 Guernsey St	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-07-17 00:00:00	Updated phone	Rt of sidwalk about 2 ft	2015-05-09 18:06:33.733516	2016-04-07 04:17:15.879099	30.6064732999999904	-96.3330136999999951	\N
-5117	Russ	Harvell		979-703-5305	\N	393	70	504 Guernsey St	\N	College Station	TX	77840	1	\N	2014-05-25 00:00:00	2013-07-04 00:00:00		Rt of sidwalk about 2 ft	2015-05-09 18:06:33.733651	2016-04-07 04:17:16.426504	30.6051159999999989	-96.3337728999999996	\N
-5118	Quint	Floyd	quint77842@yahoo.com	979-777-9424	\N	393	80	302 Fidelity St	\N	College Station	TX	77840	1	\N	2014-05-25 00:00:00	2013-07-04 00:00:00		Sleeve missing, +1 service in 2015 (i.e. -1	2015-05-09 18:06:33.733774	2016-04-07 04:17:16.976683	30.6032539999999997	-96.335166000000001	\N
-5119	John	Lampo		979-777-4747	\N	393	90	802 Hereford St	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-05-29 00:00:00			2015-05-09 18:06:33.733908	2016-04-07 04:17:17.673706	30.6034499999999987	-96.3304759999999902	\N
-5121	Gayle	Schultz	jgschultz@suddenlink.net	713-865-3606	\N	393	100	900 Hawthorn St	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-05-29 00:00:00		Median	2015-05-09 18:06:33.734255	2016-04-07 04:17:19.312236	30.6046140000000015	-96.3272899999999908	\N
-5122	Debbie	Fry	debwfry@gmail.com	979-696-0402	\N	393	110	912 Hawthorn St	\N	College Station	TX	77840	1	\N	2014-08-31 00:00:00	2013-09-11 00:00:00			2015-05-09 18:06:33.734385	2016-04-07 04:17:19.859743	30.6039309999999993	-96.3264719999999954	\N
-5123	Brett	Giroir		703-973-1857	\N	393	120	918 Hawthorn St	\N	College Station	TX	77840	1	\N	2014-01-11 00:00:00	2014-02-18 00:00:00			2015-05-09 18:06:33.73451	2016-04-07 04:17:20.426667	30.6037530000000011	-96.3258519999999976	\N
-5125	Pam	Kelling	ph77840@gmail.com	979-693-6396	\N	393	140	911 Hawthorn St	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-05-28 00:00:00	Wants flag "In front of house of next to sidewalk"	Right of sidewalk 6" from curb  - yellow tag	2015-05-09 18:06:33.734817	2016-04-07 04:17:21.848465	30.6044710000000002	-96.3260959999999926	\N
-5126	Deborah	Jasek	debjasek@hotmail.com	979-693-0343	\N	393	150	1007 Winding Rd	\N	College Station	TX	77840	2	\N	2014-08-31 00:00:00	2013-09-11 00:00:00	Added 1 more flag.  Need one hole on either side of driveway.		2015-05-09 18:06:33.73496	2016-04-07 04:17:22.378598	30.6038040000000002	-96.3271079999999955	\N
-5127	Jeannie	Barrett		979-696-5968	\N	394	10	118 Pershing Ave	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-05-28 00:00:00			2015-05-09 18:06:33.735108	2016-04-07 04:17:23.840676	30.6094779999999993	-96.3315328999999991	\N
-5128	Gaines	West	gaines.west@westwebblaw.c	979-229-1984	\N	394	20	200 Suffolk Ave	\N	College Station	TX	77840	1	\N	2014-01-11 00:00:00	2014-02-20 00:00:00	Last stop due to curve of street and existing route  *** Renewed year early ***		2015-05-09 18:06:33.735234	2016-04-07 04:17:24.384063	30.6088899999999988	-96.3319548999999995	\N
-5129	Doug and Cindy	Roesler	d76c78@aol.com	979-292-6916	\N	394	30	204 Suffolk Ave	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2014-05-04 00:00:00	3 different locations (Medina/Suffolk/Winding)	May '14 - No Sleeve	2015-05-09 18:06:33.735366	2016-04-07 04:17:24.937076	30.6083469999999984	-96.3315920000000006	\N
-5130	Hays & Robin	Glover		979-693-8238	\N	394	40	203 Suffolk Ave	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-06-14 00:00:00	2nd is for 203 Suffolk, extra is donation		2015-05-09 18:06:33.735518	2016-04-07 04:17:25.77291	30.6086559999999999	-96.3310829999999925	\N
-5131	Hays & Robin	Glover		979-693-8238	\N	394	52	300 Suffolk Ave	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-06-14 00:00:00	Paid for Suffolk (x2) - extra is donation		2015-05-09 18:06:33.73566	2016-04-07 04:17:26.375381	30.6074580000000012	-96.3305099999999896	\N
-5132	Greg	Gorman		979-693-8103	\N	394	60	315 Suffolk Ave	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-05-29 00:00:00			2015-05-09 18:06:33.735814	2016-04-07 04:17:26.879921	30.6072160000000011	-96.3293529999999976	\N
-5134	Buzz	Pruit	pruittkaty@hotmail.com	979-693-3690	\N	394	80	900 Park Place	\N	College Station	TX	77840	1	\N	2014-01-11 00:00:00	2014-02-18 00:00:00		Plug set far back	2015-05-09 18:06:33.736091	2016-04-07 04:17:28.042975	30.6068290000000012	-96.328992999999997	\N
-5135	Theresa	Schimelpfening		713-248-6418	\N	394	90	316 Pershing Ave	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-05-29 00:00:00	Check on desk, ml 8/5		2015-05-09 18:06:33.736243	2016-04-07 04:17:28.609372	30.6075000000000017	-96.3289789999999897	\N
-5136	James	Matson		979-693-0133	\N	394	100	1002 Park Place	\N	College Station	TX	77840	1	\N	2014-01-11 00:00:00	2014-02-18 00:00:00			2015-05-09 18:06:33.736401	2016-04-07 04:17:29.163854	30.6075319999999991	-96.3282069999999919	\N
-5138	Mary	Bradley		979-695-9594	\N	395	20	1951 Harvey Mitchell Parkway South	\N	College Station	TX	77845	1	\N	2013-06-22 00:00:00	2014-07-03 00:00:00	She moved to the address shown		2015-05-09 18:06:33.736639	2016-04-10 21:22:01.934679	30.5935859999999984	-96.31116999999999	\N
-5139	Doug and Cindy	Roesler	d76c78@aol.com	979-292-6916	\N	395	30	1801-1899 Lavaca Street	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2014-05-04 00:00:00	3 different locations (Medina/Suffolk/Winding)	No Cap 11/14	2015-05-09 18:06:33.736757	2016-04-10 19:03:42.125579	30.5938829000000005	-96.3219611999999898	\N
-5140	Mary	Zingaro		979-693-5888	\N	395	35	1813 Medina Dr	\N	College Station	TX	77840	1	\N	2014-08-31 00:00:00	2013-09-11 00:00:00	check received for 2012		2015-05-09 18:06:33.736923	2016-04-07 04:17:31.579267	30.5956960000000002	-96.319515899999999	\N
-5141	Kathleen	Kenefick			\N	395	40	1815 Medina Dr	\N	College Station	TX	77840	1	\N	2013-10-20 00:00:00	2013-11-11 00:00:00			2015-05-09 18:06:33.737058	2016-04-07 04:17:32.161195	30.5955429999999993	-96.319240999999991	\N
-5142	Sharon	Richmond		979-696-3258	\N	395	50	1813 Hondo Dr	\N	College Station	TX	77840	1	\N	2014-08-31 00:00:00	2013-09-11 00:00:00		6" back from curb	2015-05-09 18:06:33.737205	2016-04-07 04:17:32.692064	30.5962330000000016	-96.3181960000000004	\N
-5143	Mary	Dallis		979-693-7827	\N	395	60	1816 Shadowwood Dr	\N	College Station	TX	77840	1	\N	2014-08-31 00:00:00	2013-09-11 00:00:00		No Cap 11/14	2015-05-09 18:06:33.737335	2016-04-07 04:17:33.291492	30.5959399999999988	-96.3171430000000015	\N
-5145	Patricia	Rand		979-694-0239	\N	395	80	1801 Sabine Ct	\N	College Station	TX	77840	2	\N	2014-08-31 00:00:00	2013-09-11 00:00:00		No Cap+Clean 11/14. One on both sides of the	2015-05-09 18:06:33.737606	2016-04-07 04:17:34.416746	30.5989389999999908	-96.3158779999999979	\N
-5146	Peggy	Crittenden		979-693-5241	\N	395	90	1803 Laura Lane	\N	College Station	TX	77840	1	\N	2014-08-31 00:00:00	2013-09-11 00:00:00			2015-05-09 18:06:33.737736	2016-04-07 04:17:34.967775	30.6001259999999995	-96.3139959999999888	\N
-5147	Albert	Schneider		979-693-7546	\N	395	100	1901-1903 Southwood Drive	\N	College Station	TX	77840	1	\N	2014-08-31 00:00:00	2013-09-11 00:00:00		Marked w Yellow Paint	2015-05-09 18:06:33.737862	2016-04-10 19:04:23.32912	30.5993788000000002	-96.3112833999999935	\N
-5149	Doug and Cindy	Roesler	d76c78@aol.com	979-292-6916	\N	395	120	1101 Holleman Drive	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2014-05-04 00:00:00	3 different locations (Medina/Suffolk/Winding)		2015-05-09 18:06:33.738114	2016-04-10 23:01:10.279483	30.6052629999999901	-96.3238599999999963	\N
-5137	Alice	Jimenez	skjimenez@hotmail.com		\N	395	10	914 Hawthorn Street	\N	College Station	TX	77840	1	\N	2014-08-31 00:00:00	2013-09-11 00:00:00		At end of cul-de-sac, ours is 6" back from	2015-05-09 18:06:33.736519	2016-04-10 23:01:14.670642	30.6037290000000013	-96.3262248999999997	\N
-5150	Cathy	Stark		none given	\N	\N	150	4609 Colonial Circle	\N	College Station	TX	77845	1	\N	2014-05-25 00:00:00	2013-06-15 00:00:00		5" from curb - green stripe	2015-05-09 18:06:33.738255	2016-04-07 04:17:37.142055	30.5659889999999983	-96.2447689999999909	\N
-5151	John & Sue	Holland		979-690-1160	\N	\N	160	4613 Colonial Circle	\N	College Station	TX	77845	1	\N	2014-05-25 00:00:00	2013-06-15 00:00:00		12" from curb - gray stripe	2015-05-09 18:06:33.738386	2016-04-07 04:17:37.728183	30.5658600000000007	-96.2442240000000027	\N
-5152	Bill/George	Brady		979-690-0882	\N	\N	20	4605 Pro Court	\N	College Station	TX	77845	1	\N	2014-05-25 00:00:00	2013-06-15 00:00:00		15" from curb - gray stripe	2015-05-09 18:06:33.738528	2016-04-07 04:17:38.281883	30.5605279999999908	-96.2496539999999925	\N
-5153	Larry & Marx	Marek		979-690-1015	\N	\N	10	4608 Pro Court	\N	College Station	TX	77845	1	\N	2014-08-31 00:00:00	2013-06-15 00:00:00	forgot about it 7/11 DRG, still forgot - will do PayPal?	at curb, white marker	2015-05-09 18:06:33.738669	2016-04-07 04:17:38.789151	30.559826000000001	-96.2496510000000001	\N
-5154	Robert & Terri	McKee		979-690-1680	\N	\N	30	701 Putter Court	\N	College Station	TX	77845	1	\N	2014-05-25 00:00:00	2013-06-15 00:00:00		at curb - white marker	2015-05-09 18:06:33.738817	2016-04-07 04:17:39.360515	30.5603559999999987	-96.2467809999999986	\N
-5156	Jeff & Marsha	Sanford		979-690-6884	\N	\N	60	4603 Shoal Creek Dr	\N	College Station	TX	77845	1	\N	2013-06-22 00:00:00	2013-06-15 00:00:00	disconnected	14" from sidewalk - green stripe	2015-05-09 18:06:33.739129	2016-04-07 04:17:40.78057	30.5633410000000012	-96.2460118999999992	\N
-5157	Leo	Sayavedra		979-690-7682	\N	\N	70	4700 Shoal Creek Dr	\N	College Station	TX	77845	1	\N	2014-05-25 00:00:00	2013-06-15 00:00:00		at curb - white marker	2015-05-09 18:06:33.739272	2016-04-07 04:17:41.352971	30.5615230000000011	-96.245174999999989	\N
-5158	Emil & Clementine	Ogden		979-690-6409	\N	\N	190	4600 Spyglass Ct	\N	College Station	TX	77845	1	\N	2014-05-25 00:00:00	2013-06-15 00:00:00		White marker in flower bed	2015-05-09 18:06:33.739402	2016-04-07 04:17:42.014038	30.5676129999999908	-96.2444299999999942	\N
-5159	Jerry & Kathy	Anderson		979-690-6335	\N	\N	180	4605 Spyglass Ct	\N	College Station	TX	77845	1	\N	2013-06-22 00:00:00	2015-03-01 00:00:00	Alive and well - also missed twice so we bumped him 3 services	12" from curb - gray stripe	2015-05-09 18:06:33.739532	2016-04-07 04:17:42.542994	30.5678389999999993	-96.2434279999999944	\N
-5148	Frances	Martin	fdmartin@suddenlink.net	979-693-8092	\N	395	110	1203 Lawyer Street	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-05-28 00:00:00	Gave $50 to Philmont		2015-05-09 18:06:33.737988	2016-04-10 22:29:35.412821	30.6014990000000004	-96.3219009999999969	\N
-5079	Grace	Church			\N	392	30	700 Anderson Street	\N	College Station	TX	77840	4	\N	2010-01-01 00:00:00	2001-01-01 00:00:00		04/06/16 18:34:33: lmao	2015-05-09 18:06:33.728413	2016-04-07 04:16:47.303146	30.609997400000001	-96.3231134999999909	\N
-5104	Jo	Engelking	jo-engelking@hotmail.com	979-224-0592	\N	391	160	1211 Glade St	\N	College Station	TX	77840	1	\N	2014-01-11 00:00:00	2014-02-21 00:00:00	Check is from Western Management 3727 E29th St!		2015-05-09 18:06:33.732023	2016-04-07 04:17:08.843414	30.6050229999999992	-96.3194069999999982	\N
-5113	Larry	Mims	mims63@charter.net	817-641-6869	\N	393	31	501 Dexter Dr	\N	College Station	TX	77840	1	\N	2013-06-12 00:00:00	2013-05-28 00:00:00	Invoice returned, email sent 6/28/13.  Final left on 7/4.  Giving up on 7/4	Cap missing, Flag is on BURT Street, Rt of	2015-05-09 18:06:33.733156	2016-04-07 04:17:14.222325	30.6071719999999985	-96.330851899999999	\N
-5161	Ulman	McMullen		979-587-2059	\N	\N	130	4708 St Andrews Dr	\N	College Station	TX	77845	1	\N	2014-08-31 00:00:00	2013-06-15 00:00:00	kinda forgot about it 7/11 DRG	22" from curb - green stripe	2015-05-09 18:06:33.739831	2016-04-07 04:17:44.188692	30.5631249999999994	-96.2435539999999889	\N
-5162	Larry & Virginia	Pierson		979-690-0837	\N	\N	125	4714 St Andrews Dr	\N	College Station	TX	77845	1	\N	2014-05-25 00:00:00	2013-06-15 00:00:00		at curb - white marker	2015-05-09 18:06:33.739958	2016-04-07 04:17:44.834957	30.5627080000000007	-96.2427939999999893	\N
-5163	Howard & Eugenia	Murray		979-690-7520	\N	\N	120	4715 St Andrews Dr	\N	College Station	TX	77845	1	\N	2014-05-25 00:00:00	2013-06-15 00:00:00		14" from curb - gray stripe	2015-05-09 18:06:33.740101	2016-04-07 04:17:45.389898	30.5630559999999996	-96.2423089999999917	\N
-5164	Larry & Jean	Ringer		979-690-7047	\N	\N	110	4717 St Andrews Dr	\N	College Station	TX	77845	1	\N	2014-05-25 00:00:00	2013-06-15 00:00:00		at curb - white marker	2015-05-09 18:06:33.740231	2016-04-07 04:17:46.097869	30.5628139999999995	-96.2420899999999904	\N
-5166	Ashley	Rugh		979-690-9606	\N	\N	90	4807 St Andrews Dr	\N	College Station	TX	77845	1	\N	2014-05-25 00:00:00	2013-06-15 00:00:00		14" from curb/green marker	2015-05-09 18:06:33.740512	2016-04-07 04:17:47.250633	30.5615519999999989	-96.2413249999999891	\N
-5167	William & Kathy	Hutton		979-690-7888	\N	\N	80	4809 St Andrews Dr	\N	College Station	TX	77845	1	\N	2014-08-31 00:00:00	2013-06-15 00:00:00		at curb - white marker	2015-05-09 18:06:33.740647	2016-04-07 04:17:47.821207	30.5612199999999987	-96.2412899999999922	\N
-5168	Kay	Adams		979-690-6375	\N	\N	140	4610 Valleybrook Circle	\N	College Station	TX	77845	1	\N	2014-05-25 00:00:00	2013-06-15 00:00:00		at curb - white marker	2015-05-09 18:06:33.740781	2016-04-07 04:17:48.356439	30.5645319999999998	-96.2453829999999897	\N
-5169	WH & RR	Hardy		979-703-6480	\N	\N	170	1006 Winged Foot Dr	\N	College Station	TX	77845	1	\N	2013-06-22 00:00:00	2013-06-15 00:00:00	ml 7/11 DRG, ml 8/5	at curb - white marker	2015-05-09 18:06:33.740915	2016-04-07 04:17:48.907068	30.5671740000000014	-96.2428689999999989	\N
-5170	Kathless	Difigueriedo			\N	397	45	1400 Mill Creek Ct	\N	College Station	TX	77840	1	\N	2001-01-01 00:00:00	2014-05-05 00:00:00	Trying to pass off to 802 as of 6/18/13		2015-05-09 18:06:33.741049	2016-04-07 04:17:49.512698	30.5879550000000009	-96.2771039999999942	\N
-5171	Lesa	Colson			\N	392	25	506 Kyle	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2014-06-01 00:00:00			2015-05-09 18:06:33.741196	2016-04-07 04:17:50.044542	30.6222509999999986	-96.3190659999999923	\N
-5172	Angela	Morehead			\N	392	10	1905 Carter Creek Pkwy	\N	Bryan	TX	77802	1	\N	2014-04-02 00:00:00	2014-06-01 00:00:00			2015-05-09 18:06:33.741325	2016-04-07 04:17:50.626575	30.6558589999999995	-96.3570160000000016	\N
-5173	Patti	Ljungdahl			\N	395	64	1822 Shadowwood Drive	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2014-06-01 00:00:00		No Cap 11/14	2015-05-09 18:06:33.741454	2016-04-10 18:23:07.325949	30.5962770000000006	-96.315930999999992	\N
-5174	Jeff/Cole	Mason			\N	\N	0	5107 Congressional Drive	\N	College Station	TX	77845	1	\N	2014-04-02 00:00:00	2014-06-01 00:00:00			2015-05-09 18:06:33.741584	2016-04-07 04:17:51.838465	30.559349000000001	-96.2352778999999998	\N
-5175	David	Evans			\N	392	5	1705 Carter Creek Pkwy	\N	Bryan	TX	77802	1	\N	2014-04-02 00:00:00	2014-06-01 00:00:00			2015-05-09 18:06:33.741713	2016-04-07 04:17:52.38988	30.6572169999999993	-96.3587819999999908	\N
-5177	Cathleen	Auld	cwauld@suddenlink.net	979-450-7849	\N	\N	195	5152 Stonewater Loop	\N	College Station	TX	77845	1	\N	2014-05-25 00:00:00	2014-06-16 00:00:00		Gate Code 5201 or 5226	2015-05-09 18:06:33.741978	2016-04-07 04:17:53.486829	30.5601683999999985	-96.2336870999999974	\N
-5178	Thomas	Nelson		979-745-7515	\N	\N	200	5006 Spearman Drive	\N	College Station	TX	77845	1	\N	2013-06-26 00:00:00	2014-06-26 00:00:00	Referal from one of the other folks on this route.		2015-05-09 18:06:33.742109	2016-04-07 04:17:54.095103	30.5624849999999988	-96.2374719999999968	\N
-5179	Helen	Bryant	bethkashbryant@gmail.com	979 739 5585	\N	\N	55	805 Merion Ct	\N	College Station	TX	77845	1	\N	2014-08-31 00:00:00	2014-09-01 00:00:00		at curb, white marker	2015-05-09 18:06:33.742239	2016-04-07 04:17:54.645197	30.5636069999999904	-96.2456159999999983	\N
-5180	Peter	Lockett		979.846.7268	\N	391	161	1213 Glade St	\N	College Station	TX	77840	1	\N	2014-01-11 00:00:00	2014-02-09 00:00:00	Neighbor Jo Engelking paid for this		2015-05-09 18:06:33.742369	2016-04-07 04:17:55.223345	30.6049180000000014	-96.3191389999999927	\N
-5181	Hillel	Foundation			\N	396	5	3204 Coastal Drive	\N	College Station	TX	77840	3	\N	2014-05-25 00:00:00	2001-01-01 00:00:00			2015-05-09 18:06:33.742504	2016-04-10 00:17:53.89664	30.5838220000000014	-96.2951750000000004	\N
-5182	Jean	Mays	gmays1054@gmail.com	979-777-0000	\N	394	110	1111 Park Place	\N	College Station	TX	77840	1	\N	2014-05-25 00:00:00	2001-01-01 00:00:00			2015-05-09 18:06:33.742633	2016-04-07 04:17:56.329881	30.6086010000000002	-96.3277570000000054	\N
-5183	Cathleen	Auld	cwauld@suddenlink.net	979-480-7849	\N	\N	196	5154 Stonewater Loop	\N	College Station	TX	77845	1	\N	2014-05-30 00:00:00	2001-01-01 00:00:00		Gate Code 5201 or 5226	2015-05-09 18:06:33.742762	2016-04-07 04:17:56.860066	30.5601683999999985	-96.2336870999999974	\N
-5184	Laura	Peycke	lpeycke@cvm.tamu.edu	979 693 1024	\N	393	145	1002 Winding Rd	\N	College Station	TX	77840	1	\N	2014-05-30 00:00:00	2015-06-01 00:00:00			2015-05-09 18:06:33.74291	2016-04-07 04:17:57.444712	30.6032030000000006	-96.3272019999999998	\N
-5185	Sandy	Ragsdale	sandyragsdale!@gmail.com	979.695.1071	\N	394	54	306 Suffolk Ave	\N	College Station	TX	77840	1	\N	2014-06-06 00:00:00	2015-06-07 00:00:00			2015-05-09 18:06:33.74304	2016-04-07 04:17:57.971846	30.6072419999999994	-96.3302489999999949	\N
-5186	Jennie	Tompkins	jtomp7@suddenlink.net	702-499-8296	\N	\N	0	414 Rock Spring Court	\N	College Station	TX	77845	1	\N	2014-06-27 00:00:00	2001-01-01 00:00:00			2015-05-09 18:06:33.743169	2016-04-07 04:17:58.533305	30.5666210000000014	-96.2514460000000014	\N
-5187	Melva	McDonald		979-690-1268	\N	\N	0	5011 Harbour Town Court	\N	College Station	TX	77845	1	\N	2014-06-30 00:00:00	2001-01-01 00:00:00			2015-05-09 18:06:33.743303	2016-04-07 04:17:59.089173	30.5595929999999996	-96.2379968999999988	\N
-5188	Laura	Johson	mljohnson77@suddenlink.ne	979-485-2053	\N	\N	0	5002 Crystal Downs Court	\N	College Station	TX	77845	1	\N	2014-06-29 00:00:00	2001-01-01 00:00:00			2015-05-09 18:06:33.743433	2016-04-07 04:17:59.618789	30.5621480000000005	-96.2360109999999906	\N
-5189	Manda	Rosser	mhrosser@gmail.com	979-696-3464	\N	394	9	104 Lee Ave	\N	College Station	TX	77840	1	\N	2014-07-02 00:00:00	2001-01-01 00:00:00			2015-05-09 18:06:33.743563	2016-04-07 04:18:00.20089	30.6107079999999989	-96.331232	\N
-5190	Barbara	Neyses	neysesb@gmai.com		\N	\N	0	5113 Congressional	\N	College Station	TX	77845	1	\N	2014-07-01 00:00:00	2001-01-01 00:00:00			2015-05-09 18:06:33.743692	2016-04-07 04:18:00.769673	30.5587000000000018	-96.2347120000000018	\N
-5191	Amy and Tim	Leach	timothyleach@suddenlink.n	432-685-0668	\N	394	200	211 Pershing Ave	\N	College Station	TX	77840	1	\N	2014-07-28 00:00:00	2001-01-01 00:00:00			2015-05-09 18:06:33.743822	2016-04-07 04:18:01.349176	30.6089939999999991	-96.3298629999999889	\N
-5193	Gail	Hensley			\N	394	56	310 Suffolk Ave	\N	College Station	TX	77840	1	\N	2014-10-24 00:00:00	2001-01-01 00:00:00		New owner, unknown flag holder	2015-05-09 18:06:33.744093	2016-04-07 04:18:02.379463	30.6070479999999989	-96.3300160000000005	\N
-5194	David	Jones	ketakay@gmail.com	979-693-0097	\N	395	105	501 West Ridge Drive	\N	College Station	TX	77840	1	\N	2014-11-04 00:00:00	2001-01-01 00:00:00		No Cap 11/14	2015-05-09 18:06:33.744219	2016-04-10 20:34:06.839848	30.585089	-96.3173839999999899	\N
-5195	Mark & Tammy	Stein		832.331.4022	\N	394	95	314 Pershing Ave	\N	College Station	TX	77840	1	\N	2014-11-04 00:00:00	2001-01-01 00:00:00			2015-05-09 18:06:33.744355	2016-04-07 04:18:03.541298	30.6076610000000002	-96.3291729999999973	\N
-5078	Church	St Thomas			\N	396	0	214 Manuel Drive	\N	College Station	TX	77840	3	\N	2010-01-01 00:00:00	2001-01-01 00:00:00	Home base - comp		2015-05-09 18:06:33.728123	2016-04-10 00:16:30.161725	30.6127690000000001	-96.3110059999999919	\N
-5084	Mr Will King c/o	Presidential	will.king@nara.gov	979-691-4069	\N	396	1	330-398 Adriance Lab Road	\N	College Station	TX	77845	14	\N	2014-08-31 00:00:00	2013-06-18 00:00:00	yes, 14 - see map for specific locations	2 at main entrance, rest down sidewalk in	2015-05-09 18:06:33.729141	2016-04-10 00:17:56.900629	30.6090070999999995	-96.352049799999989	\N
-5120	Eileen	Kulvesky		979-696-7013	\N	393	95	804 Hawthorn St	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-05-29 00:00:00		Rt of sidewalk	2015-05-09 18:06:33.734026	2016-04-07 04:17:18.467537	30.6049469999999992	-96.3276369999999957	\N
-5124	Gayle	Schultz	jgschultz@suddenlink.net	713-865-3606	\N	393	130	920 Hawthorn St	\N	College Station	TX	77840	1	\N	2014-04-02 00:00:00	2013-05-29 00:00:00			2015-05-09 18:06:33.734661	2016-04-07 04:17:21.258362	30.6039400000000015	-96.3257049999999992	\N
-5133	Jeannie	McCandless	jeanniewmc@yahoo.com		\N	394	56	310 Suffolk Ave	\N	College Station	TX	77840	1	\N	2014-08-31 00:00:00	2013-09-11 00:00:00		Sold house - McCandless lives in a	2015-05-09 18:06:33.735949	2016-04-07 04:17:27.424336	30.6070479999999989	-96.3300160000000005	\N
-5144	Marilyn	Cochrane		979-693-1729	\N	395	70	1824 Shadowwood Dr	\N	College Station	TX	77840	1	\N	2013-10-20 00:00:00	2013-11-12 00:00:00	DRG 11/17/13 ML, 11/2/13 ML - 2012: Extra is a donation, 1 flag only		2015-05-09 18:06:33.737478	2016-04-07 04:17:33.835925	30.5966239999999985	-96.3155280000000005	\N
-5155	Ronald & Anna	Silvia		979-690-6519	\N	\N	50	4601 Shoal Creek Dr	\N	College Station	TX	77845	1	\N	2014-05-25 00:00:00	2013-07-05 00:00:00	Apparantly resodded as of 14.09	16" from sidewalk - green stripe	2015-05-09 18:06:33.738985	2016-04-07 04:17:40.220254	30.5635949999999994	-96.2460549999999984	\N
-5160	Durwood & Bernice	Lewis		979-690-7123	\N	\N	40	4605 St Andrews Dr	\N	College Station	TX	77845	1	\N	2014-05-25 00:00:00	2013-06-15 00:00:00		at curb - white marker	2015-05-09 18:06:33.739662	2016-04-07 04:17:43.378123	30.5640670000000014	-96.2462309999999945	\N
-5165	John & Maria	Waller		979-690-3617	\N	\N	100	1300 Mission Hills	\N	College Station	TX	77845	1	\N	2014-05-25 00:00:00	2013-06-15 00:00:00	Moving in the 'hood, check just found 7/11 DRG	at curb - white marker	2015-05-09 18:06:33.740361	2016-04-07 04:17:46.656902	30.5630270000000017	-96.2265280000000018	\N
-5176	Rev Rhonda	Mongomery		979-703-1754	\N	\N	5	816 Pine Valley Dr	\N	College Station	TX	77845	1	\N	2013-07-04 00:00:00	2001-01-01 00:00:00	Couldn't find sleeve - needs new? Needs paint.	at curb ~ 1 ft from sidewalk to house - on	2015-05-09 18:06:33.741846	2016-04-07 04:17:52.964665	30.5571260000000002	-96.2379519999999928	\N
-5192	Amy and Tim	Leach	timothyleach@suddenlink.n	432-685-0668	\N	394	115	206 Lee Ave	\N	College Station	TX	77840	1	\N	2014-07-28 00:00:00	2001-01-01 00:00:00			2015-05-09 18:06:33.743951	2016-04-07 04:18:01.876367	30.6092316000000011	-96.3295116999999976	\N
+COPY subscriptions (id, first_name, last_name, email, cell_phone, landline, route_id, print_sequence, address_line_1, address_line_2, city, state, zip, qty, group_id, last_invoice_sent, renewal_due_date, notes, maintenance_notes, created_at, updated_at, latitude, longitude, subscriber_id, status, renewal_grp, qty_comp, subscription_notes) FROM stdin;
+1	Donald G	Barker	\N	979-696-7962	\N	391	\N	1100 Timm Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-05-28 00:00:00	2016-05-03 03:50:00	\N	\N	1	GOOD	16	\N	\N
+2	Virginia	Bockholt	\N	979-696-6704	\N	391	\N	1102 Timm Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-05-28 00:00:00	2016-05-03 03:50:00	\N	\N	2	OVERDUE	15	\N	\N
+3	Mary	Miller	\N	979-695-5267	\N	391	\N	1104 Timm Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-05-29 00:00:00	2016-05-03 03:50:01	\N	\N	3	GOOD	16	\N	\N
+4	Ted/Ellen	Fox	ellenfox50@hotmail.com	979-696-7537	\N	391	\N	1103 Timm Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-05-28 00:00:00	2016-05-03 03:50:01	\N	\N	4	GOOD	16	\N	\N
+5	Dorothy	Holecek	lardot@suddenlink.net	979-696-8120	\N	391	\N	1105 Timm Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-05-29 00:00:00	2016-05-03 03:50:02	\N	\N	5	GOOD	16	\N	\N
+6	Elizabeth	Blodgett	earlywest@verizon.net	979-776-1925	\N	391	\N	409 Timber St	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-05-29 00:00:00	2016-05-03 03:50:02	\N	\N	6	OVERDUE	15	\N	\N
+7	Imadel	Bachus	\N	979-696-4260	\N	391	\N	306 Timber St	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-05-29 00:00:00	2016-05-03 03:50:03	\N	\N	7	GOOD	15	\N	\N
+8	Michael	Stavinoha	reidstav@suddenlink.net	281-413-4605	\N	391	\N	304 Timber St	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2015-08-31 00:00:00	2016-05-03 03:50:03	\N	\N	8	GOOD	16	\N	\N
+9	Connie	Dodd	\N	979-696-8351	\N	391	\N	1307 Leacrest Dr	\N	College Station	TX	77840	1	\N	\N	\N	She has 1 flag of her own	\N	2012-05-29 00:00:00	2016-05-03 03:50:04	\N	\N	9	GOOD	16	\N	\N
+10	Bill J.	Cooley	\N	979-696-5142	\N	391	\N	503 Glade St	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2013-02-12 00:00:00	2016-05-03 03:50:04	\N	\N	10	GOOD	16	\N	\N
+11	Mary	Ketchersid	mlketcher2@yahoo.com	979.820.0108	\N	391	\N	1301 Timm Dr	\N	College Station	TX	77840	2	\N	\N	\N	1 Timm, 1 Glade	\N	2012-05-29 00:00:00	2016-05-03 03:50:05	\N	\N	11	GOOD	16	\N	\N
+12	Parsonage?	Grace	\N	\N	\N	391	\N	1406 Village Dr	\N	College Station	TX	77840	1	\N	\N	\N	Well hidden, 1 ft from curb	\N	2010-01-01 00:00:00	2016-05-03 03:50:05	\N	\N	12	GOOD	16	1	\N
+13	Juan	Rodriguez	graciella.rodriguez@gmail.com	979-575-5983	\N	391	\N	1220 Orr Str	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2015-08-31 00:00:00	2016-05-03 03:50:06	\N	\N	13	GOOD	16	\N	\N
+14	David & Diane	Chester	\N	979-693-1666	\N	391	\N	1201 Glade St	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2013-02-12 00:00:00	2016-05-03 03:50:06	\N	\N	14	GOOD	16	\N	\N
+15	Jo	Engelking	jo-engelking@hotmail.com	979-224-0592	\N	391	\N	1211 Glade St	\N	College Station	TX	77802	1	\N	\N	\N	\N	\N	2013-02-21 00:00:00	2016-05-03 03:50:07	\N	\N	15	GOOD	15	\N	Check is from Western Management 3727 E29th St!
+16	Peter	Lockett	jo-engelking@hotmail.com	979.846.7268	\N	391	\N	1213 Glade St	\N	College Station	TX	77802	1	\N	\N	\N	\N	\N	2014-02-09 00:00:00	2016-05-03 03:50:07	\N	\N	16	GOOD	15	\N	Neighbor Jo Engelking paid for this
+17	Michael	Eckart	michael.eckart@yahoo.com	940.727.8240	\N	391	\N	1215 Glade St	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2015-09-01 00:00:00	2016-05-03 03:50:08	\N	\N	17	GOOD	16	\N	\N
+18	Peter	Hitchcock	mkhitch@live.com	979-255-9819	\N	391	\N	1217 Glade St	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2013-02-12 00:00:00	2016-05-03 03:50:08	\N	\N	18	GOOD	16	\N	\N
+19	Christopher	Mathewson	mathewson@geo.tamu.edu	979-693-5382	\N	391	\N	1307 Glade St	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2013-02-21 00:00:00	2016-05-03 03:50:09	\N	\N	19	GOOD	16	\N	\N
+20	David	Evans	Debaytown@aol.com	\N	\N	392	\N	1705 Carter Creek Pkwy	\N	Bryan	TX	77802	1	\N	\N	\N	\N	\N	2013-06-14 00:00:00	2016-05-03 03:50:09	\N	\N	20	GOOD	16	\N	\N
+21	Angela	Morehead	\N	\N	\N	392	\N	1905 Carter Creek Pkwy	\N	Bryan	TX	77802	1	\N	\N	\N	\N	\N	2013-06-14 00:00:00	2016-05-03 03:50:10	\N	\N	21	GOOD	16	\N	\N
+22	Don	Smith	\N	\N	\N	392	\N	704 Inwood Dr 	\N	Bryan	TX	77802	1	\N	\N	\N	\N	\N	2012-11-11 00:00:00	2016-05-03 03:50:10	\N	\N	22	GOOD	16	\N	\N
+23	Lesa	Colson	\N	\N	\N	392	\N	506 Kyle	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2013-06-14 00:00:00	2016-05-03 03:50:11	\N	\N	23	GOOD	16	\N	\N
+24	Ted & Nancy	Smith	\N	940-692-7420	\N	393	\N	301 Dexter Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-11-11 00:00:00	2016-05-03 03:50:11	\N	\N	24	OVERDUE	15	\N	Mail goes to 1401 Tanglewood Dr/Wichita Falls/76309
+25	W.R.	Lancaster	wlavc@suddenlink.net	979.696.5286	\N	393	\N	303 Dexter Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2016-11-11 00:00:00	2016-05-03 03:50:12	\N	\N	25	*  NEW *	16	\N	Flyer generated subscription
+26	Laura	Arth	\N	979-696-2227	\N	393	\N	305 Dexter Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-05-29 00:00:00	2016-05-03 03:50:12	\N	\N	26	GOOD	16	\N	DRG Called me, chk rec'vd 11/17/13, 11/2/13 Number is not in service.  Skipped Nov'13.  Gave 1 service day.
+27	Nancy	Schneider	\N	979-693-4538	\N	393	\N	405 Dexter Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-05-29 00:00:00	2016-05-03 03:50:13	\N	\N	27	GOOD	16	\N	DRG Called 11/2 - will write check
+28	Matt	Poling	\N	\N	\N	393	\N	504 Dexter Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2011-02-21 00:00:00	2016-05-03 03:50:13	\N	\N	28	GOOD	16	\N	\N
+29	Jennifer	Roberts	jennroberts13@gmail.com	979.716.8015	\N	393	\N	505 Dexter Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2015-08-31 00:00:00	2016-05-03 03:50:14	\N	\N	29	GOOD	16	\N	\N
+30	Ken	Matthews	kenjeanice@yahoo.com	979-696-1535	\N	393	\N	602 West Dexter Dr	\N	College Station	TX	77840	1	\N	\N	\N	Next to curb	Move Sleeve	2012-02-20 00:00:00	2016-05-03 03:50:14	\N	\N	30	GOOD	16	\N	Referred by Polings
+31	Russ	Harvell	fortli@aol.com	979-703-5305	\N	393	\N	504 Guernsey St	\N	College Station	TX	77840	1	\N	\N	\N	Rt of sidwalk about 2 ft	Check	2012-07-04 00:00:00	2016-05-03 03:50:15	\N	\N	31	GOOD	16	\N	\N
+32	Quint	Floyd	quint77842@yahoo.com	979-777-9424	\N	393	\N	302 Fidelity St	\N	College Station	TX	77840	1	\N	\N	\N	\N	Need Sleeve & Cap	2011-07-04 00:00:00	2016-05-03 03:50:15	\N	\N	32	GOOD	15.5	\N	EMAILED 8/15 - BOUNCED - but got a check from Maureen
+33	John	Lampo	\N	979-777-4747	\N	393	\N	802 Hereford St	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-05-29 00:00:00	2016-05-03 03:50:16	\N	\N	33	GOOD	16	\N	\N
+34	Eileen	Kulvesky	\N	979-696-7013	\N	393	\N	804 Hawthorn St	\N	College Station	TX	77840	1	\N	\N	\N	Rt of sidewalk	\N	2012-05-29 00:00:00	2016-05-03 03:50:16	\N	\N	34	GOOD	16	\N	\N
+35	Gayle	Schultz	jgschultz@suddenlink.net	713-865-3606	\N	393	\N	900 Hawthorn St	\N	College Station	TX	77840	1	\N	\N	\N	Median	\N	2012-05-29 00:00:00	2016-05-03 03:50:17	\N	\N	35	GOOD	16	\N	\N
+36	Debbie	Fry	debwfry@gmail.com	979-696-0402	\N	393	\N	912 Hawthorn St	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-09-11 00:00:00	2016-05-03 03:50:17	\N	\N	36	GOOD	16	\N	\N
+37	Frances	Martin	fdmartin@suddenlink.net	979-693-8092	\N	393	\N	1204 Winding Road	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2011-05-28 00:00:00	2016-05-03 03:50:18	\N	\N	37	GOOD	16	\N	\N
+38	Brett	Giroir	teamgiroir@gmail.com	703-973-1857	\N	393	\N	918 Hawthorn St	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2011-02-21 00:00:00	2016-05-03 03:50:18	\N	\N	38	GOOD	16	\N	\N
+39	Doug and Cindy	Roesler	d76c78@aol.com	979-292-6916	\N	393	\N	1205 Winding Road	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2011-05-28 00:00:00	2016-05-03 03:50:19	\N	\N	39	GOOD	16	\N	 3 different locations (Medina/Suffolk/Winding)
+40	Gayle	Schultz	jgschultz@suddenlink.net	713-865-3606	\N	393	\N	920 Hawthorn St	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-05-29 00:00:00	2016-05-03 03:50:19	\N	\N	40	GOOD	16	\N	\N
+41	Pam	Kelling	ph77840@gmail.com	979-693-6396	\N	393	\N	911 Hawthorn St	\N	College Station	TX	77840	1	\N	\N	\N	Right of sidewalk 6" from curb  - yellow tag	\N	2012-05-28 00:00:00	2016-05-03 03:50:20	\N	\N	41	GOOD	16	\N	\N
+42	Laura	Peycke	lpeycke@cvm.tamu.edu	979 693 1024	\N	393	\N	1002 Winding Rd	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2014-06-01 00:00:00	2016-05-03 03:50:20	\N	\N	42	GOOD	16	\N	\N
+43	Deborah	Jasek	debjasek@hotmail.com	979-693-0343	\N	393	\N	1007 Winding Rd	\N	College Station	TX	77840	2	\N	\N	\N	\N	\N	2011-11-11 00:00:00	2016-05-03 03:50:21	\N	\N	43	GOOD	16	\N	2015 ? 2014: Added 1 more flag.  Need one hole on either side of driveway.
+44	Manda	Rosser	mhrosser@gmail.com	979-696-3464	\N	394	\N	104 Lee Ave	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2014-06-24 00:00:00	2016-05-03 03:50:21	\N	\N	44	GOOD	16	\N	\N
+45	Amy and Tim	Leach	timothyleach@suddenlink.net	432-685-0668	\N	394	\N	211 Pershing Ave	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2014-07-28 00:00:00	2016-05-03 03:50:22	\N	\N	45	GOOD	16	\N	\N
+46	F.J.	Moreno	\N	281.280.9640	\N	394	\N	213 Pershing Ave	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2015-09-04 00:00:00	2016-05-03 03:50:22	\N	\N	46	GOOD	16	\N	\N
+47	Mark & Tammy	Stein	\N	832.331.4022	\N	394	\N	218 Pershing Ave	\N	College Station	TX	77840	2	\N	\N	\N	One each between Oak Trees	* New flag Feb 2016 *	2016-01-17 00:00:00	2016-05-03 03:50:23	\N	\N	47	GOOD	16	\N	\N
+48	Jeannie	Barrett	barrett.jeannie@gmail.com	979-696-5968	\N	394	\N	118 Pershing Ave	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-05-28 00:00:00	2016-05-03 03:50:23	\N	\N	48	GOOD	16	\N	\N
+49	Gaines	West	gaines.west@westwebblaw.com	979-229-1984	\N	394	\N	200 Suffolk Ave	\N	College Station	TX	77840	1	\N	\N	\N	\N	Sleeve/Cap	2012-02-20 00:00:00	2016-05-03 03:50:24	\N	\N	49	GOOD	16	\N	s
+50	Doug and Cindy	Roesler	d76c78@aol.com	979-292-6916	\N	394	\N	204 Suffolk Ave	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-06-14 00:00:00	2016-05-03 03:50:24	\N	\N	50	GOOD	16	\N	 3 different locations (Medina/Suffolk/Winding)
+51	Hays & Robin	Glover	\N	979-693-8238	\N	394	\N	203 Suffolk Ave	\N	College Station	TX	77840	1	\N	\N	\N	Wrong hole marked - use other	\N	2012-06-14 00:00:00	2016-05-03 03:50:25	\N	\N	51	GOOD	16	\N	2nd is for 203 Suffolk, extra is donation
+52	Hays & Robin	Glover	\N	979-693-8238	\N	394	\N	300 Suffolk Ave	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-06-14 00:00:00	2016-05-03 03:50:25	\N	\N	52	GOOD	16	\N	Paid for Suffolk (x2) - extra is donation
+53	Gail	Hensley	gail24014@gmail.com	\N	\N	394	\N	310 Suffolk Ave	\N	College Station	TX	77840	1	\N	\N	\N	\N	Sleeve	2014-11-01 00:00:00	2016-05-03 03:50:26	\N	\N	53	GOOD	16	\N	\N
+54	Greg	Gorman	\N	979-693-8103	\N	394	\N	315 Suffolk Ave	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-05-29 00:00:00	2016-05-03 03:50:26	\N	\N	54	GOOD	16	\N	\N
+55	Buzz	Pruit	pruittkaty@hotmail.com	979-693-3690	\N	394	\N	900 Park Place	\N	College Station	TX	77840	1	\N	\N	\N	Plug set far back	\N	2011-02-21 00:00:00	2016-05-03 03:50:27	\N	\N	55	GOOD	16	\N	\N
+56	Theresa	Schimelpfening	\N	713-248-6418	\N	394	\N	316 Pershing Ave	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-05-29 00:00:00	2016-05-03 03:50:27	\N	\N	56	GOOD	16	\N	\N
+57	Mark & Tammy	Stein	\N	832.331.4022	\N	394	\N	314 Pershing Ave	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2016-01-17 00:00:00	2016-05-03 03:50:28	\N	\N	57	GOOD	16	\N	\N
+58	Will & Amber	Reed	amberreed02@hotmail.com	979-777-6337	\N	394	\N	906 Park Place	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2015-09-04 00:00:00	2016-05-03 03:50:28	\N	\N	58	GOOD	16	\N	\N
+59	James	Matson	\N	979-693-0133	\N	394	\N	1002 Park Place	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2011-02-21 00:00:00	2016-05-03 03:50:29	\N	\N	59	GOOD	16	\N	\N
+60	Jean	Mays	gmays1054@gmail.com	979-777-0000	\N	394	\N	1111 Park Place	\N	College Station	TX	77840	1	\N	\N	\N	1' back from curb	\N	2014-06-01 00:00:00	2016-05-03 03:50:29	\N	\N	60	OVERDUE	15	\N	\N
+61	Robert	McGehee	\N	\N	\N	394	\N	311 Lee Ave	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2015-05-31 00:00:00	2016-05-03 03:50:30	\N	\N	61	GOOD	15.5	\N	\N
+62	Vicky	Harrison	\N	979-696-5952	\N	394	\N	207 Lee Ave	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-06-14 00:00:00	2016-05-03 03:50:30	\N	\N	62	GOOD	16	\N	\N
+63	Alice	Jimenez	skjimenez@hotmail.com	\N	\N	395	\N	1220 South Dexter Dr	\N	College Station	TX	77840	1	\N	\N	\N	At end of cul-de-sac, ours is 6" back from curb	\N	2011-11-11 00:00:00	2016-05-03 03:50:31	\N	\N	63	GOOD	16	\N	\N
+64	Doug and Cindy	Roesler	d76c78@aol.com	979-292-6916	\N	395	\N	1812 Medina Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2011-07-04 00:00:00	2016-05-03 03:50:31	\N	\N	64	GOOD	16	\N	 3 different locations (Medina/Suffolk/Winding)
+65	Mary	Zingaro	mjzingaro@yahoo.com	979-693-5888	\N	395	\N	1813 Medina Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2011-11-11 00:00:00	2016-05-03 03:50:32	\N	\N	65	GOOD	16	\N	\N
+66	Kathleen	Kenefick	\N	\N	\N	395	\N	1815 Medina Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2012-11-11 00:00:00	2016-05-03 03:50:32	\N	\N	66	GOOD	16	\N	\N
+67	James	Mondshine	lori@mondshine.net	281.764.4068	\N	395	\N	1814 Hondo Dr	\N	College Station	TX	77440	1	\N	\N	\N	\N	\N	2015-11-01 00:00:00	2016-05-03 03:50:33	\N	\N	67	*  NEW *	16	\N	\N
+68	Southwood	Church	\N	\N	\N	395	\N	1901 Harvey Mitchell Pkwy S.	\N	College Station	TX	77845	4	\N	\N	\N	\N	\N	2010-01-01 00:00:00	2016-05-03 03:50:33	\N	\N	68	GOOD	16	4	\N
+69	Sharon	Richmond	\N	979-696-3258	\N	395	\N	1813 Hondo Dr	\N	College Station	TX	77840	1	\N	\N	\N	6" back from curb	\N	2011-11-11 00:00:00	2016-05-03 03:50:34	\N	\N	69	GOOD	16	\N	\N
+70	Mary	Dallis	yiayiadallis@gmail.com'	979-693-7827	\N	395	\N	1816 Shadowwood Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2011-11-11 00:00:00	2016-05-03 03:50:34	\N	\N	70	GOOD	16	\N	\N
+71	Mary	Bryan	marlylbryan@aol.com	979-777-5554	\N	395	\N	1813 Shadowwood Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2015-08-31 00:00:00	2016-05-03 03:50:35	\N	\N	71	GOOD	16	\N	\N
+72	Patti	Ljungdahl	pattil@suddenlink.net	\N	\N	395	\N	1822 Shadowwood Dr	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2013-06-07 00:00:00	2016-05-03 03:50:35	\N	\N	72	GOOD	16	\N	\N
+73	Patricia	Rand	\N	979-694-0239	\N	395	\N	1801 Sabine Ct	\N	College Station	TX	77840	2	\N	\N	\N	\N	\N	2011-11-11 00:00:00	2016-05-03 03:50:36	\N	\N	73	GOOD	16	\N	\N
+74	Peggy	Crittenden	pcritt@suddenlink.net	979-693-5241	\N	395	\N	1803 Laura Lane	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2011-11-11 00:00:00	2016-05-03 03:50:36	\N	\N	74	GOOD	16	\N	\N
+75	Richard	Williams	Heirsonline@gmail.com	979-764-8286	\N	395	\N	1714 Glade St	\N	College Station	TX	77840	2	\N	\N	\N	Thick grass - tough to find.	\N	2011-07-04 00:00:00	2016-05-03 03:50:37	\N	\N	75	GOOD	16	\N	\N
+76	Albert	Schneider	\N	979-693-7546	\N	395	\N	1401 Angelina Cir	\N	College Station	TX	77840	1	\N	\N	\N	Marked w Yellow Paint	\N	2011-11-11 00:00:00	2016-05-03 03:50:37	\N	\N	76	GOOD	16	\N	\N
+77	David	Jones	ketakay@gmail.com	979-693-0097	\N	395	\N	1404 Angelina Cir	\N	College Station	TX	77840	1	\N	\N	\N	\N	\N	2014-11-04 00:00:00	2016-05-03 03:50:38	\N	\N	77	GOOD	16	\N	\N
+78	Church	St Thomas	\N	\N	\N	396	\N	906 George Bush Dr West	\N	College Station	TX	77840	3	\N	\N	\N	\N	\N	2010-01-01 00:00:00	2016-05-03 03:50:38	\N	\N	78	GOOD	16	3	Home base - comp
+79	Will King -	George Bush Presidential Library	\N	979-691-4069	\N	397	\N	1000 George Bush Dr West	\N	College Station	TX	77845	14	\N	\N	\N	2 at main entrance, rest down sidewalk in line with fountain and front of bldg	\N	2012-09-11 00:00:00	2016-05-03 03:50:39	\N	\N	79	GOOD	15	\N	\N
+80	Hillel	Foundation	\N	\N	\N	398	\N	800 George Bush	\N	College Station	TX	77840	3	\N	\N	\N	\N	\N	2014-02-12 00:00:00	2016-05-03 03:50:39	\N	\N	80	GOOD	15	3	\N
+81	Grace	Church	\N	\N	\N	399	\N	700 Anderson Street	\N	College Station	TX	77840	4	\N	\N	\N	\N	\N	2010-01-01 00:00:00	2016-05-03 03:50:40	\N	\N	81	GOOD	16	4	\N
 \.
 
 
@@ -1690,6 +1751,19 @@ COPY tasks (id, run_id, user_id, subscription_id, description, qty, created_at, 
 758	13	\N	5085	Flag In	3	2016-04-06 23:34:24.902491	2016-04-06 23:34:24.902491
 759	13	\N	5171	Flag In	1	2016-04-06 23:34:25.290481	2016-04-06 23:34:25.290481
 760	13	\N	5086	Flag In	1	2016-04-06 23:34:26.174354	2016-04-06 23:34:26.174354
+762	24	\N	5085	Flag In	3	2016-05-03 00:17:40.131214	2016-05-03 00:17:40.131214
+763	24	\N	5086	Flag In	1	2016-05-03 00:17:40.687021	2016-05-03 00:17:40.687021
+764	24	\N	5079	Flag In	4	2016-05-03 00:17:41.139846	2016-05-03 00:17:41.139846
+765	24	\N	5171	Flag In	1	2016-05-03 00:17:41.612102	2016-05-03 00:17:41.612102
+766	24	\N	5172	Flag In	1	2016-05-03 00:17:42.380371	2016-05-03 00:17:42.380371
+767	24	\N	5175	Flag In	1	2016-05-03 00:17:42.808327	2016-05-03 00:17:42.808327
+768	25	\N	5080	Flag In	2	2016-05-03 00:25:09.551753	2016-05-03 00:25:09.551753
+769	25	\N	5081	Flag In	1	2016-05-03 00:25:09.859379	2016-05-03 00:25:09.859379
+770	25	\N	5082	Flag In	2	2016-05-03 00:25:10.227932	2016-05-03 00:25:10.227932
+771	25	\N	5170	Flag In	1	2016-05-03 00:25:10.881063	2016-05-03 00:25:10.881063
+772	26	\N	5181	Flag In	3	2016-05-03 00:25:54.244342	2016-05-03 00:25:54.244342
+773	26	\N	5078	Flag In	3	2016-05-03 00:25:54.626886	2016-05-03 00:25:54.626886
+774	26	\N	5084	Flag In	14	2016-05-03 00:25:55.021024	2016-05-03 00:25:55.021024
 \.
 
 
@@ -1697,7 +1771,7 @@ COPY tasks (id, run_id, user_id, subscription_id, description, qty, created_at, 
 -- Name: tasks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: scoutsfd
 --
 
-SELECT pg_catalog.setval('tasks_id_seq', 761, true);
+SELECT pg_catalog.setval('tasks_id_seq', 774, true);
 
 
 --

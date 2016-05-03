@@ -15,7 +15,6 @@ ActiveRecord::Schema.define(version: 20160425230604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "adminpack"
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
@@ -104,6 +103,7 @@ ActiveRecord::Schema.define(version: 20160425230604) do
     t.string   "zip"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.integer "subscription_amount"
   end
 
   create_table "subscriptions", force: :cascade do |t|
@@ -130,6 +130,10 @@ ActiveRecord::Schema.define(version: 20160425230604) do
     t.float    "latitude"
     t.float    "longitude"
     t.integer  "subscriber_id"
+    t.string  "status",
+        t.float "renewal_grp",
+        t.integer "qty_comp",
+        t.string "subscription_notes"
   end
 
   add_index "subscriptions", ["subscriber_id"], name: "index_subscriptions_on_subscriber_id", using: :btree
