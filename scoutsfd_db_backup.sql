@@ -489,10 +489,10 @@ CREATE TABLE subscriptions (
     latitude double precision,
     longitude double precision,
     subscriber_id integer,
-    status text,
-    renewal_grp real,
+    status character varying,
+    renewal_grp double precision,
     qty_comp integer,
-    subscription_notes text
+    subscription_notes character varying
 );
 
 
@@ -1294,6 +1294,11 @@ COPY schema_migrations (version) FROM stdin;
 20160409024403
 20160425230023
 20160425230604
+20160503222708
+20160503222728
+20160503222748
+20160503222804
+20160503222835
 \.
 
 
